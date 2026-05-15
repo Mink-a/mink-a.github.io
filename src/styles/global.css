@@ -52,7 +52,7 @@ img, svg {
 }
 
 /* Focus state — amber outline */
-:where(a, button, [tabindex]):focus-visible {
+:where(a, button, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 2px;
