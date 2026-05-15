@@ -7,7 +7,7 @@ const entries = (await getCollection("experience")).sort(
 );
 ---
 {entries.length > 0 && (
-  <ol class="hover-dim-group relative space-y-16">
+  <ol class="relative space-y-16">
     <div class="absolute left-[5px] top-2 bottom-2 w-px bg-border" aria-hidden="true"></div>
     {entries.map((entry) => {
       const isCurrent = entry.data.end === "Present";
