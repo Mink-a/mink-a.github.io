@@ -36,22 +36,33 @@
 </style>
 
 <script>
-  const el = document.getElementById("spotlight");
-  if (el && window.matchMedia("(hover: hover)").matches) {
-    let pending = false;
-    let mx = 0, my = 0;
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(() => {
-          el.style.setProperty("--mx", `${mx}px`);
-          el.style.setProperty("--my", `${my}px`);
-          pending = false;
-        });
-      }
-    };
+  // Re-acquire the spotlight element on every page load (initial + View Transitions
+  // in Task 15 swap the DOM, so the previous reference becomes detached).
+  // The mousemove listener is bound once on window — it persists across navigations.
+  let activeEl: HTMLElement | null = null;
+  let pending = false;
+  let mx = 0, my = 0;
+
+  function onMove(e: MouseEvent) {
+    mx = e.clientX;
+    my = e.clientY;
+    if (!pending) {
+      pending = true;
+      requestAnimationFrame(() => {
+        activeEl?.style.setProperty("--mx", `${mx}px`);
+        activeEl?.style.setProperty("--my", `${my}px`);
+        pending = false;
+      });
+    }
+  }
+
+  function refresh() {
+    activeEl = document.getElementById("spotlight");
+  }
+
+  if (window.matchMedia("(hover: hover)").matches) {
     window.addEventListener("mousemove", onMove, { passive: true });
+    document.addEventListener("astro:page-load", refresh);
+    refresh();
   }
 </script>
