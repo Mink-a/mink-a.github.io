@@ -7,19 +7,34 @@ const entries = (await getCollection("experience")).sort(
 );
 ---
 {entries.length > 0 && (
-  <ol class="hover-dim-group space-y-6">
-    {entries.map((entry) => (
-      <li>
-        <ExperienceCard
-          role={entry.data.role}
-          company={entry.data.company}
-          companyUrl={entry.data.companyUrl}
-          start={entry.data.start}
-          end={String(entry.data.end)}
-          description={entry.data.description}
-          tech={entry.data.tech}
-        />
-      </li>
-    ))}
+  <ol class="hover-dim-group space-y-10">
+    {entries.map((entry) => {
+      const isCurrent = entry.data.end === "Present";
+      return (
+        <li class="grid grid-cols-[16px_1fr] gap-5">
+          <div class="relative flex flex-col items-center pt-2">
+            <span
+              class={`block w-3 h-3 rounded-full shrink-0 ${
+                isCurrent
+                  ? "bg-accent ring-4 ring-accent-glow"
+                  : "bg-bg border-2 border-text-dim"
+              }`}
+              aria-hidden="true"
+            ></span>
+            <div class="flex-1 w-px bg-border mt-3 self-center" aria-hidden="true"></div>
+          </div>
+          <ExperienceCard
+            role={entry.data.role}
+            company={entry.data.company}
+            companyUrl={entry.data.companyUrl}
+            start={entry.data.start}
+            end={String(entry.data.end)}
+            description={entry.data.description}
+            tech={entry.data.tech}
+            isCurrent={isCurrent}
+          />
+        </li>
+      );
+    })}
   </ol>
 )}

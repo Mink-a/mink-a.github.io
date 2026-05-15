@@ -9,30 +9,29 @@ interface Props {
   end: string;
   description: string;
   tech: string[];
+  isCurrent?: boolean;
 }
-const { role, company, companyUrl, start, end, description, tech } = Astro.props;
+const { role, company, companyUrl, start, end, description, tech, isCurrent = false } = Astro.props;
 
 function formatRange(s: string, e: string) {
   return `${s} — ${e}`;
 }
 ---
-<article class="hover-dim-item group grid md:grid-cols-[140px_1fr] gap-4 p-4 -mx-4 rounded-md border border-transparent hover:border-border-strong hover:bg-surface/50 transition-colors">
-  <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim pt-1">
+<article class="hover-dim-item group">
+  <p class={`text-xs uppercase tracking-[0.16em] font-semibold mb-2 ${isCurrent ? "text-accent" : "text-text-dim"}`}>
     {formatRange(start, end)}
   </p>
-  <div>
-    <h3 class="h-3 text-text group-hover:text-accent transition-colors">
-      {role}
-      <span class="text-text-muted"> · </span>
-      {companyUrl ? (
-        <a href={companyUrl} target="_blank" rel="noopener noreferrer" class="hover:text-accent">{company}</a>
-      ) : (
-        <span>{company}</span>
-      )}
-    </h3>
-    <p class="mt-2 text-text-muted">{description}</p>
-    <ul class="mt-3 flex flex-wrap gap-2">
-      {tech.map((t) => <li><Tag label={t} /></li>)}
-    </ul>
-  </div>
+  <h3 class="h-3 group-hover:text-accent transition-colors mb-2">
+    <span class="text-text">{role}</span>
+    <span class="text-text-muted"> at </span>
+    {companyUrl ? (
+      <a href={companyUrl} target="_blank" rel="noopener noreferrer" class="text-text hover:text-accent transition-colors">{company}</a>
+    ) : (
+      <span class="text-text">{company}</span>
+    )}
+  </h3>
+  <p class="text-text-muted">{description}</p>
+  <ul class="mt-3 flex flex-wrap gap-2">
+    {tech.map((t) => <li><Tag label={t} /></li>)}
+  </ul>
 </article>

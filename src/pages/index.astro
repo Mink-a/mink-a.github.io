@@ -16,7 +16,7 @@ const navItems = [
 ];
 ---
 <Base title="Min Khant Kyaw — Software Engineer" navItems={navItems}>
-  <section id="about" class="mb-24 pt-8 fade-in-up">
+  <section id="about" class="mb-32 pt-8 fade-in-up">
     <p class="body-lg text-text-muted">
       I design and develop performant applications with a strong focus on maintainability, user
       experience, and scalable architecture. My day-to-day is full-stack TypeScript — Astro,
@@ -30,7 +30,7 @@ const navItems = [
   </section>
 
   {hasExperience && (
-    <section id="experience" class="mb-24">
+    <section id="experience" class="mb-32">
       <SectionHeading eyebrow="Experience" heading="Where I've worked." />
       <ExperienceList />
       <a
@@ -45,7 +45,7 @@ const navItems = [
     </section>
   )}
 
-  <section id="projects" class="mb-24">
+  <section id="projects" class="mb-32">
     <SectionHeading eyebrow="Selected Work" heading="Featured projects." />
     <ProjectList featuredOnly />
     <a
@@ -57,7 +57,7 @@ const navItems = [
     </a>
   </section>
 
-  <section id="contact" class="mb-24 fade-in-up">
+  <section id="contact" class="mb-32 fade-in-up">
     <SectionHeading eyebrow="What's Next" heading="Open for ambitious work." />
     <p class="body-lg text-text-muted max-w-xl">
       Available for software engineering, product development, and system architecture
