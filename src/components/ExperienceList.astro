@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import ExperienceCard from "./ExperienceCard.astro";
+
+const entries = (await getCollection("experience")).sort(
+  (a, b) => b.data.order - a.data.order
+);
+---
+{entries.length > 0 && (
+  <ol class="hover-dim-group space-y-6">
+    {entries.map((entry) => (
+      <li>
+        <ExperienceCard
+          role={entry.data.role}
+          company={entry.data.company}
+          companyUrl={entry.data.companyUrl}
+          start={entry.data.start}
+          end={String(entry.data.end)}
+          description={entry.data.description}
+          tech={entry.data.tech}
+        />
+      </li>
+    ))}
+  </ol>
+)}

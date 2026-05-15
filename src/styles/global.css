@@ -103,3 +103,34 @@ img, svg {
   font-size: 18px;
   line-height: 1.6;
 }
+
+/* Hover-dim siblings — pure CSS */
+.hover-dim-group .hover-dim-item {
+  transition: opacity 200ms ease;
+}
+@media (hover: hover) {
+  .hover-dim-group:hover .hover-dim-item {
+    opacity: 0.4;
+  }
+  .hover-dim-group .hover-dim-item:hover {
+    opacity: 1;
+  }
+}
+
+/* Entry animation — set by IntersectionObserver in Task 14 */
+html.js .fade-in-up {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+html.js .fade-in-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .fade-in-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
