@@ -6,7 +6,7 @@
 // TextScramble pattern.
 
 const BIOS = [
-  "Seeking the 'why.' Engineering the 'how.' Fuelled by curiosity.",
+  "In the zone. In the code. In production.",
   "Making the complex look simple.",
   "Imagining systems. Engineering solutions.",
 ];
