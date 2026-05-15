@@ -17,9 +17,12 @@ const { navItems = [] } = Astro.props;
       <h1 class="h-display text-text">Min Khant Kyaw</h1>
     </a>
     <p class="mt-3 text-text text-xl lg:text-2xl font-medium">Software Engineer</p>
-    <p class="mt-5 text-text-muted text-base max-w-xs">
-      Crafting code that scales — clean APIs, fast feedback loops, and interfaces that
-      respect the user's attention.
+    <p
+      id="bio"
+      class="mt-5 text-text-muted text-base max-w-xs min-h-[3.4em] font-mono"
+      data-bio-target
+    >
+      Seeking the 'why.' Engineering the 'how.' Fuelled by curiosity.
     </p>
 
     {navItems.length > 0 && (
