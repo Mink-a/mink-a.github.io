@@ -1,11 +1,16 @@
 ---
 import "../styles/global.css";
+import Sidebar from "../components/Sidebar.astro";
+
+interface NavItem { id: string; label: string; }
 
 interface Props {
   title: string;
   description?: string;
+  navItems?: NavItem[];
 }
-const { title, description = "Software Engineer building modern digital products." } = Astro.props;
+
+const { title, description = "Software Engineer building modern digital products.", navItems = [] } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -19,6 +24,14 @@ const { title, description = "Software Engineer building modern digital products
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   </head>
   <body>
-    <slot />
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:rounded-md focus:z-50">
+      Skip to content
+    </a>
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,380px)_minmax(0,720px)] gap-16">
+      <Sidebar navItems={navItems} />
+      <main id="main" class="py-12 lg:py-24">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>

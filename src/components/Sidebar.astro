@@ -1,0 +1,86 @@
+---
+interface NavItem { id: string; label: string; }
+
+interface Props {
+  /** Section anchors when on home. Empty array means "no in-page nav" (inner routes). */
+  navItems?: NavItem[];
+  /** Whether to show the "Available for work" status pill. */
+  showStatus?: boolean;
+}
+
+const { navItems = [], showStatus = true } = Astro.props;
+---
+
+<aside class="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between py-12 lg:py-24">
+  <div>
+    <a href="/" class="block group">
+      <h1 class="h-display">Min Khant<br />Kyaw</h1>
+      <p class="mt-2 text-accent text-base font-medium">Software Engineer</p>
+    </a>
+    <p class="mt-6 text-text-muted max-w-xs">
+      Building modern digital products with clean architecture and developer experience in mind.
+    </p>
+
+    {navItems.length > 0 && (
+      <nav class="mt-16 hidden lg:block" aria-label="Section navigation">
+        <ul class="space-y-3">
+          {navItems.map((item) => (
+            <li>
+              <a
+                href={`#${item.id}`}
+                data-nav-link
+                data-section={item.id}
+                class="group inline-flex items-center gap-4 py-2"
+              >
+                <span class="nav-indicator inline-block h-px bg-text-dim transition-all duration-200 ease-out group-hover:bg-accent" />
+                <span class="text-text-dim text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-200 group-hover:text-text">
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )}
+  </div>
+
+  <div class="mt-12 lg:mt-0">
+    {showStatus && (
+      <div class="flex items-center gap-2 mb-4">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+        </span>
+        <span class="text-xs text-text-muted">Available for work</span>
+      </div>
+    )}
+    <div class="flex items-center gap-5 text-text-muted">
+      <a href="https://github.com/mink-a" aria-label="GitHub" class="hover:text-text transition-colors">GH</a>
+      <a href="https://www.linkedin.com/" aria-label="LinkedIn" class="hover:text-text transition-colors">LI</a>
+      <a href="https://x.com/" aria-label="X" class="hover:text-text transition-colors">X</a>
+      <a href="mailto:hello@minkhantkyaw.com" aria-label="Email" class="hover:text-text transition-colors">@</a>
+    </div>
+    <a
+      href="/resume.pdf"
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-[0.16em] font-semibold text-text hover:text-accent transition-colors"
+    >
+      Resume <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</aside>
+
+<style>
+  .nav-indicator {
+    width: 24px;
+  }
+  [data-nav-link][data-active="true"] .nav-indicator,
+  [data-nav-link]:hover .nav-indicator {
+    width: 64px;
+    background-color: var(--color-accent);
+  }
+  [data-nav-link][data-active="true"] span:last-child {
+    color: var(--color-text);
+  }
+</style>

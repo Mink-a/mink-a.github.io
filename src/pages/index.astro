@@ -1,13 +1,28 @@
 ---
 import Base from "../layouts/Base.astro";
+
+const navItems = [
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "projects", label: "Projects" },
+  { id: "contact", label: "Contact" },
+];
 ---
-<Base title="Min Khant Kyaw — Software Engineer">
-  <main class="max-w-screen-xl mx-auto px-12 py-24">
-    <div class="eyebrow mb-3">Software Engineer</div>
-    <h1 class="h-display">Tokens loaded.</h1>
-    <p class="body-lg mt-6 text-text-muted max-w-2xl">
-      Background uses <span class="text-accent">--color-bg</span> and accent uses
-      <span class="text-accent">--color-accent</span>. Both come from <code class="text-accent">@theme</code>.
+<Base title="Min Khant Kyaw — Software Engineer" navItems={navItems}>
+  <section id="about" class="min-h-screen">
+    <p class="eyebrow mb-4">About</p>
+    <p class="text-text-muted body-lg">
+      Sections will be filled in over the next several tasks. The sidebar is now sticky on the
+      left, with hover-animated nav indicators.
     </p>
-  </main>
+  </section>
+  <section id="experience" class="min-h-screen">
+    <p class="eyebrow mb-4">Experience</p>
+  </section>
+  <section id="projects" class="min-h-screen">
+    <p class="eyebrow mb-4">Projects</p>
+  </section>
+  <section id="contact" class="min-h-screen">
+    <p class="eyebrow mb-4">Contact</p>
+  </section>
 </Base>
