@@ -1,6 +1,5 @@
 ---
 import Base from "../layouts/Base.astro";
-import SectionHeading from "../components/SectionHeading.astro";
 import ExperienceList from "../components/ExperienceList.astro";
 import ProjectList from "../components/ProjectList.astro";
 import { getCollection } from "astro:content";
@@ -12,7 +11,6 @@ const navItems = [
   { id: "about", label: "About" },
   ...(hasExperience ? [{ id: "experience", label: "Experience" }] : []),
   { id: "projects", label: "Projects" },
-  { id: "contact", label: "Contact" },
 ];
 ---
 <Base title="Min Khant Kyaw — Software Engineer" navItems={navItems}>
@@ -30,14 +28,13 @@ const navItems = [
   </section>
 
   {hasExperience && (
-    <section id="experience" class="mb-32">
-      <SectionHeading eyebrow="Experience" heading="Where I've worked." />
+    <section id="experience" class="mb-32 fade-in-up">
       <ExperienceList />
       <a
         href="/resume.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-text hover:text-accent transition-colors group"
+        class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-text hover:text-accent transition-colors group"
       >
         View Full Resume
         <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
@@ -45,30 +42,14 @@ const navItems = [
     </section>
   )}
 
-  <section id="projects" class="mb-32">
-    <SectionHeading eyebrow="Selected Work" heading="Featured projects." />
+  <section id="projects" class="mb-32 fade-in-up">
     <ProjectList featuredOnly />
     <a
       href="/projects"
-      class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-text hover:text-accent transition-colors group"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-text hover:text-accent transition-colors group"
     >
       View All Projects
       <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
-    </a>
-  </section>
-
-  <section id="contact" class="mb-32 fade-in-up">
-    <SectionHeading eyebrow="What's Next" heading="Open for ambitious work." />
-    <p class="body-lg text-text-muted max-w-xl">
-      Available for software engineering, product development, and system architecture
-      collaborations. The fastest way to reach me is email.
-    </p>
-    <a
-      href="mailto:hello@minkhantkyaw.com"
-      class="inline-flex items-center gap-3 mt-8 px-6 py-3 rounded-full bg-accent text-bg font-semibold hover:bg-accent/90 transition-colors"
-    >
-      Say hello
-      <span aria-hidden="true">→</span>
     </a>
   </section>
 </Base>
