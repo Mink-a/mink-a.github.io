@@ -6,11 +6,9 @@ interface NavItem { id: string; label: string; }
 interface Props {
   /** Section anchors when on home. Empty array means "no in-page nav" (inner routes). */
   navItems?: NavItem[];
-  /** Whether to show the "Available for work" status pill. */
-  showStatus?: boolean;
 }
 
-const { navItems = [], showStatus = true } = Astro.props;
+const { navItems = [] } = Astro.props;
 ---
 
 <aside class="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between py-12 lg:py-24">
@@ -48,33 +46,22 @@ const { navItems = [], showStatus = true } = Astro.props;
   </div>
 
   <div class="mt-12 lg:mt-0">
-    {showStatus && (
-      <div class="flex items-center gap-2 mb-4">
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full rounded-full bg-accent opacity-75 animate-ping"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
-        </span>
-        <span class="text-xs text-text-muted">Available for work</span>
-      </div>
-    )}
-    <div class="flex items-center gap-5 text-text-muted">
+    <div class="flex items-center gap-6 text-text-muted">
       <a href="https://github.com/mink-a" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hover:text-text transition-colors">
-        <Icon name="simple-icons:github" class="w-5 h-5" aria-hidden="true" />
+        <Icon name="simple-icons:github" class="w-6 h-6" aria-hidden="true" />
       </a>
       <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:text-text transition-colors">
-        <Icon name="simple-icons:linkedin" class="w-5 h-5" aria-hidden="true" />
+        <Icon name="simple-icons:linkedin" class="w-6 h-6" aria-hidden="true" />
       </a>
       <a href="https://t.me/" target="_blank" rel="noopener noreferrer" aria-label="Telegram" class="hover:text-text transition-colors">
-        <Icon name="simple-icons:telegram" class="w-5 h-5" aria-hidden="true" />
+        <Icon name="simple-icons:telegram" class="w-6 h-6" aria-hidden="true" />
       </a>
       <a href="mailto:hello@minkhantkyaw.com" aria-label="Email" class="hover:text-text transition-colors">
-        <Icon name="lucide:mail" class="w-5 h-5" aria-hidden="true" />
+        <Icon name="lucide:mail" class="w-6 h-6" aria-hidden="true" />
       </a>
     </div>
     <a
-      href="/resume.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
+      href="/resume"
       class="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-[0.16em] font-semibold text-text hover:text-accent transition-colors"
     >
       Resume <span aria-hidden="true">→</span>
