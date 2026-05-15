@@ -1,7 +1,6 @@
 ---
 import "../styles/global.css";
 import Sidebar from "../components/Sidebar.astro";
-import Spotlight from "../components/Spotlight.astro";
 import { ClientRouter } from "astro:transitions";
 
 interface NavItem { id: string; label: string; }
@@ -26,12 +25,11 @@ const { title, description = "Software Engineer building modern digital products
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
     <ClientRouter />
   </head>
-  <body class="relative">
-    <Spotlight />
+  <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:rounded-md focus:z-[100]">
       Skip to content
     </a>
-    <div class="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,380px)_minmax(0,720px)] gap-16">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,380px)_minmax(0,720px)] gap-16">
       <Sidebar navItems={navItems} />
       <main id="main" class="py-12 lg:py-24">
         <slot />
