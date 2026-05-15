@@ -1,0 +1,36 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", (p) => !p.data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatter = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
+<Base title={`${post.data.title} — Min Khant Kyaw`} description={post.data.description}>
+  <article class="prose-stone max-w-none">
+    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim mb-3">
+      {formatter.format(post.data.pubDate)}
+    </p>
+    <h1 class="h-2 mb-6">{post.data.title}</h1>
+    <p class="body-lg text-text-muted mb-10">{post.data.description}</p>
+    <div class="text-text-muted leading-relaxed space-y-5 [&_a]:text-accent [&_a:hover]:underline [&_h2]:h-3 [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-text [&_h3]:text-text [&_h3]:mt-8 [&_h3]:mb-2 [&_code]:text-accent [&_code]:bg-surface [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_pre]:bg-surface [&_pre]:border [&_pre]:border-border [&_pre]:rounded-md [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6">
+      <Content />
+    </div>
+  </article>
+  <a
+    href="/blog"
+    class="inline-flex items-center gap-2 mt-16 text-sm font-semibold text-text hover:text-accent transition-colors group"
+  >
+    <span aria-hidden="true" class="transition-transform group-hover:-translate-x-1">←</span>
+    Back to all writing
+  </a>
+</Base>
