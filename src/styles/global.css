@@ -28,6 +28,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Pad anchor jumps so the target doesn't land flush with the viewport top. */
+  scroll-padding-top: 96px;
 }
 
 body {
