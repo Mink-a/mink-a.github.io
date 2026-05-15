@@ -1,41 +1,66 @@
-let currentObserver: IntersectionObserver | null = null;
+// Scroll-position based active-section tracking.
+//
+// IntersectionObserver with a center-viewport rootMargin felt off when sections
+// have very different heights — short sections (About) never reach the trigger
+// band before the next section takes over. This implementation matches what
+// most users intuit: the "active" section is the one whose top has scrolled
+// past a fixed offset near the viewport top.
 
-function initScrollSpy() {
-  if (currentObserver) {
-    currentObserver.disconnect();
-    currentObserver = null;
+const OFFSET = 100; // px from viewport top
+let bound = false;
+let scheduled = false;
+
+function getActiveSectionId(): string | null {
+  const sections = document.querySelectorAll<HTMLElement>("main section[id]");
+  if (sections.length === 0) return null;
+
+  let activeId: string | null = null;
+  for (const section of sections) {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= OFFSET) {
+      activeId = section.id;
+    } else {
+      break; // sections are in document order; remainder are below the offset.
+    }
   }
 
-  const sections = document.querySelectorAll<HTMLElement>("main section[id]");
+  // Above the first section → still highlight the first one so the sidebar
+  // never looks "empty."
+  if (activeId === null) {
+    activeId = sections[0].id;
+  }
+  return activeId;
+}
+
+function setActive(id: string | null) {
   const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
-  if (sections.length === 0 || links.length === 0) return;
+  links.forEach((link) => {
+    const isActive = id !== null && link.dataset.section === id;
+    link.dataset.active = String(isActive);
+    if (isActive) {
+      link.setAttribute("aria-current", "location");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
 
-  const setActive = (id: string | null) => {
-    links.forEach((link) => {
-      const isActive = link.dataset.section === id;
-      link.dataset.active = String(isActive);
-      if (isActive) {
-        link.setAttribute("aria-current", "location");
-      } else {
-        link.removeAttribute("aria-current");
-      }
-    });
-  };
+function onScroll() {
+  if (scheduled) return;
+  scheduled = true;
+  requestAnimationFrame(() => {
+    setActive(getActiveSectionId());
+    scheduled = false;
+  });
+}
 
-  currentObserver = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((e) => e.isIntersecting)
-        .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
-      if (visible.length > 0) {
-        const id = (visible[0].target as HTMLElement).id;
-        setActive(id);
-      }
-    },
-    { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
-  );
-
-  sections.forEach((s) => currentObserver!.observe(s));
+function initScrollSpy() {
+  if (!bound) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    bound = true;
+  }
+  // Re-evaluate immediately on every page load (covers View Transitions).
+  onScroll();
 }
 
 document.addEventListener("astro:page-load", initScrollSpy);
