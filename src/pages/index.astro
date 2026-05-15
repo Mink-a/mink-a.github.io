@@ -1,28 +1,73 @@
 ---
 import Base from "../layouts/Base.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ExperienceList from "../components/ExperienceList.astro";
+import ProjectList from "../components/ProjectList.astro";
+import { getCollection } from "astro:content";
+
+const experience = await getCollection("experience");
+const hasExperience = experience.length > 0;
 
 const navItems = [
   { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
+  ...(hasExperience ? [{ id: "experience", label: "Experience" }] : []),
   { id: "projects", label: "Projects" },
   { id: "contact", label: "Contact" },
 ];
 ---
 <Base title="Min Khant Kyaw — Software Engineer" navItems={navItems}>
-  <section id="about" class="min-h-screen">
-    <p class="eyebrow mb-4">About</p>
-    <p class="text-text-muted body-lg">
-      Sections will be filled in over the next several tasks. The sidebar is now sticky on the
-      left, with hover-animated nav indicators.
+  <section id="about" class="mb-24 fade-in-up">
+    <p class="body-lg text-text-muted">
+      I design and develop performant applications with a strong focus on maintainability, user
+      experience, and scalable architecture. Experienced across frontend, backend, database
+      design, APIs, authentication systems, and cloud-native development.
+    </p>
+    <p class="body-lg text-text-muted mt-4">
+      Currently focused on modern TypeScript ecosystems and full-stack systems — Astro, Next.js,
+      Bun, Hono, PostgreSQL.
     </p>
   </section>
-  <section id="experience" class="min-h-screen">
-    <p class="eyebrow mb-4">Experience</p>
+
+  {hasExperience && (
+    <section id="experience" class="mb-24">
+      <SectionHeading eyebrow="Experience" heading="Where I've worked." />
+      <ExperienceList />
+      <a
+        href="/resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-text hover:text-accent transition-colors group"
+      >
+        View Full Resume
+        <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </section>
+  )}
+
+  <section id="projects" class="mb-24">
+    <SectionHeading eyebrow="Selected Work" heading="Featured projects." />
+    <ProjectList featuredOnly />
+    <a
+      href="/projects"
+      class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-text hover:text-accent transition-colors group"
+    >
+      View All Projects
+      <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+    </a>
   </section>
-  <section id="projects" class="min-h-screen">
-    <p class="eyebrow mb-4">Projects</p>
-  </section>
-  <section id="contact" class="min-h-screen">
-    <p class="eyebrow mb-4">Contact</p>
+
+  <section id="contact" class="mb-24 fade-in-up">
+    <SectionHeading eyebrow="What's Next" heading="Open for ambitious work." />
+    <p class="body-lg text-text-muted max-w-xl">
+      Available for software engineering, product development, and system architecture
+      collaborations. The fastest way to reach me is email.
+    </p>
+    <a
+      href="mailto:hello@minkhantkyaw.com"
+      class="inline-flex items-center gap-3 mt-8 px-6 py-3 rounded-full bg-accent text-bg font-semibold hover:bg-accent/90 transition-colors"
+    >
+      Say hello
+      <span aria-hidden="true">→</span>
+    </a>
   </section>
 </Base>
