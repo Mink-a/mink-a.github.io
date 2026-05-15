@@ -6,7 +6,7 @@
 // most users intuit: the "active" section is the one whose top has scrolled
 // past a fixed offset near the viewport top.
 
-const OFFSET = 100; // px from viewport top
+const OFFSET = 180; // px from viewport top
 let bound = false;
 let scheduled = false;
 
