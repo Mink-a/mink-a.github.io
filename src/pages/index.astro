@@ -2,8 +2,12 @@
 import Base from "../layouts/Base.astro";
 ---
 <Base title="Min Khant Kyaw — Software Engineer">
-  <main class="p-8">
-    <h1 class="text-4xl font-bold tracking-tight">Tailwind is wired up.</h1>
-    <p class="mt-4 text-stone-400">Tokens and layout come next.</p>
+  <main class="max-w-screen-xl mx-auto px-12 py-24">
+    <div class="eyebrow mb-3">Software Engineer</div>
+    <h1 class="h-display">Tokens loaded.</h1>
+    <p class="body-lg mt-6 text-text-muted max-w-2xl">
+      Background uses <span class="text-accent">--color-bg</span> and accent uses
+      <span class="text-accent">--color-accent</span>. Both come from <code class="text-accent">@theme</code>.
+    </p>
   </main>
 </Base>
