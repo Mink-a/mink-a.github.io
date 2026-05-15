@@ -15,27 +15,17 @@ const { navItems = [], showStatus = true } = Astro.props;
 
 <aside class="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between py-12 lg:py-24">
   <div>
-    <img
-      src="https://placehold.co/200"
-      alt=""
-      width="200"
-      height="200"
-      class="w-24 h-24 rounded-full mb-8 object-cover"
-    />
-
-    <p class="text-sm text-text-muted mb-2">Hi, I am</p>
     <a href="/" class="block group">
       <h1 class="h-display text-text">Min Khant Kyaw</h1>
     </a>
-
-    <p class="mt-6 flex items-center gap-2 text-accent text-sm font-medium">
-      <span aria-hidden="true">★</span>
-      Software Engineer
+    <p class="mt-3 text-text text-xl lg:text-2xl font-medium">Software Engineer</p>
+    <p class="mt-5 text-text-muted text-base max-w-xs">
+      Crafting code that scales — clean APIs, fast feedback loops, and interfaces that
+      respect the user's attention.
     </p>
-    <p class="mt-1 text-text-dim text-sm">Crafting code that scales.</p>
 
     {navItems.length > 0 && (
-      <nav class="mt-16 hidden lg:block" aria-label="Section navigation">
+      <nav class="mt-20 hidden lg:block" aria-label="Section navigation">
         <ul class="space-y-4">
           {navItems.map((item) => (
             <li>
@@ -46,7 +36,7 @@ const { navItems = [], showStatus = true } = Astro.props;
                 class="group inline-flex items-center gap-4 py-2"
               >
                 <span class="nav-indicator inline-block h-px bg-text-dim transition-all duration-200 ease-out group-hover:bg-accent" />
-                <span class="text-text-dim text-xs uppercase tracking-[0.16em] font-semibold transition-colors duration-200 group-hover:text-text">
+                <span class="text-text-dim text-sm uppercase tracking-[0.16em] font-semibold transition-colors duration-200 group-hover:text-text">
                   {item.label}
                 </span>
               </a>
@@ -98,8 +88,8 @@ const { navItems = [], showStatus = true } = Astro.props;
   }
   [data-nav-link][data-active="true"] .nav-indicator,
   [data-nav-link]:hover .nav-indicator {
-    width: 64px;
-    background-color: var(--color-accent);
+    width: 80px;
+    background-color: var(--color-text);
   }
   [data-nav-link][data-active="true"] span:last-child {
     color: var(--color-text);
