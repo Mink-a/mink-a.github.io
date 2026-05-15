@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "./ProjectCard.astro";
+
+interface Props {
+  /** When true, only render featured projects. */
+  featuredOnly?: boolean;
+}
+const { featuredOnly = false } = Astro.props;
+
+let entries = await getCollection("projects");
+if (featuredOnly) {
+  entries = entries.filter((e) => e.data.featured);
+}
+entries.sort((a, b) => b.data.order - a.data.order);
+---
+{entries.length > 0 && (
+  <ol class="hover-dim-group space-y-6">
+    {entries.map((entry) => (
+      <li>
+        <ProjectCard
+          title={entry.data.title}
+          type={entry.data.type}
+          description={entry.data.description}
+          tech={entry.data.tech}
+          repoUrl={entry.data.repoUrl}
+          demoUrl={entry.data.demoUrl}
+        />
+      </li>
+    ))}
+  </ol>
+)}
