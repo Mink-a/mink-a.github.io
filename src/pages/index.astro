@@ -14,7 +14,7 @@ const navItems = [
 ];
 ---
 <Base title="Min Khant Kyaw — Software Engineer" navItems={navItems}>
-  <section id="about" class="mb-32 fade-in-up">
+  <section id="about" class="mb-16 lg:mb-32 fade-in-up">
     <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">About</h2>
     <p class="body-lg text-text-muted">
       I design and develop performant applications with a strong focus on maintainability, user
@@ -29,7 +29,7 @@ const navItems = [
   </section>
 
   {hasExperience && (
-    <section id="experience" class="mb-32 fade-in-up">
+    <section id="experience" class="mb-16 lg:mb-32 fade-in-up">
       <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">Experience</h2>
       <ExperienceList />
       <a
@@ -42,7 +42,7 @@ const navItems = [
     </section>
   )}
 
-  <section id="projects" class="mb-32 fade-in-up">
+  <section id="projects" class="mb-16 lg:mb-32 fade-in-up">
     <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">Projects</h2>
     <ProjectList featuredOnly />
     <a
