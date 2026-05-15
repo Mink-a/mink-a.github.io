@@ -1,0 +1,57 @@
+---
+---
+<div id="spotlight" aria-hidden="true"></div>
+
+<style>
+  #spotlight {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      600px circle at var(--mx, 50%) var(--my, 50%),
+      var(--color-accent-glow),
+      transparent 40%
+    );
+    transition: background 200ms ease;
+  }
+
+  /* Konami code easter-egg flair */
+  body[data-konami] #spotlight {
+    background: radial-gradient(
+      600px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(251, 146, 60, 0.25),
+      rgba(167, 139, 250, 0.2) 25%,
+      rgba(94, 234, 212, 0.15) 50%,
+      transparent 60%
+    );
+  }
+
+  /* Disable on touch devices and when reduced motion is preferred */
+  @media (hover: none), (prefers-reduced-motion: reduce) {
+    #spotlight {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const el = document.getElementById("spotlight");
+  if (el && window.matchMedia("(hover: hover)").matches) {
+    let pending = false;
+    let mx = 0, my = 0;
+    const onMove = (e: MouseEvent) => {
+      mx = e.clientX;
+      my = e.clientY;
+      if (!pending) {
+        pending = true;
+        requestAnimationFrame(() => {
+          el.style.setProperty("--mx", `${mx}px`);
+          el.style.setProperty("--my", `${my}px`);
+          pending = false;
+        });
+      }
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+  }
+</script>
