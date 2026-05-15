@@ -45,8 +45,8 @@ const { navItems = [] } = Astro.props;
     )}
   </div>
 
-  <div class="mt-12 lg:mt-0">
-    <div class="flex items-center gap-6 text-text-muted">
+  <div class="mt-12 lg:mt-0 w-fit space-y-3">
+    <div class="flex items-center justify-between gap-5 px-5 py-3 rounded-lg border border-border text-text-muted">
       <a href="https://github.com/mink-a" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hover:text-text transition-colors">
         <Icon name="simple-icons:github" class="w-6 h-6" aria-hidden="true" />
       </a>
@@ -62,7 +62,7 @@ const { navItems = [] } = Astro.props;
     </div>
     <a
       href="/resume"
-      class="inline-flex items-center gap-2 mt-6 text-xs uppercase tracking-[0.16em] font-semibold text-text hover:text-accent transition-colors"
+      class="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-lg bg-accent text-bg text-sm uppercase tracking-[0.16em] font-semibold hover:bg-accent/90 transition-colors"
     >
       Resume <span aria-hidden="true">→</span>
     </a>
