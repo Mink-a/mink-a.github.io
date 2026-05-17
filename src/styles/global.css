@@ -114,6 +114,25 @@ img, svg {
   line-height: 1.7;
 }
 
+/*
+ * View Transitions: main column animates its FRAME (width + padding)
+ * between layouts because both Base and InnerLayout's <main> share
+ * transition:name="main-frame". We override the default cross-fade
+ * on the old/new snapshots so the content morph is quick and doesn't
+ * overlap visibly — the user only really sees the size/space change.
+ */
+::view-transition-old(main-frame),
+::view-transition-new(main-frame) {
+  animation-duration: 120ms;
+}
+::view-transition-old(main-frame) {
+  animation-timing-function: ease-in;
+}
+::view-transition-new(main-frame) {
+  animation-timing-function: ease-out;
+  animation-delay: 80ms;
+}
+
 /* Hover-dim siblings — pure CSS */
 .hover-dim-group .hover-dim-item {
   transition: opacity 200ms ease;
