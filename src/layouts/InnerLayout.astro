@@ -3,17 +3,14 @@ import "../styles/global.css";
 import Sidebar from "../components/Sidebar.astro";
 import { ClientRouter } from "astro:transitions";
 
-interface NavItem { id: string; label: string; }
 interface Props {
   title: string;
   description?: string;
-  navItems?: NavItem[];
 }
 
 const {
   title,
   description = "Software Engineer building modern digital products.",
-  navItems = [],
 } = Astro.props;
 ---
 <!doctype html>
@@ -34,8 +31,8 @@ const {
       Skip to content
     </a>
     <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,380px)_minmax(0,720px)] gap-8 lg:gap-16">
-      <Sidebar navItems={navItems} compact={false} />
-      <main id="main" class="pt-12 lg:pt-24 pb-12 lg:pb-24">
+      <Sidebar compact={true} />
+      <main id="main" class="pt-8 lg:pt-12 pb-12 lg:pb-24">
         <slot />
       </main>
     </div>
@@ -46,5 +43,4 @@ const {
   import "../scripts/scroll-spy";
   import "../scripts/entry-anim";
   import "../scripts/easter-egg";
-  import "../scripts/bio-scramble";
 </script>

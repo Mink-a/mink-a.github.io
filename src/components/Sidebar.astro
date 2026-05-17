@@ -17,11 +17,14 @@ const { navItems = [], compact = false } = Astro.props;
   <div>
     <a href="/" class="block group">
       {compact ? (
-        <h1 class="text-text text-2xl lg:text-3xl font-bold tracking-tight group-hover:text-accent transition-colors">
+        <h1
+          transition:name="identity-name"
+          class="text-text text-2xl lg:text-3xl font-bold tracking-tight group-hover:text-accent transition-colors"
+        >
           Min Khant Kyaw
         </h1>
       ) : (
-        <h1 class="h-display text-text">Min Khant Kyaw</h1>
+        <h1 transition:name="identity-name" class="h-display text-text">Min Khant Kyaw</h1>
       )}
     </a>
     {compact ? (
