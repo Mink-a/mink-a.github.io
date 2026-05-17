@@ -6,24 +6,38 @@ interface NavItem { id: string; label: string; }
 interface Props {
   /** Section anchors when on home. Empty array means "no in-page nav" (inner routes). */
   navItems?: NavItem[];
+  /** Compact identity for inner routes — smaller name, no bio. */
+  compact?: boolean;
 }
 
-const { navItems = [] } = Astro.props;
+const { navItems = [], compact = false } = Astro.props;
 ---
 
 <aside class="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between py-12 lg:py-24">
   <div>
     <a href="/" class="block group">
-      <h1 class="h-display text-text">Min Khant Kyaw</h1>
+      {compact ? (
+        <h1 class="text-text text-2xl lg:text-3xl font-bold tracking-tight group-hover:text-accent transition-colors">
+          Min Khant Kyaw
+        </h1>
+      ) : (
+        <h1 class="h-display text-text">Min Khant Kyaw</h1>
+      )}
     </a>
-    <p class="mt-3 text-text text-xl lg:text-2xl font-medium">Software Engineer</p>
-    <p
-      id="bio"
-      class="mt-5 text-text-muted text-base max-w-xs min-h-[3.4em]"
-      data-bio-target
-    >
-      In the zone. In the code. In production.
-    </p>
+    {compact ? (
+      <p class="mt-1 text-text-muted text-sm">Software Engineer</p>
+    ) : (
+      <>
+        <p class="mt-3 text-text text-xl lg:text-2xl font-medium">Software Engineer</p>
+        <p
+          id="bio"
+          class="mt-5 text-text-muted text-base max-w-xs min-h-[3.4em]"
+          data-bio-target
+        >
+          In the zone. In the code. In production.
+        </p>
+      </>
+    )}
 
     {navItems.length > 0 && (
       <nav class="mt-12 lg:mt-20 hidden lg:block" aria-label="Section navigation">

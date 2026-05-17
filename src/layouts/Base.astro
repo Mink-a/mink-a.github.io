@@ -8,9 +8,16 @@ interface Props {
   title: string;
   description?: string;
   navItems?: NavItem[];
+  /** Compact sidebar identity. Defaults to true for any path other than "/". */
+  compact?: boolean;
 }
 
-const { title, description = "Software Engineer building modern digital products.", navItems = [] } = Astro.props;
+const {
+  title,
+  description = "Software Engineer building modern digital products.",
+  navItems = [],
+  compact = Astro.url.pathname !== "/",
+} = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -30,7 +37,7 @@ const { title, description = "Software Engineer building modern digital products
       Skip to content
     </a>
     <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,380px)_minmax(0,720px)] gap-8 lg:gap-16">
-      <Sidebar navItems={navItems} />
+      <Sidebar navItems={navItems} compact={compact} />
       <main id="main" class="py-12 lg:py-24">
         <slot />
       </main>
