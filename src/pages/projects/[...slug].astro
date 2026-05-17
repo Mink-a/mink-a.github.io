@@ -1,0 +1,89 @@
+---
+import Base from "../../layouts/Base.astro";
+import Tag from "../../components/Tag.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+<Base
+  title={`${project.data.title} — Min Khant Kyaw`}
+  description={project.data.description}
+>
+  <a
+    href="/projects"
+    class="inline-flex items-center gap-2 mb-8 text-sm font-semibold text-text-muted hover:text-accent transition-colors group"
+  >
+    <span aria-hidden="true" class="transition-transform group-hover:-translate-x-1">←</span>
+    All projects
+  </a>
+
+  <article>
+    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent mb-3">
+      {project.data.type}
+    </p>
+    <h1 class="h-2 mb-4">{project.data.title}</h1>
+    <p class="body-lg text-text-muted mb-8">{project.data.description}</p>
+
+    <ul class="flex flex-wrap gap-2 mb-8">
+      {project.data.tech.map((t) => <li><Tag label={t} /></li>)}
+    </ul>
+
+    {(project.data.demoUrl || project.data.repoUrl) && (
+      <div class="flex flex-wrap gap-3 mb-12">
+        {project.data.demoUrl && (
+          <a
+            href={project.data.demoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-accent text-bg font-semibold text-sm hover:bg-accent/90 transition-colors"
+          >
+            View Demo <span aria-hidden="true">↗</span>
+          </a>
+        )}
+        {project.data.repoUrl && (
+          <a
+            href={project.data.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-border-strong text-text font-semibold text-sm hover:bg-surface/50 transition-colors"
+          >
+            View Repo <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    )}
+
+    {project.data.image && (
+      <figure class="mb-12">
+        <img
+          src={project.data.image}
+          alt={`${project.data.title} screenshot`}
+          width="1280"
+          height="720"
+          class="w-full rounded-md border border-border"
+        />
+      </figure>
+    )}
+
+    <div class="prose-project text-text-muted leading-relaxed space-y-5 [&_a]:text-accent [&_a:hover]:underline [&_h2]:h-3 [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-text [&_h3]:text-text [&_h3]:mt-8 [&_h3]:mb-2 [&_strong]:text-text [&_code]:text-accent [&_code]:bg-surface [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_pre]:bg-surface [&_pre]:border [&_pre]:border-border [&_pre]:rounded-md [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic">
+      <Content />
+    </div>
+  </article>
+
+  <a
+    href="/projects"
+    class="inline-flex items-center gap-2 mt-16 text-sm font-semibold text-text hover:text-accent transition-colors group"
+  >
+    <span aria-hidden="true" class="transition-transform group-hover:-translate-x-1">←</span>
+    Back to all projects
+  </a>
+</Base>
