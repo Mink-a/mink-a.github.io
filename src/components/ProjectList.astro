@@ -5,26 +5,31 @@ import ProjectCard from "./ProjectCard.astro";
 interface Props {
   /** When true, only render featured projects. */
   featuredOnly?: boolean;
+  /** Cap the rendered count after filtering + sorting. */
+  limit?: number;
 }
-const { featuredOnly = false } = Astro.props;
+const { featuredOnly = false, limit } = Astro.props;
 
 let entries = await getCollection("projects");
 if (featuredOnly) {
   entries = entries.filter((e) => e.data.featured);
 }
 entries.sort((a, b) => b.data.order - a.data.order);
+if (limit !== undefined) {
+  entries = entries.slice(0, limit);
+}
 ---
 {entries.length > 0 && (
-  <ol class="hover-dim-group space-y-6">
+  <ol class="hover-dim-group space-y-8 lg:space-y-10">
     {entries.map((entry) => (
       <li>
         <ProjectCard
+          slug={entry.id}
           title={entry.data.title}
           type={entry.data.type}
           description={entry.data.description}
           tech={entry.data.tech}
-          repoUrl={entry.data.repoUrl}
-          demoUrl={entry.data.demoUrl}
+          image={entry.data.image}
         />
       </li>
     ))}
