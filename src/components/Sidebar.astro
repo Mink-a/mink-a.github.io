@@ -13,7 +13,7 @@ interface Props {
 const { navItems = [], compact = false } = Astro.props;
 ---
 
-<aside class="lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between py-12 lg:py-24">
+<aside class:list={["lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between pb-12 lg:pb-24", compact ? "pt-8 lg:pt-12" : "pt-12 lg:pt-24"]}>
   <div>
     <a href="/" class="block group">
       {compact ? (

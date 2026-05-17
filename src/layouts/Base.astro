@@ -38,7 +38,7 @@ const {
     </a>
     <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,380px)_minmax(0,720px)] gap-8 lg:gap-16">
       <Sidebar navItems={navItems} compact={compact} />
-      <main id="main" class="py-12 lg:py-24">
+      <main id="main" class:list={["pb-12 lg:pb-24", compact ? "pt-8 lg:pt-12" : "pt-12 lg:pt-24"]}>
         <slot />
       </main>
     </div>
