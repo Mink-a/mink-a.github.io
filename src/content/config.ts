@@ -24,6 +24,8 @@ const projects = defineCollection({
     tech: z.array(z.string()),
     repoUrl: z.string().url().optional(),
     demoUrl: z.string().url().optional(),
+    /** Thumbnail / hero image. Local path under public/ or absolute URL. */
+    image: z.string().optional(),
     featured: z.boolean().default(false),
     order: z.number().default(0),
   }),
