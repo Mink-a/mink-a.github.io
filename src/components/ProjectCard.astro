@@ -13,7 +13,7 @@ const { slug, title, type, description, tech, image } = Astro.props;
 ---
 <a
   href={`/projects/${slug}`}
-  class="hover-dim-item group grid sm:grid-cols-[180px_1fr] gap-5 p-4 -mx-4 rounded-md border border-transparent hover:border-border-strong hover:bg-surface/40 transition-colors"
+  class="hover-dim-item group grid sm:grid-cols-[200px_1fr] gap-6 lg:gap-8"
 >
   <div class="aspect-[16/10] rounded-md overflow-hidden border border-border bg-surface">
     {image ? (
@@ -30,12 +30,12 @@ const { slug, title, type, description, tech, image } = Astro.props;
     )}
   </div>
   <div>
-    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim mb-1">{type}</p>
-    <h3 class="h-3 text-text group-hover:text-accent transition-colors mb-2 inline-flex items-center gap-2">
+    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim mb-2">{type}</p>
+    <h3 class="h-3 text-text group-hover:text-accent transition-colors mb-3 inline-flex items-center gap-2">
       <span>{title}</span>
       <span aria-hidden="true" class="text-text-muted transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5 group-hover:text-accent">↗</span>
     </h3>
-    <p class="text-text-muted text-sm mb-3">{description}</p>
+    <p class="text-text-muted mb-5">{description}</p>
     <ul class="flex flex-wrap gap-2">
       {tech.map((t) => <li><Tag label={t} /></li>)}
     </ul>
