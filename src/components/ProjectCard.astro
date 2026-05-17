@@ -4,12 +4,11 @@ import Tag from "./Tag.astro";
 interface Props {
   slug: string;
   title: string;
-  type: string;
   description: string;
   tech: string[];
   image?: string;
 }
-const { slug, title, type, description, tech, image } = Astro.props;
+const { slug, title, description, tech, image } = Astro.props;
 ---
 <a
   href={`/projects/${slug}`}
@@ -30,7 +29,6 @@ const { slug, title, type, description, tech, image } = Astro.props;
     )}
   </div>
   <div>
-    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim mb-2">{type}</p>
     <h3 class="h-3 text-text group-hover:text-accent transition-colors mb-3 inline-flex items-center gap-2">
       <span>{title}</span>
       <span aria-hidden="true" class="text-text-muted transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5 group-hover:text-accent">↗</span>
