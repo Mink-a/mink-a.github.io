@@ -4,7 +4,7 @@ type: Personal Project · OCR Platform
 description: An OCR-based platform for digitizing physical documents — upload a photo or scan, get back searchable, structured text.
 tech: ["TypeScript", "React", "OCR"]
 image: https://placehold.co/1280x720/0c0a09/fb923c?text=Textify&font=inter
-featured: true
+featured: false
 order: 80
 ---
 
