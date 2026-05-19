@@ -1,11 +1,20 @@
 ---
 import Base from "../layouts/InnerLayout.astro";
 import ProjectList from "../components/ProjectList.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import BackCTA from "../components/BackCTA.astro";
 ---
 <Base
   title="Projects — Min Khant Kyaw"
   description="Selected work and side projects by Min Khant Kyaw."
 >
+  <Breadcrumb items={[
+    { label: "Home", href: "/" },
+    { label: "Projects" },
+  ]} />
+
   <h2 class="h-2 mb-12 lg:mb-16 fade-in-up">Things I've built.</h2>
   <ProjectList />
+
+  <BackCTA href="/" label="Back to home" />
 </Base>

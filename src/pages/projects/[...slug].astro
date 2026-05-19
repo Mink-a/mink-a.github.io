@@ -1,6 +1,8 @@
 ---
 import Base from "../../layouts/InnerLayout.astro";
 import Tag from "../../components/Tag.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import BackCTA from "../../components/BackCTA.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -18,13 +20,11 @@ const { Content } = await render(project);
   title={`${project.data.title} — Min Khant Kyaw`}
   description={project.data.description}
 >
-  <a
-    href="/projects"
-    class="inline-flex items-center gap-2 mb-8 text-sm font-semibold text-text-muted hover:text-accent transition-colors group"
-  >
-    <span aria-hidden="true" class="transition-transform group-hover:-translate-x-1">←</span>
-    All projects
-  </a>
+  <Breadcrumb items={[
+    { label: "Home", href: "/" },
+    { label: "Projects", href: "/projects" },
+    { label: project.data.title },
+  ]} />
 
   <article>
     <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent mb-3">
@@ -79,11 +79,5 @@ const { Content } = await render(project);
     </div>
   </article>
 
-  <a
-    href="/projects"
-    class="inline-flex items-center gap-2 mt-16 text-sm font-semibold text-text hover:text-accent transition-colors group"
-  >
-    <span aria-hidden="true" class="transition-transform group-hover:-translate-x-1">←</span>
-    Back to all projects
-  </a>
+  <BackCTA href="/projects" label="Back to all projects" />
 </Base>
