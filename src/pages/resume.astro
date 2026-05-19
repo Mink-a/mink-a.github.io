@@ -1,0 +1,33 @@
+---
+import Base from "../layouts/InnerLayout.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import { Content as ResumeContent } from "../data/resume.md";
+---
+<Base
+  title="Resume — Min Khant Kyaw"
+  description="Resume of Min Khant Kyaw — full-stack software engineer."
+>
+  <Breadcrumb items={[
+    { label: "Home", href: "/" },
+    { label: "Resume" },
+  ]} />
+
+  <div class="flex items-center justify-between gap-4 mb-10 lg:mb-12">
+    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent">
+      Resume
+    </p>
+    <a
+      href="/resume.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2 text-sm font-semibold text-text hover:text-accent transition-colors"
+    >
+      <span aria-hidden="true">⬇</span>
+      Download PDF
+    </a>
+  </div>
+
+  <article class="resume" itemscope itemtype="https://schema.org/Person">
+    <ResumeContent />
+  </article>
+</Base>

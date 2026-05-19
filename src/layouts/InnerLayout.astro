@@ -30,12 +30,23 @@ const {
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:bg-accent focus:text-bg focus:px-4 focus:py-2 focus:rounded-md focus:z-[100]">
       Skip to content
     </a>
-    <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,300px)_1fr] gap-8 lg:gap-16">
+    <div class="max-w-screen-xl mx-auto px-6 lg:px-12 grid lg:grid-cols-[minmax(0,280px)_1fr] gap-8 lg:gap-16">
       <Sidebar compact={true} />
       <main id="main" transition:name="main-frame" class="pt-8 lg:pt-12 pb-12 lg:pb-24">
         <slot />
+        <div class="dot-pattern-space mt-20 lg:mt-28" aria-hidden="true"></div>
       </main>
     </div>
+
+    <button
+      id="back-to-top"
+      type="button"
+      aria-label="Back to top"
+      data-visible="false"
+      class="fixed bottom-6 right-6 lg:bottom-8 lg:right-8 z-40 inline-flex h-11 w-11 items-center justify-center rounded-full border border-border-strong bg-surface/80 backdrop-blur-sm text-text-muted opacity-0 translate-y-2 pointer-events-none transition-all duration-200 ease-out hover:text-accent hover:border-accent data-[visible=true]:opacity-100 data-[visible=true]:translate-y-0 data-[visible=true]:pointer-events-auto"
+    >
+      <span aria-hidden="true" class="text-lg leading-none">↑</span>
+    </button>
   </body>
 </html>
 
@@ -43,4 +54,7 @@ const {
   import "../scripts/scroll-spy";
   import "../scripts/entry-anim";
   import "../scripts/easter-egg";
+  import "../scripts/nav-scroll";
+  import "../scripts/toc-spy";
+  import "../scripts/back-to-top";
 </script>

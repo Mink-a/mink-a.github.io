@@ -11,18 +11,33 @@ interface Props {
 }
 
 const { navItems = [], compact = false } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const isSectionActive = (path: string) =>
+  currentPath === path || currentPath.startsWith(path + "/");
+
+const siteNav = [
+  { href: "/projects", label: "Projects" },
+  { href: "/writing", label: "Writing" },
+  { href: "/resume", label: "Resume" },
+];
 ---
 
 <aside
   transition:name="sidebar-shell"
-  class:list={["lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between pb-12 lg:pb-24", compact ? "pt-8 lg:pt-12" : "pt-12 lg:pt-24"]}
+  class:list={[
+    "lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between pb-12 lg:pb-24",
+    compact
+      ? "pt-8 lg:pt-12 lg:opacity-60 lg:hover:opacity-100 lg:transition-opacity lg:duration-300 lg:ease-out"
+      : "pt-12 lg:pt-24",
+  ]}
 >
   <div>
     <a href="/" class="block group">
       {compact ? (
         <h1
           transition:name="identity-name"
-          class="text-text text-3xl lg:text-4xl font-bold tracking-tight group-hover:text-accent transition-colors"
+          class="text-text text-3xl lg:text-4xl font-bold tracking-tight transition-colors duration-200"
         >
           Min Khant Kyaw
         </h1>
@@ -68,6 +83,32 @@ const { navItems = [], compact = false } = Astro.props;
     )}
   </div>
 
+  {compact && (
+    <nav class="hidden lg:block" aria-label="Site sections">
+      <ul class="space-y-3">
+        {siteNav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-site-nav
+              data-active={isSectionActive(item.href) ? "true" : "false"}
+              class="group inline-flex items-center gap-4 py-1.5"
+            >
+              <span
+                class="site-nav-indicator inline-block h-px bg-text-dim transition-all duration-200 ease-out"
+              />
+              <span
+                class="site-nav-label text-text-dim text-xs uppercase tracking-[0.18em] font-semibold transition-colors duration-200"
+              >
+                {item.label}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+
   <div transition:name="sidebar-footer" class="mt-12 lg:mt-0">
     <div class="inline-flex items-center gap-5 text-text-muted">
       <a transition:name="social-github" href="https://github.com/mink-a" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="group hover:text-text transition-colors duration-200 ease-out">
@@ -105,6 +146,19 @@ const { navItems = [], compact = false } = Astro.props;
     background-color: var(--color-text);
   }
   [data-nav-link][data-active="true"] span:last-child {
+    color: var(--color-text);
+  }
+
+  .site-nav-indicator {
+    width: 24px;
+  }
+  [data-site-nav][data-active="true"] .site-nav-indicator,
+  [data-site-nav]:hover .site-nav-indicator {
+    width: 56px;
+    background-color: var(--color-text);
+  }
+  [data-site-nav][data-active="true"] .site-nav-label,
+  [data-site-nav]:hover .site-nav-label {
     color: var(--color-text);
   }
 </style>

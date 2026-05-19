@@ -1,85 +1,54 @@
 ---
 import Base from "../../layouts/InnerLayout.astro";
-import Tag from "../../components/Tag.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((project) => ({
-    params: { slug: project.id },
-    props: { project },
+  const posts = await getCollection("writing", (p) => !p.data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
   }));
 }
 
-const { project } = Astro.props;
-const { Content, headings } = await render(project);
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
 ---
 <Base
-  title={`${project.data.title} — Min Khant Kyaw`}
-  description={project.data.description}
+  title={`${post.data.title} — Min Khant Kyaw`}
+  description={post.data.description}
 >
   <Breadcrumb items={[
     { label: "Home", href: "/" },
-    { label: "Projects", href: "/projects" },
-    { label: project.data.title },
+    { label: "Writing", href: "/writing" },
+    { label: post.data.title },
   ]} />
 
   <article>
     <header class="mb-10 lg:mb-14">
       <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent mb-3">
-        {project.data.type}
+        {formatter.format(post.data.pubDate)}
       </p>
       <h1 class="text-3xl lg:text-4xl font-bold tracking-tight leading-[1.15] text-text mb-4">
-        {project.data.title}
+        {post.data.title}
       </h1>
       <p class="text-base lg:text-lg text-text-muted leading-relaxed mb-6">
-        {project.data.description}
+        {post.data.description}
       </p>
 
-      <div class="flex flex-wrap items-center gap-x-5 gap-y-3">
-        <ul class="flex flex-wrap gap-2">
-          {project.data.tech.map((t) => <li><Tag label={t} /></li>)}
+      {post.data.tags.length > 0 && (
+        <ul class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-text-dim">
+          {post.data.tags.map((t) => <li>#{t}</li>)}
         </ul>
-        {(project.data.demoUrl || project.data.repoUrl) && (
-          <div class="flex flex-wrap items-center gap-4 ml-auto text-sm font-semibold">
-            {project.data.demoUrl && (
-              <a
-                href={project.data.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-text hover:text-accent transition-colors"
-              >
-                Demo <span aria-hidden="true">↗</span>
-              </a>
-            )}
-            {project.data.repoUrl && (
-              <a
-                href={project.data.repoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-text hover:text-accent transition-colors"
-              >
-                Repo <span aria-hidden="true">↗</span>
-              </a>
-            )}
-          </div>
-        )}
-      </div>
+      )}
     </header>
-
-    {project.data.image && (
-      <figure class="mb-14 lg:mb-20">
-        <img
-          src={project.data.image}
-          alt={`${project.data.title} screenshot`}
-          width="1280"
-          height="720"
-          class="w-full rounded-md border border-border"
-        />
-      </figure>
-    )}
 
     <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-12">
       <div class="prose-project text-text-muted text-base leading-[1.7] space-y-5 [&_a]:text-accent [&_a:hover]:underline [&_h2]:text-xl [&_h2]:lg:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-text [&_h2]:scroll-mt-24 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-text [&_h3]:mt-8 [&_h3]:mb-2 [&_h3]:scroll-mt-24 [&_strong]:text-text [&_strong]:font-semibold [&_code]:text-accent [&_code]:bg-surface [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[0.9em] [&_pre]:bg-surface [&_pre]:border [&_pre]:border-border [&_pre]:rounded-md [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-sm [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-5 [&_blockquote]:italic [&_blockquote]:text-text [&_hr]:border-border [&_hr]:my-10">

@@ -1,9 +1,3 @@
----
-layout: ../layouts/ResumeLayout.astro
-title: Resume — Min Khant Kyaw
-description: Resume of Min Khant Kyaw — full-stack software engineer.
----
-
 # Min Khant Kyaw
 
 **Software Engineer**

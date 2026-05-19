@@ -28,7 +28,6 @@ const entries = (await getCollection("experience")).sort(
             start={entry.data.start}
             end={String(entry.data.end)}
             description={entry.data.description}
-            tech={entry.data.tech}
             isCurrent={isCurrent}
           />
         </li>
