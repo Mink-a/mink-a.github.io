@@ -1,0 +1,27 @@
+---
+import { Icon } from "astro-icon/components";
+---
+<button
+  type="button"
+  data-theme-toggle
+  aria-label="Toggle color theme"
+  class="group fixed top-4 right-4 lg:top-6 lg:right-6 z-40 inline-flex h-10 w-10 items-center justify-center text-text-muted hover:text-accent transition-colors duration-200 ease-out"
+>
+  <Icon
+    name="lucide:sun"
+    class="theme-icon-sun w-[18px] h-[18px] transition-transform duration-300 ease-out group-hover:rotate-45"
+    aria-hidden="true"
+  />
+  <Icon
+    name="lucide:moon"
+    class="theme-icon-moon w-[18px] h-[18px] transition-transform duration-300 ease-out group-hover:-rotate-12"
+    aria-hidden="true"
+  />
+</button>
+
+<style is:global>
+  [data-theme-toggle] .theme-icon-sun { display: block; }
+  [data-theme-toggle] .theme-icon-moon { display: none; }
+  :root[data-theme="light"] [data-theme-toggle] .theme-icon-sun { display: none; }
+  :root[data-theme="light"] [data-theme-toggle] .theme-icon-moon { display: block; }
+</style>
