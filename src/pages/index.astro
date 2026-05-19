@@ -2,10 +2,14 @@
 import Base from "../layouts/Base.astro";
 import ExperienceList from "../components/ExperienceList.astro";
 import ProjectList from "../components/ProjectList.astro";
+import WritingList from "../components/WritingList.astro";
 import { getCollection } from "astro:content";
 
 const experience = await getCollection("experience");
 const hasExperience = experience.length > 0;
+
+const writing = (await getCollection("writing")).filter((e) => !e.data.draft);
+const hasWriting = writing.length > 0;
 
 const navItems = [
   { id: "about", label: "About" },
@@ -53,4 +57,18 @@ const navItems = [
       <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
     </a>
   </section>
+
+  {hasWriting && (
+    <section id="writing" class="mb-16 lg:mb-32 fade-in-up">
+      <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">Writing</h2>
+      <WritingList limit={3} />
+      <a
+        href="/writing"
+        class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-text hover:text-accent transition-colors group"
+      >
+        View All Writings
+        <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </section>
+  )}
 </Base>
