@@ -1,0 +1,107 @@
+---
+title: Khin Sandar Kyaw Portfolio
+type: Personal Project · Artist Portfolio
+description: A static, content-driven portfolio for a Myanmar oil-landscape painter — every painting is one Markdown file that generates its own gallery row, deep-linkable lightbox, social card, and structured data at build time.
+tech: ["Astro", "TypeScript", "Tailwind CSS", "Zod", "Satori", "Sharp", "PagesCMS", "GitHub Pages"]
+demoUrl: https://madebyksk.com
+image: https://placehold.co/1280x720/0c0a09/fb923c?text=Artist+Portfolio&font=inter
+featured: true
+order: 80
+---
+
+## Overview
+
+A fully static portfolio for **Khin Sandar Kyaw**, an oil-landscape painter from Yangon, Myanmar, live at [madebyksk.com](https://madebyksk.com). The whole site is built so the artist can publish new work without ever touching code: each painting is a single Markdown file, and the gallery, per-painting pages, deep-linkable lightbox, social-share cards, and structured data are all derived from those files at build time.
+
+There is no runtime server and no client framework in sight — just static HTML produced by Astro plus a handful of small, dependency-free TypeScript enhancements. The result loads instantly, costs nothing to host, and stays trivially maintainable: the content is plain Markdown in the repo, edited through a Git-based CMS rather than wrangled in a database.
+
+## How it works
+
+The architecture is deliberately content-first. A painting enters the system as a Markdown file with a small block of frontmatter; everything visible on the site is a *projection* of that file:
+
+- Astro **content collections** load every file under `src/content/works/` through a `glob` loader and validate the frontmatter against a **Zod** schema, so a typo or missing field fails the build instead of shipping broken pages.
+- The full gallery and the home page's featured strip iterate those entries to render rows and tiles.
+- A dynamic route, `/works/[slug]`, generates one static page per painting from the same data.
+- The build hooks then generate the derived assets — Open Graph cards, the apple-touch icon — from those entries too.
+
+Because every artifact traces back to one source of truth, adding a file is the *only* step required to add a painting end to end. No code edits, no manual page wiring, no out-of-date copies.
+
+## Key features
+
+### Markdown as a CMS
+
+Each painting is one Markdown file in `src/content/works/`, but the artist never has to touch code or Git directly. Content and images are managed through [Pages CMS](https://pagescms.org/) — a free, open-source, Git-based CMS that adds a visual editor and a drag-and-drop media manager on top of the repository and commits changes straight back to GitHub, all wired up from a single `.pages.yml` config file (no database, API, or backend). However a painting lands in the repo, it produces, with zero code changes, a gallery row, a `/works/<slug>/` detail page, a custom Open Graph card, and a block of JSON-LD structured data — and the resulting commit to `main` triggers a fresh deploy. The file name becomes the URL slug, and the optional Markdown body doubles as both the page's meta description (first line) and the painting's gallery note (full body).
+
+### Build-time Open Graph cards
+
+A custom Astro integration hooks into `astro:build:done` and renders editorial share images entirely at build time. The pipeline is `satori` (HTML/CSS-like layout → SVG) → `@resvg/resvg-js` (SVG → PNG) → `sharp` (final encode), with `wawoff2` decompressing the WOFF2 webfonts to TTF so Satori can embed them. It produces a grayscale portrait card for the home and about pages and one full-colour card per painting, and rasterises the `apple-touch-icon.png` in the same pass.
+
+### ThumbHash blur-up placeholders
+
+Every image ships a tiny, inline `background-image` placeholder computed at build time with `thumbhash` + `sharp`. The blurred preview is encoded directly into the markup, so the layout reserves the right space immediately — no reflow, no flash of empty space, and a smooth blur-up as the full image decodes.
+
+### View Transitions lightbox
+
+Clicking a painting morphs the thumbnail into a high-resolution modal using the **View Transitions API**, syncs the URL to `/works/<slug>/`, and honours browser back/forward and direct deep links. For cmd/ctrl/middle-click it degrades gracefully to the real static detail pages, so the gallery stays linkable and crawlable without depending on JavaScript.
+
+### SEO and structured data
+
+Sharing and discoverability are wired in by default: canonical URLs, Open Graph and Twitter meta, and per-type JSON-LD (`Person`, `CollectionPage`, `VisualArtwork`, `AboutPage`), plus a generated sitemap and `robots.txt`. Every painting is therefore richly described to search engines and social platforms without any per-page hand-authoring.
+
+### Accessibility
+
+The interactions were built to stay usable for everyone: an `inert`-gated mobile nav, `aria-current` page indicators, focus-visible outlines, and full `prefers-reduced-motion` fallbacks for both the cursor parallax and the lightbox animations.
+
+## Performance
+
+The build-time-everything approach shows up in the field: the site scores a perfect **100 / 100 / 100 / 100** across Lighthouse's Performance, Accessibility, Best Practices, and SEO categories (emulated desktop, Lighthouse 13). The headline metrics are about as good as the tool reports:
+
+- **First Contentful Paint** — 0.3 s
+- **Largest Contentful Paint** — 0.4 s
+- **Total Blocking Time** — 0 ms
+- **Cumulative Layout Shift** — 0
+- **Speed Index** — 0.4 s
+
+Those numbers fall out of the architecture rather than from micro-tuning: shipping pure static HTML with no client framework keeps the main thread idle (0 ms blocking time), and the inline ThumbHash placeholders reserve every image's box up front, so cumulative layout shift stays at exactly zero.
+
+![Lighthouse report for madebyksk.com: a perfect 100 across Performance, Accessibility, Best Practices, and SEO.](/assets/madebyksk-lighthouse.png)
+
+## Tech stack
+
+- **Framework** — Astro 5 in fully static mode (`output: 'static'`).
+- **Styling** — Tailwind CSS v4 via `@tailwindcss/vite`, with design tokens declared in an `@theme` block and consumed as utilities.
+- **Language** — TypeScript on Astro's `strict` config.
+- **Content** — Astro content collections (`glob` loader) with Zod-validated frontmatter.
+- **Content editing** — [Pages CMS](https://pagescms.org/), a Git-based CMS that edits the Markdown and media directly in the GitHub repo (no database or backend), configured via `.pages.yml`.
+- **OG rendering** — `satori` + `@resvg/resvg-js` + `sharp`, with `wawoff2` decompressing WOFF2 → TTF for Satori.
+- **Placeholders** — `thumbhash` + `sharp` (Astro's bundled `sharp`, so no separate install).
+- **Sitemap** — `@astrojs/sitemap`.
+
+## Content model
+
+A painting is described entirely by its frontmatter, validated by the Zod schema in `src/content.config.ts`:
+
+```markdown
+---
+title: Fisherman at Inle              # required
+year: 2024                            # required, integer
+image: ./images/fisherman-at-inle.jpg # required, relative to the .md file
+alt: Fisherman at sunset on Inle Lake, oil painting  # required
+medium: Oil on canvas                 # optional, defaults to "Oil on canvas"
+order: 1                              # optional sort key (lower = first; default 999)
+dimensions: 30 × 40 in                # optional
+location: Inle Lake                   # optional
+---
+
+A still morning on Inle, the lone fisherman framed against the sunrise.
+```
+
+Publishing a new painting is a three-step routine: drop the source image into `src/content/works/images/`, create a matching `slug.md` with the frontmatter above, and run `npm run build`. The gallery row, detail page, social card (`og-works-<slug>.jpg`), and JSON-LD are all generated automatically; `order` controls placement, and the home page also surfaces the most recent painting by `year`.
+
+## Deployment
+
+Pushing to `main` triggers a GitHub Actions workflow that builds with the official `withastro/action` and publishes `dist/` to **GitHub Pages**. The site is served from the apex domain `madebyksk.com` (configured via `CNAME` and `site` in `astro.config.mjs`), and the workflow can also be dispatched manually. Because the OG cards and icons are produced by the `astro:build:done` hook, they exist only in the production build, not during local `dev`.
+
+## What I took away
+
+This project was an exercise in pushing as much work as possible to build time. Keeping the content as Markdown in the repo (edited through a Git-based CMS), deriving every page and asset from a single validated source, and rendering social cards and placeholders ahead of time meant the shipped site is pure static output — which is exactly what earned the straight 100s in Lighthouse. The payoff is a site that's fast, cheap to host, and easy for a non-technical artist to keep current, one painting at a time.

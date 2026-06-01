@@ -1,17 +1,17 @@
 ---
 title: Custom Odoo POS
 type: ERP Customization · MIT
-description: A customized point-of-sale module built on Odoo for retail clients in Myanmar — extending the standard POS with country-specific receipt formats, payment flows, and reporting.
-tech: ["Odoo", "Python", "JavaScript"]
+description: Point-of-sale customization on Odoo for retail clients in Myanmar — adapting the standard POS to local requirements and wiring it into each client's broader Odoo deployment.
+tech: ["Odoo", "Python", "JavaScript", "XML", "PostgreSQL"]
 image: https://placehold.co/1280x720/0c0a09/fb923c?text=Custom+Odoo+POS&font=inter
 featured: false
-order: 50
+order: 40
 ---
 
 ## Overview
 
-A point-of-sale solution built on top of Odoo's POS module for retail clients. Customized to meet local requirements: receipt formats, supported payment methods, and reporting tied to each client's accounting workflow.
+Point-of-sale work built on Odoo for retail clients in Myanmar. Rather than a from-scratch build, the job was to take Odoo's standard POS and adapt it to what each client actually needed on the floor — extending and tailoring the existing module rather than replacing it.
 
 ## My role
 
-Odoo customization — Python on the backend modules, JavaScript on the POS frontend, and integration work to wire the POS into each client's broader Odoo deployment.
+Focused customization work inside Odoo: Python on the backend modules and JavaScript on the POS frontend, plus the integration to fit the customized POS into each client's wider Odoo deployment (inventory, accounting, and their other installed apps).

@@ -1,6 +1,6 @@
 # Min Khant Kyaw
 
-**Software Engineer**
+**Full-Stack Software Engineer**
 
 Remote · [hello@minkhantkyaw.com](mailto:hello@minkhantkyaw.com) · [GitHub](https://github.com/mink-a) · [LinkedIn](https://www.linkedin.com/) · [minkhantkyaw.com](https://minkhantkyaw.com)
 
@@ -8,78 +8,93 @@ Remote · [hello@minkhantkyaw.com](mailto:hello@minkhantkyaw.com) · [GitHub](ht
 
 ## Summary
 
-Full-stack software engineer focused on modern TypeScript ecosystems. I design and develop performant web applications with attention to maintainability, user experience, and scalable architecture — across frontend, backend, database design, APIs, authentication systems, and cloud-native deployment.
+Full-stack software engineer working in TypeScript, focused on frontend, API design, and system architecture. I build production web applications end to end — from React/Next.js interfaces and NestJS / Server-Action APIs through PostgreSQL data models to cloud deployment — and lean toward simple, maintainable solutions over clever ones.
 
-Day-to-day stack: Astro, Next.js, Bun, Hono, PostgreSQL. I care about clean APIs, well-named code, fast feedback loops, and interfaces that respect the user's attention.
+Currently at MeeeetUp, building an AI-powered event platform and a coworking product on a shared, multi-tenant engine. Previously shipped enterprise systems at KBZ Bank (Myanmar's largest private bank) and Odoo ERP solutions at Myanmar Information Technology.
 
 ---
 
 ## Skills
 
-**Languages:** TypeScript, JavaScript
+**Languages:** TypeScript, JavaScript, Python, PHP
 
-**Frontend:** React, Next.js, Astro, Tailwind CSS, Shadcn UI
+**Frontend:** React, Next.js, Astro, Vite, Tailwind CSS, shadcn/ui, Redux, TanStack Query / Router / Table, Zustand
 
-**Backend:** Bun, Hono, Node.js
+**Backend:** Node.js, NestJS, Next.js (RSC & Server Actions), Odoo (Python), WordPress (PHP)
 
-**Database & ORM:** PostgreSQL, Redis, Prisma
+**Database & ORM:** PostgreSQL, OracleDB, MySQL, Supabase, Prisma
 
-**Cloud & Tools:** Docker, GitHub Actions, Vercel
+**Auth & Payments:** NextAuth, JWT / RBAC, Stripe & Stripe Connect
+
+**Cloud & Tooling:** AWS (S3, Rekognition, SES/SNS/SQS, Lambda, Amplify), Vercel, DigitalOcean, Cloudflare, Docker, GitHub Actions, Turborepo, esbuild
+
+**Testing:** Vitest, Playwright, Storybook
 
 ---
 
 ## Experience
 
-### Software Engineer · Independent
+### Software Engineer · MeeeetUp
 
-*2024-01 — Present*
+*Jan 2025 — Present · Remote*
 
-Building production web applications with focus on performance, maintainability, and developer experience. _Replace this entry with real work history._
+- Build and ship two production Next.js products — an event-management platform and a coworking reception system — on a single shared, multi-tenant engine where a second product launches through configuration rather than a fork, using Next.js, React, TypeScript, and a Turborepo monorepo.
+- Engineer a touchless facial check-in pipeline that layers in-browser MediaPipe quality gating in front of AWS Rekognition matching to control cost and latency.
+- Model a ~40-table domain in Prisma and PostgreSQL with Zod schemas as the single source of truth across the database, API routes, server actions, and forms.
+- Integrate Stripe and Stripe Connect for ticketing and host payouts, and decouple transactional email from the request path through SQS, AWS Lambda, and SES.
 
-**Tech:** TypeScript, Next.js, Bun, Hono, PostgreSQL
+### Frontend Software Engineer · KBZ Bank
 
-### Full-Stack Engineer · Lattice Studio
+*Nov 2023 — Jan 2025*
 
-*2022-03 — 2023-12*
+- Built customer-facing and internal banking systems for Myanmar's largest private bank under tight reliability and regulatory requirements, using React, NestJS, and Oracle Database.
+- Engineered the frontend of a host-to-host payroll tool end to end — an Excel-upload, Zod-validated, editable and virtualized review table — modeled as a Redux state machine.
+- Developed a full-stack cash-management system tying branch and ATM cash requests to a transport (cash-in-transit) fulfillment workflow, continuing the build after taking it over from a senior engineer.
+- Extended a customer-satisfaction (NPS) platform and integrated it with the branch queue-management system to print survey QR codes onto queue tickets per branch and topic.
 
-Built consumer web products with Next.js and GraphQL. Owned a design-system migration that cut frontend duplication by 40% and shipped the feature-flag infrastructure every product team uses today.
+### Web Developer · Myanmar Information Technology
 
-**Tech:** TypeScript, Next.js, GraphQL, PostgreSQL, AWS
+*Oct 2022 — Nov 2023*
 
-### Software Engineer · Nimbus Labs
+- Built and customized Odoo ERP solutions for enterprise clients across vertical markets using Python backend modules and JavaScript frontends.
+- Engineered a drag-and-drop room-reservation calendar — a visual booking timeline — for Odoo's free Community edition, where the Enterprise planning views aren't available out of the box.
+- Customized Odoo's point-of-sale for retail clients and integrated it into each client's wider Odoo deployment.
 
-*2020-08 — 2022-02*
+### Freelance Developer · Independent
 
-Backend services for a developer-tools startup. Designed a queue-based ingestion pipeline (10× throughput vs the prior implementation) and the internal CLI used by every engineer for local environment setup.
+*2022 — Present · alongside full-time roles*
 
-**Tech:** TypeScript, Node.js, Redis, Docker, Kubernetes
-
-### Software Engineering Intern · Northwind
-
-*2019-05 — 2020-07*
-
-Full-stack internship on internal admin tooling. Shipped a real-time operations dashboard and led a migration from a legacy Django frontend to a modern React/TypeScript stack.
-
-**Tech:** Python, Django, React, PostgreSQL
+- Architect and ship full-stack products for clients alongside my full-time roles, owning technical decisions from project setup through deployment.
+- Built BurmaUni, an EdTech operations portal, around a custom JWT-based RBAC system enforcing access at the route, component, and action levels, plus a concurrency-safe silent-refresh interceptor and a reusable URL-state data-table hook shared across ~20 server-side grids in React and TypeScript.
+- Built MyanHealth, a Burmese-first health-news WordPress theme, with a self-built ad manager and a modern Tailwind CSS v4 + esbuild build pipeline, migrating it cleanly off an Avada page-builder.
+- Maintained and fixed bugs across the modules of a live hospital ERP frontend (Master Care).
 
 ---
 
 ## Projects
 
-### Realtime Platform — Full-stack SaaS Platform
+### Meeeetup — Event & Coworking Platforms
 
-High-performance realtime application with scalable APIs, authentication, websocket infrastructure, and optimized frontend rendering.
+Two production Next.js products on one shared, multi-tenant engine (Turborepo): an event-management platform and a coworking reception system with touchless facial check-in (MediaPipe + AWS Rekognition).
 
-**Tech:** Next.js, Hono, PostgreSQL, Redis
+**Tech:** TypeScript, Next.js, Prisma, PostgreSQL, AWS, Stripe
 
-### Developer Infrastructure — Internal Engineering Tooling
+### BurmaUni — EdTech Admin Portal
 
-Built internal tooling and reusable systems improving deployment workflows, observability, and frontend productivity.
+Internal operations portal (~30 modules) built around a custom JWT-based RBAC system (route / component / action enforcement, 6 roles × ~35 resources), a concurrency-safe silent-refresh interceptor, and a reusable URL-state data-table hook.
 
-**Tech:** TypeScript, Docker, Bun, CI/CD
+**Tech:** React, TypeScript, TanStack Query & Table, Tailwind CSS
 
-### Modern Commerce Experience — Web Application
+### CoBudget — Expense-Splitting PWA
 
-Fast and responsive commerce experience focused on accessibility, SEO performance, clean UI systems, and scalable architecture.
+[Live demo](https://co-budget-snowy.vercel.app) · An offline-first PWA that splits shared expenses and settles up in the fewest transfers via a close-based ledger; authorization enforced entirely through Supabase Row Level Security.
 
-**Tech:** React, Prisma, TailwindCSS, Vercel
+**Tech:** React, Vite, Supabase, PostgreSQL, PWA
+
+### Textify — OCR App
+
+A full-stack app that turns images and PDFs into editable text using Google Drive's built-in document conversion as a zero-cost OCR engine instead of a paid Vision API.
+
+**Tech:** React, NestJS, Google Drive API, Docker
+
+_More at [minkhantkyaw.com/projects](https://minkhantkyaw.com/projects)._
