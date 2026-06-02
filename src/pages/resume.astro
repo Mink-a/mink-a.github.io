@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/InnerLayout.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
-import { Content as ResumeContent } from "../data/resume.md";
+import { resumeCSS, renderResumeBody } from "../data/resume";
 ---
 <Base
   title="Resume — Min Khant Kyaw"
@@ -12,7 +12,7 @@ import { Content as ResumeContent } from "../data/resume.md";
     { label: "Resume" },
   ]} />
 
-  <div class="flex items-center justify-between gap-4 mb-10 lg:mb-12">
+  <div class="flex items-center justify-between gap-4 mb-8 lg:mb-10">
     <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent">
       Resume
     </p>
@@ -26,7 +26,6 @@ import { Content as ResumeContent } from "../data/resume.md";
     </a>
   </div>
 
-  <article class="resume" itemscope itemtype="https://schema.org/Person">
-    <ResumeContent />
-  </article>
+  <style is:inline set:html={resumeCSS}></style>
+  <div class="resume-doc" set:html={renderResumeBody()}></div>
 </Base>
