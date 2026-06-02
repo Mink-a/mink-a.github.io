@@ -1,0 +1,111 @@
+---
+import Base from "../layouts/Base.astro";
+import ExperienceList from "../components/ExperienceList.astro";
+import ProjectList from "../components/ProjectList.astro";
+import WritingList from "../components/WritingList.astro";
+import { getCollection } from "astro:content";
+
+const experience = await getCollection("experience");
+const hasExperience = experience.length > 0;
+
+const writing = (await getCollection("writing")).filter((e) => !e.data.draft);
+const hasWriting = writing.length > 0;
+
+const navItems = [
+  { id: "about", label: "About" },
+  ...(hasExperience ? [{ id: "experience", label: "Experience" }] : []),
+  { id: "projects", label: "Projects" },
+];
+
+const description =
+  "Min Khant Kyaw — full-stack software engineer in TypeScript, focused on frontend, API design, and system architecture. Selected projects, experience, and writing.";
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Min Khant Kyaw",
+    jobTitle: "Software Engineer",
+    url: "https://minkhantkyaw.com",
+    email: "mailto:hello@minkhantkyaw.com",
+    sameAs: ["https://github.com/mink-a"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Min Khant Kyaw",
+    url: "https://minkhantkyaw.com",
+  },
+];
+---
+<Base
+  title="Min Khant Kyaw — Software Engineer"
+  description={description}
+  navItems={navItems}
+  schema={schema}
+>
+  <section id="about" class="mb-16 lg:mb-32 fade-in-up">
+    <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">About</h2>
+    <p class="body-lg text-text-muted">
+      I'm a full-stack software engineer working in TypeScript, focused on frontend, API design,
+      and system architecture. I care about user experience and lean toward simple solutions over
+      clever ones.
+    </p>
+    <p class="body-lg text-text-muted mt-4">
+      Currently at
+      <a href="https://meeeetup.com" target="_blank" rel="noopener noreferrer" class="text-text font-medium hover:text-accent transition-colors">meeeetup.com</a>,
+      building an AI-powered face-recognition event platform, a coworking-space management
+      product, and an AI face-identity SaaS — end to end with the team.
+    </p>
+    <p class="body-lg text-text-muted mt-4">
+      Previously at
+      <a href="https://www.kbzbank.com/mm/company-profile-mm/" target="_blank" rel="noopener noreferrer" class="text-text font-medium hover:text-accent transition-colors">KBZ Bank</a>
+      (Myanmar's largest private bank, behind KBZPay) and Myanmar Information Technology (MIT),
+      shipping enterprise solutions across Myanmar, Singapore, and Thailand. On the side, I built
+      an expense-splitting PWA that started as a real itch with friends.
+    </p>
+    <p class="body-lg text-text-muted mt-4">
+      Off the clock: reading, keeping up with tech, and time with family.
+    </p>
+  </section>
+
+  {hasExperience && (
+    <section id="experience" class="mb-16 lg:mb-32 fade-in-up">
+      <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">Experience</h2>
+      <ExperienceList />
+      <a
+        href="/resume"
+        class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-text hover:text-accent transition-colors group"
+      >
+        View Full Resume
+        <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </section>
+  )}
+
+  <section id="projects" class="mb-16 lg:mb-32 fade-in-up">
+    <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">Projects</h2>
+    <ProjectList featuredOnly limit={5} />
+    <a
+      href="/projects"
+      class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-text hover:text-accent transition-colors group"
+    >
+      View All Projects
+      <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+    </a>
+  </section>
+
+  {hasWriting && (
+    <section id="writing" class="mb-16 lg:mb-32 fade-in-up">
+      <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">Writing</h2>
+      <WritingList limit={3} />
+      <a
+        href="/writing"
+        class="inline-flex items-center gap-2 mt-10 text-sm font-semibold text-text hover:text-accent transition-colors group"
+      >
+        View All Writings
+        <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </section>
+  )}
+</Base>

@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/InnerLayout.astro";
+import WritingList from "../components/WritingList.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+---
+<Base
+  title="Writing — Min Khant Kyaw"
+  description="Notes and articles on software engineering by Min Khant Kyaw."
+>
+  <Breadcrumb items={[
+    { label: "Home", href: "/" },
+    { label: "Writing" },
+  ]} />
+
+  <h2 class="h-2 mb-12 lg:mb-16 fade-in-up">Notes and articles.</h2>
+  <WritingList />
+</Base>

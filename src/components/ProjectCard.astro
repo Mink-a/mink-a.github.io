@@ -1,0 +1,42 @@
+---
+import Tag from "./Tag.astro";
+import BlurImage from "./BlurImage.astro";
+
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  tech: string[];
+  image?: string;
+}
+const { slug, title, description, tech, image } = Astro.props;
+---
+<a
+  href={`/projects/${slug}`}
+  class="group grid sm:grid-cols-[200px_1fr] gap-6 lg:gap-8"
+>
+  {image ? (
+    <BlurImage
+      src={image}
+      alt=""
+      ratio="16 / 10"
+      loading="lazy"
+      class="rounded-md border border-border bg-surface"
+      imgClass="transition-transform duration-300 ease-out group-hover:scale-105"
+    />
+  ) : (
+    <div class="aspect-[16/10] rounded-md overflow-hidden border border-border bg-surface">
+      <div class="w-full h-full bg-gradient-to-br from-accent/15 via-surface to-surface" aria-hidden="true"></div>
+    </div>
+  )}
+  <div>
+    <h3 class="h-3 text-text group-hover:text-accent transition-colors mb-3 inline-flex items-center gap-2">
+      <span>{title}</span>
+      <span aria-hidden="true" class="text-text-muted transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5 group-hover:text-accent">↗</span>
+    </h3>
+    <p class="text-text-muted mb-5">{description}</p>
+    <ul class="flex flex-wrap gap-2">
+      {tech.map((t) => <li><Tag label={t} /></li>)}
+    </ul>
+  </div>
+</a>

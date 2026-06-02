@@ -1,0 +1,34 @@
+---
+interface Props {
+  role: string;
+  company: string;
+  companyUrl?: string;
+  start: string;
+  end: string;
+  description: string;
+  isCurrent?: boolean;
+}
+const { role, company, companyUrl, start, end, description, isCurrent = false } = Astro.props;
+
+function formatRange(s: string, e: string) {
+  return `${s} — ${e}`;
+}
+---
+<article class="group">
+  <p class={`text-xs uppercase tracking-[0.16em] font-semibold mb-3 ${isCurrent ? "text-accent" : "text-text-dim"}`}>
+    {formatRange(start, end)}
+  </p>
+  <h3 class="h-3 group-hover:text-accent transition-colors mb-4">
+    <span class="text-text">{role}</span>
+    <span class="text-text-muted"> · </span>
+    {companyUrl ? (
+      <a href={companyUrl} target="_blank" rel="noopener noreferrer" class="text-text hover:text-accent transition-colors inline-flex items-center gap-1">
+        {company}
+        <span aria-hidden="true" class="text-text-muted group-hover:text-accent transition-colors">↗</span>
+      </a>
+    ) : (
+      <span class="text-text">{company}</span>
+    )}
+  </h3>
+  <p class="text-text-muted">{description}</p>
+</article>

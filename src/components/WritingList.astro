@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+
+let entries = (await getCollection("writing")).filter((e) => !e.data.draft);
+entries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+if (limit) entries = entries.slice(0, limit);
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+{entries.length > 0 ? (
+  <ol class="space-y-12 lg:space-y-16">
+    {entries.map((entry) => (
+      <li>
+        <a
+          href={`/writing/${entry.id}`}
+          class="group block"
+        >
+          <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim mb-3">
+            {formatter.format(entry.data.pubDate)}
+          </p>
+          <h3 class="h-3 mb-3 inline-flex items-center gap-2">
+            <span class="text-text group-hover:text-accent transition-colors">{entry.data.title}</span>
+            <span aria-hidden="true" class="text-text-muted group-hover:text-accent group-hover:translate-x-0.5 transition-all">→</span>
+          </h3>
+          <p class="text-text-muted mb-3">{entry.data.description}</p>
+          {entry.data.tags.length > 0 && (
+            <ul class="flex flex-wrap gap-2 text-xs text-text-dim">
+              {entry.data.tags.map((t) => <li>#{t}</li>)}
+            </ul>
+          )}
+        </a>
+      </li>
+    ))}
+  </ol>
+) : (
+  <p class="text-text-muted">No posts yet — first one coming soon.</p>
+)}

@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/InnerLayout.astro";
+---
+<Base title="404 — Min Khant Kyaw" description="This page took a different flight path.">
+  <div class="flex flex-col items-start gap-8 pt-12">
+    <pre class="text-text-dim leading-tight text-xs sm:text-sm font-mono whitespace-pre" aria-hidden="true">
+{`        ___
+       /   \\
+      /     \\
+     /       \\
+    /  ___    \\
+   /  /   \\    \\
+  /  /     \\____\\
+ /__/__________\\
+    \\_____/
+`}
+    </pre>
+    <div>
+      <p class="eyebrow mb-3 text-accent">404</p>
+      <h1 class="h-2 mb-4">This page took a different flight path.</h1>
+      <p class="body-lg text-text-muted max-w-xl">
+        The page you were looking for doesn't exist — or possibly never did. Try the home page,
+        or pick a section from the sidebar.
+      </p>
+    </div>
+    <a
+      href="/"
+      class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-accent text-bg font-semibold hover:bg-accent/90 transition-colors"
+    >
+      <span aria-hidden="true">←</span>
+      Take me home
+    </a>
+  </div>
+</Base>
+
+<style>
+  pre {
+    animation: glide 6s ease-in-out infinite;
+  }
+  @keyframes glide {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(20px, -10px) rotate(2deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    pre { animation: none; }
+  }
+</style>

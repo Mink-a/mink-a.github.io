@@ -1,0 +1,12 @@
+---
+interface Props {
+  eyebrow: string;
+  heading: string;
+  id?: string;
+}
+const { eyebrow, heading, id } = Astro.props;
+---
+<header class="mb-10 fade-in-up" id={id}>
+  <p class="eyebrow mb-3">{eyebrow}</p>
+  <h2 class="h-2">{heading}</h2>
+</header>

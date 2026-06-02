@@ -1,0 +1,21 @@
+---
+import { Icon } from "astro-icon/components";
+import { stack } from "../data/stack";
+---
+<div class="space-y-12">
+  {stack.map((group) => (
+    <div>
+      <h3 class="eyebrow mb-5">{group.category}</h3>
+      <ul class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {group.items.map((item) => (
+          <li
+            class="flex items-center gap-3 px-4 py-3 rounded-md border border-border bg-surface hover:border-border-strong hover:bg-surface-2 transition-colors"
+          >
+            <Icon name={item.icon} class="w-5 h-5 text-text-muted" aria-hidden="true" />
+            <span class="text-sm text-text">{item.name}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>

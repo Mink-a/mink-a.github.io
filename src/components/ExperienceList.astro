@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+import ExperienceCard from "./ExperienceCard.astro";
+
+const entries = (await getCollection("experience")).sort(
+  (a, b) => b.data.order - a.data.order
+);
+---
+{entries.length > 0 && (
+  <ol class="relative space-y-10 lg:space-y-16">
+    <div class="absolute left-[5px] top-2 bottom-2 w-px bg-border" aria-hidden="true"></div>
+    {entries.map((entry) => {
+      const isCurrent = entry.data.end === "Present";
+      return (
+        <li class="grid grid-cols-[12px_1fr] gap-6 relative">
+          <span
+            class={`relative z-10 block w-3 h-3 rounded-full shrink-0 mt-2 ${
+              isCurrent
+                ? "bg-accent ring-4 ring-accent-glow"
+                : "bg-bg border-2 border-text-dim"
+            }`}
+            aria-hidden="true"
+          ></span>
+          <ExperienceCard
+            role={entry.data.role}
+            company={entry.data.company}
+            companyUrl={entry.data.companyUrl}
+            start={entry.data.start}
+            end={String(entry.data.end)}
+            description={entry.data.description}
+            isCurrent={isCurrent}
+          />
+        </li>
+      );
+    })}
+  </ol>
+)}
