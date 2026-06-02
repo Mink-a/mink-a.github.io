@@ -2,7 +2,7 @@
 
 **Full-Stack Software Engineer**
 
-Remote · [hello@minkhantkyaw.com](mailto:hello@minkhantkyaw.com) · [GitHub](https://github.com/mink-a) · [LinkedIn](https://www.linkedin.com/) · [minkhantkyaw.com](https://minkhantkyaw.com)
+Remote · [hello@minkhantkyaw.com](mailto:hello@minkhantkyaw.com) · [GitHub](https://github.com/Mink-a) · [LinkedIn](https://www.linkedin.com/in/min-khant-kyaw-56b05724b/) · [minkhantkyaw.com](https://minkhantkyaw.com)
 
 ---
 
