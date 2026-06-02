@@ -1,4 +1,4 @@
-User-agent: *
-Allow: /
-
+# Crawl rules for this site are managed by Cloudflare (AI/bot controls), which
+# prepends its own "User-agent: *" group ahead of this file. Keep only the
+# sitemap here so the served robots.txt doesn't gain a duplicate group.
 Sitemap: https://minkhantkyaw.com/sitemap-index.xml
