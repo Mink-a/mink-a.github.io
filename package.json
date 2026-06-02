@@ -9,7 +9,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "resume:pdf": "bun scripts/resume-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
@@ -23,6 +24,7 @@
     "@iconify-json/lucide": "^1.2.107",
     "@iconify-json/simple-icons": "^1.2.82",
     "@tailwindcss/vite": "^4.3.0",
+    "puppeteer": "^25.1.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.3.0",
     "thumbhash": "^0.1.1",

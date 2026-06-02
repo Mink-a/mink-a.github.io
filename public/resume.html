@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Min Khant Kyaw — Resume</title>
+    <style>
+      :root {
+        --accent: #2d52e0;
+        --ink: #1a1a1a;
+        --body: #3a3a3a;
+        --muted: #8a8a8a;
+      }
+
+      @page {
+        size: A4;
+        margin: 13mm 14mm;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        color: var(--body);
+        font-size: 11px;
+        line-height: 1.46;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* On-screen: emulate an A4 page so the preview matches the PDF. */
+      @media screen {
+        body {
+          background: #f4f4f5;
+          padding: 24px;
+        }
+        .sheet {
+          background: #fff;
+          width: 210mm;
+          min-height: 297mm;
+          margin: 0 auto;
+          padding: 13mm 14mm;
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 26px;
+        margin-bottom: 26px;
+      }
+
+      .name {
+        color: var(--accent);
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        line-height: 1.05;
+        margin: 0;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.55;
+        margin: 10px 0 0;
+        max-width: 30em;
+      }
+
+      .contact {
+        text-align: right;
+        font-size: 10.5px;
+        line-height: 2.15;
+        color: #5a5a5a;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .contact a:hover {
+        color: var(--accent);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1.75fr 1fr;
+        gap: 32px;
+        align-items: start;
+      }
+
+      h2 {
+        color: var(--accent);
+        font-size: 15px;
+        font-weight: 700;
+        margin: 0 0 14px;
+      }
+
+      section {
+        margin-bottom: 22px;
+      }
+      section:last-child {
+        margin-bottom: 0;
+      }
+
+      .entry {
+        margin-bottom: 13px;
+        break-inside: avoid;
+      }
+      .entry:last-child {
+        margin-bottom: 0;
+      }
+
+      .entry-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .role {
+        font-weight: 700;
+        font-size: 11.5px;
+        color: var(--ink);
+      }
+      .company {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .date {
+        color: var(--muted);
+        font-size: 10px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      ul {
+        margin: 6px 0 0;
+        padding-left: 15px;
+      }
+      li {
+        margin-bottom: 4px;
+      }
+
+      .skill-group {
+        margin-bottom: 11px;
+      }
+      .skill-group:last-child {
+        margin-bottom: 0;
+      }
+      .skill-group h3 {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--ink);
+        margin: 0 0 3px;
+      }
+      .skill-group p {
+        margin: 0;
+        font-size: 10.5px;
+        color: #4a4a4a;
+      }
+
+      .proj {
+        margin-bottom: 13px;
+        break-inside: avoid;
+      }
+      .proj:last-child {
+        margin-bottom: 0;
+      }
+      .proj h3 {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--ink);
+        margin: 0 0 3px;
+      }
+      .proj p {
+        margin: 0;
+        font-size: 10.5px;
+        color: #4a4a4a;
+      }
+      .proj .accent {
+        color: var(--accent);
+      }
+
+      .ai-note {
+        margin-top: 16px;
+        padding-top: 9px;
+        border-top: 1px solid #e6e6e6;
+        font-size: 9px;
+        color: var(--muted);
+        text-align: center;
+      }
+      .ai-note a {
+        color: var(--accent);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sheet">
+      <header>
+        <div>
+          <h1 class="name">Min Khant Kyaw</h1>
+          <p class="subtitle">
+            Full-stack software engineer working in TypeScript, focused on
+            frontend, API design, and system architecture — building production
+            web apps end to end.
+          </p>
+        </div>
+        <div class="contact">
+          <a href="mailto:hello@minkhantkyaw.com">hello@minkhantkyaw.com</a><br />
+          <a href="https://github.com/Mink-a">github.com/Mink-a</a><br />
+          <a href="https://www.linkedin.com/in/min-khant-kyaw-56b05724b/"
+            >linkedin.com/in/min-khant-kyaw</a
+          ><br />
+          <a href="https://minkhantkyaw.com">minkhantkyaw.com</a><br />
+          Remote
+        </div>
+      </header>
+
+      <div class="layout">
+        <main>
+          <section>
+            <h2>Experience</h2>
+
+            <div class="entry">
+              <div class="entry-head">
+                <div class="role">
+                  Software Engineer · <span class="company">MeeeetUp</span>
+                </div>
+                <div class="date">Jan 2025 — Present</div>
+              </div>
+              <ul>
+                <li>
+                  Build and ship two production Next.js products — an
+                  event-management platform and a coworking reception system — on
+                  a single shared, multi-tenant engine where a second product
+                  launches through configuration rather than a fork (Next.js,
+                  React, TypeScript, Turborepo monorepo).
+                </li>
+                <li>
+                  Engineered a touchless facial check-in pipeline layering
+                  in-browser MediaPipe quality gating in front of AWS Rekognition
+                  matching to control cost and latency.
+                </li>
+                <li>
+                  Modeled a ~40-table domain in Prisma and PostgreSQL with Zod
+                  schemas as the single source of truth across the database, API
+                  routes, server actions, and forms.
+                </li>
+                <li>
+                  Integrated Stripe and Stripe Connect for ticketing and host
+                  payouts, and decoupled transactional email from the request
+                  path via SQS, AWS Lambda, and SES.
+                </li>
+              </ul>
+            </div>
+
+            <div class="entry">
+              <div class="entry-head">
+                <div class="role">
+                  Frontend Software Engineer ·
+                  <span class="company">KBZ Bank</span>
+                </div>
+                <div class="date">Nov 2023 — Jan 2025</div>
+              </div>
+              <ul>
+                <li>
+                  Built customer-facing and internal banking systems for
+                  Myanmar's largest private bank under tight reliability and
+                  regulatory requirements (React, NestJS, Oracle Database).
+                </li>
+                <li>
+                  Engineered the frontend of a host-to-host payroll tool end to
+                  end — an Excel-upload, Zod-validated, editable and virtualized
+                  review table modeled as a Redux state machine.
+                </li>
+                <li>
+                  Developed a full-stack cash-management system tying branch and
+                  ATM cash requests to a transport (cash-in-transit) fulfillment
+                  workflow.
+                </li>
+                <li>
+                  Extended an NPS platform and integrated it with the branch
+                  queue-management system to print survey QR codes onto queue
+                  tickets per branch and topic.
+                </li>
+              </ul>
+            </div>
+
+            <div class="entry">
+              <div class="entry-head">
+                <div class="role">
+                  Web Developer ·
+                  <span class="company">Myanmar Information Technology</span>
+                </div>
+                <div class="date">Oct 2022 — Nov 2023</div>
+              </div>
+              <ul>
+                <li>
+                  Built and customized Odoo ERP solutions for enterprise clients
+                  across vertical markets using Python backend modules and
+                  JavaScript frontends.
+                </li>
+                <li>
+                  Engineered a drag-and-drop room-reservation calendar — a visual
+                  booking timeline — for Odoo's free Community edition, where
+                  Enterprise planning views aren't available.
+                </li>
+                <li>
+                  Customized Odoo's point-of-sale for retail clients and
+                  integrated it into each client's wider Odoo deployment.
+                </li>
+              </ul>
+            </div>
+
+            <div class="entry">
+              <div class="entry-head">
+                <div class="role">
+                  Freelance Developer ·
+                  <span class="company">Independent</span>
+                </div>
+                <div class="date">2022 — Present</div>
+              </div>
+              <ul>
+                <li>
+                  Architect and ship full-stack products for clients alongside
+                  full-time roles, owning technical decisions from setup through
+                  deployment.
+                </li>
+                <li>
+                  Built BurmaUni, an EdTech operations portal, around a custom
+                  JWT-based RBAC system (route / component / action enforcement),
+                  a concurrency-safe silent-refresh interceptor, and a reusable
+                  URL-state data-table hook across ~20 server-side grids.
+                </li>
+                <li>
+                  Built MyanHealth, a Burmese-first health-news WordPress theme,
+                  with a self-built ad manager and a modern Tailwind CSS v4 +
+                  esbuild pipeline.
+                </li>
+              </ul>
+            </div>
+          </section>
+        </main>
+
+        <aside>
+          <section>
+            <h2>Skills</h2>
+
+            <div class="skill-group">
+              <h3>Languages</h3>
+              <p>TypeScript, JavaScript, Python, PHP</p>
+            </div>
+            <div class="skill-group">
+              <h3>Frontend</h3>
+              <p>
+                React, Next.js, Astro, Vite, Tailwind CSS, shadcn/ui, Redux,
+                TanStack Query / Router / Table, Zustand
+              </p>
+            </div>
+            <div class="skill-group">
+              <h3>Backend</h3>
+              <p>
+                Node.js, NestJS, Next.js (RSC &amp; Server Actions), Odoo
+                (Python), WordPress (PHP)
+              </p>
+            </div>
+            <div class="skill-group">
+              <h3>Database &amp; ORM</h3>
+              <p>PostgreSQL, OracleDB, MySQL, Supabase, Prisma</p>
+            </div>
+            <div class="skill-group">
+              <h3>Auth &amp; Payments</h3>
+              <p>NextAuth, JWT / RBAC, Stripe &amp; Stripe Connect</p>
+            </div>
+            <div class="skill-group">
+              <h3>Cloud &amp; Tooling</h3>
+              <p>
+                AWS (S3, Rekognition, SES/SNS/SQS, Lambda, Amplify), Vercel,
+                DigitalOcean, Cloudflare, Docker, GitHub Actions, Turborepo
+              </p>
+            </div>
+            <div class="skill-group">
+              <h3>Testing</h3>
+              <p>Vitest, Playwright, Storybook</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Selected Projects</h2>
+
+            <div class="proj">
+              <h3>Meeeetup — Event &amp; Coworking</h3>
+              <p>
+                Two production Next.js products on one shared, multi-tenant engine
+                (Turborepo), with touchless facial check-in (MediaPipe + AWS
+                Rekognition).
+              </p>
+            </div>
+            <div class="proj">
+              <h3>BurmaUni — EdTech Admin Portal</h3>
+              <p>
+                ~30-module operations portal around a custom JWT/RBAC system and a
+                reusable URL-state data-table hook.
+              </p>
+            </div>
+            <div class="proj">
+              <h3>CoBudget — Expense-Splitting PWA</h3>
+              <p>
+                <a class="accent" href="https://co-budget-snowy.vercel.app"
+                  >Live demo</a
+                >
+                · Offline-first PWA that settles shared expenses in the fewest
+                transfers; authz via Supabase RLS.
+              </p>
+            </div>
+            <div class="proj">
+              <h3>Textify — OCR App</h3>
+              <p>
+                Turns images and PDFs into editable text using Google Drive's
+                document conversion as a zero-cost OCR engine.
+              </p>
+            </div>
+          </section>
+        </aside>
+      </div>
+      <footer class="ai-note">
+        Machine-readable version of this résumé for AI screeners &amp; ATS:
+        <a href="https://minkhantkyaw.com/llms.txt">minkhantkyaw.com/llms.txt</a>
+      </footer>
+    </div>
+  </body>
+</html>

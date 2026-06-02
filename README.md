@@ -123,7 +123,7 @@ Add a file to the matching collection; frontmatter is validated against `src/con
 
 - **Colors & typography** — edit the `@theme` tokens in `src/styles/global.css`; light-mode overrides live under `:root[data-theme="light"]`. The self-hosted font and its metric-matched fallback are declared as `@font-face` at the top of the same file.
 - **Tech stack page** — edit the categorized list in `src/data/stack.ts` (each item uses an `astro-icon` name).
-- **Resume** — `/resume` renders `src/data/resume.md`; the page also links to `/resume.pdf` (add the PDF to `public/`).
+- **Resume** — `/resume` renders `src/data/resume.md`. The downloadable CV is a separate styled page, `public/resume.html`, exported to `public/Min-Khant-Kyaw-Resume.pdf` (A4) with `bun run resume:pdf`.
 - **Identity & bio** — sidebar content lives in `src/components/Sidebar.astro`; the cycling bio lines are in `src/scripts/bio-scramble.ts`.
 - **Site metadata & social cards** — `src/components/BaseHead.astro` is the single source for `<head>` meta (canonical, Open Graph/Twitter, JSON-LD); the default share image is `public/og.png` and the monogram favicon is `public/favicon.svg`.
 

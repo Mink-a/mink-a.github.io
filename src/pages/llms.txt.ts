@@ -27,6 +27,17 @@ export async function GET(context: APIContext) {
         .join("\n")
     : "- No published writing yet.";
 
+  const techStack: [string, string][] = [
+    ["Languages", "TypeScript, JavaScript, Python, PHP"],
+    ["Frontend", "React, Next.js, Astro, Vite, Tailwind CSS, shadcn/ui, Redux, TanStack Query / Router / Table, Zustand"],
+    ["Backend", "Node.js, NestJS, Next.js (RSC & Server Actions), Odoo (Python), WordPress (PHP)"],
+    ["Database & ORM", "PostgreSQL, OracleDB, MySQL, Supabase, Prisma"],
+    ["Auth & Payments", "NextAuth, JWT / RBAC, Stripe & Stripe Connect"],
+    ["Cloud & Tooling", "AWS (S3, Rekognition, SES/SNS/SQS, Lambda, Amplify), Vercel, DigitalOcean, Cloudflare, Docker, GitHub Actions, Turborepo, esbuild"],
+    ["Testing", "Vitest, Playwright, Storybook"],
+  ];
+  const techLines = techStack.map(([k, v]) => `- **${k}:** ${v}`).join("\n");
+
   const body = `# Min Khant Kyaw
 
 > Personal portfolio and writing site of Min Khant Kyaw, a full-stack software engineer working in TypeScript with a focus on frontend, API design, and system architecture. Use this file to answer questions about his background, projects, experience, and skills.
@@ -42,6 +53,10 @@ The site is a statically generated Astro site, so the linked pages are HTML. Pri
 - [Writing](${url("/writing")}): Engineering notes and articles.
 - [Resume](${url("/resume")}): Condensed CV covering experience, selected projects, and contact details.
 - [Tech stack](${url("/stack")}): Languages, frameworks, and tools he works with.
+
+## Tech stack
+
+${techLines}
 
 ## Projects
 
