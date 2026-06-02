@@ -13,6 +13,21 @@
   src: url("/fonts/inter-variable.woff2") format("woff2");
 }
 
+/*
+ * Metric-matched fallback: a local Arial reshaped to Inter's box (ascent /
+ * descent / size). Sitting between Inter and system-ui in --font-sans, it
+ * makes the pre-swap paint occupy the same space as Inter, so the swap on
+ * load doesn't shift layout (near-zero font CLS).
+ */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+  size-adjust: 107.12%;
+}
+
 @theme {
   /* Colors — Stone + Amber palette (dark, default) */
   --color-bg: #0c0a09;
@@ -28,7 +43,7 @@
   --color-accent-glow: rgba(251, 146, 60, 0.15);
 
   /* Typography */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", "Inter Fallback", system-ui, -apple-system, sans-serif;
 
   /* Motion */
   --ease-out-soft: cubic-bezier(0.4, 0, 0.2, 1);

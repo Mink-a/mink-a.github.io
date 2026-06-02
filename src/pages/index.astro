@@ -16,8 +16,34 @@ const navItems = [
   ...(hasExperience ? [{ id: "experience", label: "Experience" }] : []),
   { id: "projects", label: "Projects" },
 ];
+
+const description =
+  "Min Khant Kyaw — full-stack software engineer in TypeScript, focused on frontend, API design, and system architecture. Selected projects, experience, and writing.";
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Min Khant Kyaw",
+    jobTitle: "Software Engineer",
+    url: "https://minkhantkyaw.com",
+    email: "mailto:hello@minkhantkyaw.com",
+    sameAs: ["https://github.com/mink-a"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Min Khant Kyaw",
+    url: "https://minkhantkyaw.com",
+  },
+];
 ---
-<Base title="Min Khant Kyaw — Software Engineer" navItems={navItems}>
+<Base
+  title="Min Khant Kyaw — Software Engineer"
+  description={description}
+  navItems={navItems}
+  schema={schema}
+>
   <section id="about" class="mb-16 lg:mb-32 fade-in-up">
     <h2 class="lg:hidden text-text text-base font-bold uppercase tracking-[0.18em] mb-6">About</h2>
     <p class="body-lg text-text-muted">

@@ -20,6 +20,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 <Base
   title={`${project.data.title} — Min Khant Kyaw`}
   description={project.data.description}
+  image={project.data.image}
 >
   <Breadcrumb items={[
     { label: "Home", href: "/" },
@@ -75,7 +76,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
         <BlurImage
           src={project.data.image}
           alt={`${project.data.title} screenshot`}
-          loading="eager"
+          priority
           class="rounded-md border border-border"
         />
       </figure>

@@ -7,6 +7,18 @@ interface Props {
   items: Crumb[];
 }
 const { items } = Astro.props;
+
+const site = Astro.site ?? new URL("https://minkhantkyaw.com");
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.label,
+    item: new URL(item.href ?? Astro.url.pathname, site).href,
+  })),
+};
 ---
 <nav aria-label="Breadcrumb" class="mb-10 lg:mb-12 flex items-center min-h-9 lg:min-h-10">
   <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
@@ -34,3 +46,4 @@ const { items } = Astro.props;
     })}
   </ol>
 </nav>
+<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />

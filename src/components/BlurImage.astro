@@ -12,6 +12,8 @@ interface Props {
   /** Extra classes for the <img> (e.g. hover transforms). */
   imgClass?: string;
   loading?: "lazy" | "eager";
+  /** LCP images: eager-load and hint high fetch priority to the browser. */
+  priority?: boolean;
   sizes?: string;
 }
 
@@ -22,22 +24,30 @@ const {
   class: wrapperClass,
   imgClass,
   loading = "lazy",
+  priority = false,
   sizes,
 } = Astro.props;
 
 const { width, height, placeholder } = await getImageData(src);
-const aspect = ratio ?? `${width} / ${height}`;
+const aspect = ratio ?? (width && height ? `${width} / ${height}` : "16 / 9");
+const style = [
+  `aspect-ratio: ${aspect};`,
+  placeholder ? `background-image: url('${placeholder}');` : "",
+]
+  .join(" ")
+  .trim();
 ---
 <div
   class:list={["relative overflow-hidden bg-cover bg-center bg-no-repeat", wrapperClass]}
-  style={`aspect-ratio: ${aspect}; background-image: url('${placeholder}');`}
+  style={style}
 >
   <img
     src={src}
     alt={alt}
-    width={width}
-    height={height}
-    loading={loading}
+    width={width || undefined}
+    height={height || undefined}
+    loading={priority ? "eager" : loading}
+    fetchpriority={priority ? "high" : undefined}
     decoding="async"
     sizes={sizes}
     class:list={["blur-up absolute inset-0 h-full w-full object-cover", imgClass]}
