@@ -4,7 +4,7 @@ type: Personal Project · Expense Splitting
 description: A mobile-first, offline-first PWA for splitting shared expenses among friends and roommates — flexible splits, a realtime feed, and a close-based ledger that settles up in the fewest transfers.
 tech: ["TypeScript", "React", "Vite", "Supabase", "PostgreSQL", "TanStack Query", "TanStack Router", "Tailwind CSS", "PWA", "Vercel"]
 demoUrl: https://co-budget-snowy.vercel.app
-image: /assets/covers/co-budget-cover.jpg
+image: /assets/covers/co-budget-cover.webp
 featured: true
 order: 90
 ---

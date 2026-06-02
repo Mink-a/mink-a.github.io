@@ -1,0 +1,45 @@
+---
+import { getImageData } from "../lib/images";
+
+interface Props {
+  /** Public URL under `public/`, e.g. `/assets/covers/x.webp`. */
+  src: string;
+  alt: string;
+  /** Force a display ratio (e.g. "16 / 10"); defaults to the intrinsic ratio. */
+  ratio?: string;
+  /** Classes for the wrapper (borders, radius, spacing live here). */
+  class?: string;
+  /** Extra classes for the <img> (e.g. hover transforms). */
+  imgClass?: string;
+  loading?: "lazy" | "eager";
+  sizes?: string;
+}
+
+const {
+  src,
+  alt,
+  ratio,
+  class: wrapperClass,
+  imgClass,
+  loading = "lazy",
+  sizes,
+} = Astro.props;
+
+const { width, height, placeholder } = await getImageData(src);
+const aspect = ratio ?? `${width} / ${height}`;
+---
+<div
+  class:list={["relative overflow-hidden bg-cover bg-center bg-no-repeat", wrapperClass]}
+  style={`aspect-ratio: ${aspect}; background-image: url('${placeholder}');`}
+>
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    sizes={sizes}
+    class:list={["blur-up absolute inset-0 h-full w-full object-cover", imgClass]}
+  />
+</div>

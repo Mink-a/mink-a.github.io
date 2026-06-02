@@ -3,7 +3,7 @@ title: Net Promoter Score (NPS) System
 type: Analytics Platform · KBZ Bank
 description: An internal NPS platform for a bank — customers complete a survey and are scored into a Net Promoter Score, later integrated with the branch queue-management system to print the survey QR right on each queue ticket, per branch and topic.
 tech: ["TypeScript", "React", "NestJS", "OracleDB"]
-image: /assets/covers/nps-cover.jpg
+image: /assets/covers/nps-cover.webp
 featured: false
 order: 55
 ---

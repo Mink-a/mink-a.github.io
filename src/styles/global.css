@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/*
+ * Self-hosted Inter (variable, latin subset, weights 100–900). Served from
+ * /public/fonts so the site has no dependency on Google Fonts. Glyphs outside
+ * the latin subset fall back to system-ui via the --font-sans stack.
+ */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/inter-variable.woff2") format("woff2");
+}
+
 @theme {
   /* Colors — Stone + Amber palette (dark, default) */
   --color-bg: #0c0a09;
@@ -293,6 +306,24 @@ html.js .fade-in-up.is-visible {
   html.js .fade-in-up {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+}
+
+/*
+ * Blur-up images — the wrapper paints an inline ThumbHash placeholder; the full
+ * image fades in over it once decoded (toggled by scripts/img-blur.ts). Gated on
+ * html.js so images stay visible if JS never runs.
+ */
+html.js img.blur-up {
+  opacity: 0;
+  transition: opacity 600ms ease-out;
+}
+html.js img.blur-up[data-loaded="true"] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js img.blur-up {
     transition: none;
   }
 }

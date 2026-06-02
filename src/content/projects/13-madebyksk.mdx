@@ -4,10 +4,12 @@ type: Personal Project · Artist Portfolio
 description: A static, content-driven portfolio for a Myanmar oil-landscape painter — every painting is one Markdown file that generates its own gallery row, deep-linkable lightbox, social card, and structured data at build time.
 tech: ["Astro", "TypeScript", "Tailwind CSS", "Zod", "Satori", "Sharp", "PagesCMS", "GitHub Pages"]
 demoUrl: https://madebyksk.com
-image: /assets/covers/ksdk-cover.png
+image: /assets/covers/ksdk-cover.webp
 featured: true
 order: 80
 ---
+
+import BlurImage from "../../components/BlurImage.astro";
 
 ## Overview
 
@@ -64,7 +66,12 @@ The build-time-everything approach shows up in the field: the site scores a perf
 
 Those numbers fall out of the architecture rather than from micro-tuning: shipping pure static HTML with no client framework keeps the main thread idle (0 ms blocking time), and the inline ThumbHash placeholders reserve every image's box up front, so cumulative layout shift stays at exactly zero.
 
-![Lighthouse report for madebyksk.com: a perfect 100 across Performance, Accessibility, Best Practices, and SEO.](/assets/madebyksk-lighthouse.png)
+<BlurImage
+  src="/assets/madebyksk-lighthouse.webp"
+  alt="Lighthouse report for madebyksk.com: a perfect 100 across Performance, Accessibility, Best Practices, and SEO."
+  loading="lazy"
+  class="rounded-md border border-border my-6"
+/>
 
 ## Tech stack
 

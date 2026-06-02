@@ -3,7 +3,7 @@ title: Custom Odoo POS
 type: ERP Customization · MIT
 description: Point-of-sale customization on Odoo for retail clients in Myanmar — adapting the standard POS to local requirements and wiring it into each client's broader Odoo deployment.
 tech: ["Odoo", "Python", "JavaScript", "XML", "PostgreSQL"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Custom+Odoo+POS&font=inter
+image: /assets/covers/odoo-pos-cover.webp
 featured: false
 order: 40
 ---

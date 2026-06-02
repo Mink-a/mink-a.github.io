@@ -1,5 +1,6 @@
 ---
 import Tag from "./Tag.astro";
+import BlurImage from "./BlurImage.astro";
 
 interface Props {
   slug: string;
@@ -12,22 +13,22 @@ const { slug, title, description, tech, image } = Astro.props;
 ---
 <a
   href={`/projects/${slug}`}
-  class="hover-dim-item group grid sm:grid-cols-[200px_1fr] gap-6 lg:gap-8"
+  class="group grid sm:grid-cols-[200px_1fr] gap-6 lg:gap-8"
 >
-  <div class="aspect-[16/10] rounded-md overflow-hidden border border-border bg-surface">
-    {image ? (
-      <img
-        src={image}
-        alt=""
-        loading="lazy"
-        width="640"
-        height="400"
-        class="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-      />
-    ) : (
+  {image ? (
+    <BlurImage
+      src={image}
+      alt=""
+      ratio="16 / 10"
+      loading="lazy"
+      class="rounded-md border border-border bg-surface"
+      imgClass="transition-transform duration-300 ease-out group-hover:scale-105"
+    />
+  ) : (
+    <div class="aspect-[16/10] rounded-md overflow-hidden border border-border bg-surface">
       <div class="w-full h-full bg-gradient-to-br from-accent/15 via-surface to-surface" aria-hidden="true"></div>
-    )}
-  </div>
+    </div>
+  )}
   <div>
     <h3 class="h-3 text-text group-hover:text-accent transition-colors mb-3 inline-flex items-center gap-2">
       <span>{title}</span>

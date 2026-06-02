@@ -17,12 +17,12 @@ const formatter = new Intl.DateTimeFormat("en-US", {
 });
 ---
 {entries.length > 0 ? (
-  <ol class="hover-dim-group space-y-12 lg:space-y-16">
+  <ol class="space-y-12 lg:space-y-16">
     {entries.map((entry) => (
       <li>
         <a
           href={`/writing/${entry.id}`}
-          class="hover-dim-item group block"
+          class="group block"
         >
           <p class="text-xs uppercase tracking-[0.16em] font-semibold text-text-dim mb-3">
             {formatter.format(entry.data.pubDate)}

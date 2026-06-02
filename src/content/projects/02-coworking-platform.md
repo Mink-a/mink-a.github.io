@@ -4,7 +4,7 @@ type: AI-Powered SaaS · Meeeetup
 description: Coworking-space reception automation and access control for the Japanese market — time-slotted room booking and touchless facial check-in (in-browser MediaPipe gating + AWS Rekognition) — built on the same engine as Meeeetup.
 tech: ["TypeScript", "Next.js", "React", "PostgreSQL", "Prisma", "NextAuth", "AWS Rekognition", "MediaPipe", "Amazon S3", "Stripe", "Tailwind CSS", "Turborepo"]
 demoUrl: https://coworking.meeeetup.com
-image: /assets/covers/coworking-cover.jpg
+image: /assets/covers/coworking-cover.webp
 featured: true
 order: 95
 ---

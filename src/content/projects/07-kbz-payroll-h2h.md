@@ -3,7 +3,7 @@ title: Payroll H2H System
 type: Enterprise Tooling · KBZ Bank
 description: A frontend for corporate payroll customers to upload payroll files, validate and correct them in the browser, and track disbursement status across an automated host-to-host pipeline.
 tech: ["TypeScript", "React", "Redux", "Zod"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Payroll+H2H&font=inter
+image: /assets/covers/payroll-h2h-cover.webp
 featured: false
 order: 60
 ---

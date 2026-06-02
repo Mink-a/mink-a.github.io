@@ -3,7 +3,7 @@ title: BurmaUni
 type: Admin Portal · Freelance
 description: The internal admin & operations portal for an EdTech platform — ~30 modules (catalog, payments, instructors, students, promotions) behind a custom JWT-based RBAC system that enforces access at the route, component, and action levels.
 tech: ["TypeScript", "React", "Vite", "React Router", "TanStack Query", "TanStack Table", "Zustand", "nuqs", "Zod", "Axios", "Tailwind CSS"]
-image: /assets/covers/burmauni-cover.jpg
+image: /assets/covers/burmauni-cover.webp
 featured: true
 order: 85
 ---

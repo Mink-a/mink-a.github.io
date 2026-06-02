@@ -3,7 +3,7 @@ title: Master Care
 type: Healthcare ERP · Freelance
 description: Frontend maintenance and bug-fixing across a live hospital ERP — clinical, billing, and inventory modules (registration, pharmacy, room and patient records, sales and purchasing) used by staff every shift.
 tech: ["React", "React-Bootstrap"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Master+Care&font=inter
+image: /assets/covers/master-care-cover.webp
 featured: false
 order: 45
 ---

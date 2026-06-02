@@ -3,7 +3,7 @@ title: Hotel Management System
 type: ERP Customization · MIT
 description: An Odoo-based hotel management build whose standout is a drag-and-drop room-reservation calendar chart — bringing a visual booking timeline to Odoo's free Community edition.
 tech: ["Odoo", "Python", "JavaScript", "XML", "PostgreSQL"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Hotel+Management&font=inter
+image: /assets/covers/hotel-management-cover.webp
 featured: false
 order: 50
 ---

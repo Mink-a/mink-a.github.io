@@ -4,7 +4,7 @@ type: WordPress Theme · Freelance
 description: A Burmese-first health-news WordPress theme with a BBC-inspired magazine layout — a self-built ad manager with impression/click stats, a modern Tailwind v4 + esbuild build pipeline, and typography tuned for Burmese script.
 tech: ["WordPress", "PHP", "JavaScript", "Tailwind CSS", "esbuild", "PostCSS", "MySQL"]
 demoUrl: https://myanhealth.org
-image: /assets/covers/myan-health-cover.png
+image: /assets/covers/myan-health-cover.webp
 featured: false
 order: 70
 ---

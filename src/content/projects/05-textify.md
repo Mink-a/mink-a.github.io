@@ -3,7 +3,7 @@ title: Textify
 type: Personal Project · OCR App
 description: A full-stack OCR app that turns images and PDFs into clean, copyable text — using Google Drive's built-in document conversion as a zero-cost OCR engine instead of a paid Vision API.
 tech: ["TypeScript", "React", "Vite", "NestJS", "Tailwind CSS", "Zod", "Axios", "Google Drive API", "Docker"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Textify&font=inter
+image: /assets/covers/textify-cover.webp
 featured: false
 order: 65
 ---

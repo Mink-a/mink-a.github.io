@@ -21,7 +21,9 @@
     "@iconify-json/lucide": "^1.2.107",
     "@iconify-json/simple-icons": "^1.2.82",
     "@tailwindcss/vite": "^4.3.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.3.0",
+    "thumbhash": "^0.1.1",
     "typescript": "^5.5.0"
   }
 }

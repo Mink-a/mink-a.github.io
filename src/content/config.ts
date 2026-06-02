@@ -10,13 +10,12 @@ const experience = defineCollection({
     start: z.string(),                               // "2023-06"
     end: z.union([z.string(), z.literal("Present")]),
     description: z.string(),
-    tech: z.array(z.string()),
     order: z.number(),                               // higher = newer
   }),
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
     type: z.string(),                                // "SaaS Platform", "Web App"
