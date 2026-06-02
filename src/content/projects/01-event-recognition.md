@@ -3,7 +3,8 @@ title: Meeeetup
 type: Event Platform · Meeeetup
 description: An event & community-meetup platform for the Japanese market — discovery, Stripe ticketing, a multi-step Event Studio, QR check-in, and analytics — built on a shared, multi-tenant Next.js engine that also powers a coworking product.
 tech: ["TypeScript", "Next.js", "React", "PostgreSQL", "Prisma", "NextAuth", "TanStack Query", "Zod", "Tailwind CSS", "Stripe", "Turborepo", "AWS"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Meeeetup&font=inter
+demoUrl: https://meeeetup.com
+image: /assets/covers/event-cover.jpg
 featured: true
 order: 100
 ---

@@ -3,7 +3,7 @@ title: Cash Management System
 type: Enterprise System · KBZ Bank
 description: An internal full-stack system for a bank's cash operations — raising cash requests across branches and ATMs and fulfilling them through an integrated transport (cash-in-transit) management workflow.
 tech: ["TypeScript", "React", "NestJS", "OracleDB"]
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Cash+Management+System&font=inter
+image: /assets/covers/cash-cover.jpg
 featured: false
 order: 75
 ---

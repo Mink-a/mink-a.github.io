@@ -4,7 +4,7 @@ type: Personal Project · Artist Portfolio
 description: A static, content-driven portfolio for a Myanmar oil-landscape painter — every painting is one Markdown file that generates its own gallery row, deep-linkable lightbox, social card, and structured data at build time.
 tech: ["Astro", "TypeScript", "Tailwind CSS", "Zod", "Satori", "Sharp", "PagesCMS", "GitHub Pages"]
 demoUrl: https://madebyksk.com
-image: https://placehold.co/1280x720/0c0a09/fb923c?text=Artist+Portfolio&font=inter
+image: /assets/covers/ksdk-cover.png
 featured: true
 order: 80
 ---
