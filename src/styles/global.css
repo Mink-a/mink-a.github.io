@@ -64,6 +64,15 @@
   --color-accent-glow: rgba(194, 65, 12, 0.18);
 }
 
+/*
+ * Spotlight color for the mobile dot-pattern divider. A brighter, more
+ * saturated take on the brand accent so the moving glow reads clearly against
+ * the dot grid: the plain light-theme accent (#c2410c) is too dark to pop on
+ * the near-white background, so light gets a vivid orange-500 instead.
+ */
+:root { --divider-glow: var(--color-accent); }
+:root[data-theme="light"] { --divider-glow: #f97316; }
+
 html {
   color-scheme: dark;
 }
@@ -227,6 +236,65 @@ img, svg {
     rgba(0, 0, 0, 0.6),
     transparent
   );
+}
+
+/*
+ * Mobile-only dotted band between the stacked sidebar and main content.
+ * On large screens the sidebar is a side column (hidden here via `lg:hidden`),
+ * so it only renders when the two sections stack vertically.
+ *
+ * The dot grid is the MASK, painted over a dim base plus a theme-accent radial
+ * "spotlight". A looping keyframe bounces the spotlight across the band, so the
+ * accent appears to travel through the dots, lighting them up as it passes.
+ * Two mask layers (dots ∩ top/bottom fade) are intersected so the band still
+ * feathers into the page at its edges.
+ */
+.dot-pattern-divider {
+  height: clamp(120px, 22vh, 180px);
+  /* Base color of every dot, plus the moving accent spotlight on top. */
+  background-color: var(--color-text-dim);
+  background-image: radial-gradient(
+    circle at center,
+    var(--divider-glow) 0%,
+    var(--divider-glow) 16%,
+    color-mix(in srgb, var(--divider-glow) 45%, transparent) 38%,
+    transparent 62%
+  );
+  background-repeat: no-repeat;
+  background-size: 55% 200%;
+  background-position: 0% 20%;
+  /* Reveal the dot grid, intersected with a top/bottom fade. */
+  -webkit-mask-image:
+    radial-gradient(circle, #000 1px, transparent 1.4px),
+    linear-gradient(to bottom, transparent, #000 50%, transparent);
+  -webkit-mask-size: 16px 16px, 100% 100%;
+  -webkit-mask-position: center, center;
+  -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle, #000 1px, transparent 1.4px),
+    linear-gradient(to bottom, transparent, #000 50%, transparent);
+  mask-size: 16px 16px, 100% 100%;
+  mask-position: center, center;
+  mask-repeat: repeat, no-repeat;
+  mask-composite: intersect;
+  animation: dot-divider-bounce 7s ease-in-out infinite;
+}
+
+/* Spotlight bounces left→right while bobbing, like a ball arcing across. */
+@keyframes dot-divider-bounce {
+  0%   { background-position: 0% 18%; }
+  25%  { background-position: 50% 88%; }
+  50%  { background-position: 100% 18%; }
+  75%  { background-position: 50% 88%; }
+  100% { background-position: 0% 18%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot-pattern-divider {
+    animation: none;
+    background-position: 50% 50%;
+  }
 }
 
 /* Resume article styling — applied wherever .resume wraps rendered markdown. */

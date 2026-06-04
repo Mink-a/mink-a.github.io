@@ -236,6 +236,37 @@ export const resumeCSS = `
   text-align: center;
 }
 .resume-doc .ai-note a { color: var(--accent); font-weight: 600; }
+
+/* On small screens the A4 "sheet" doesn't fit: shrink padding, drop the
+   two-column grid to one column, and stack the header. Placed last so these
+   screen-only rules win over the equal-specificity base rules above; the
+   print/PDF path (print media) is untouched. */
+@media screen and (max-width: 640px) {
+  .resume-doc {
+    padding: 26px 22px;
+    font-size: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  }
+  .resume-doc header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .resume-doc .name { font-size: 30px; letter-spacing: -0.5px; }
+  .resume-doc .subtitle { font-size: 12px; max-width: none; }
+  .resume-doc .contact {
+    text-align: left;
+    white-space: normal;
+    line-height: 1.9;
+    font-size: 11.5px;
+  }
+  .resume-doc .layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .resume-doc h2 { font-size: 16px; }
+}
 `;
 
 /** Renders the résumé markup (the inner content of `.resume-doc`). */
