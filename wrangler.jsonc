@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "minkhantkyaw-portfolio",
+  "compatibility_date": "2025-05-05",
+  // AI SDK + InstantDB admin use Node built-ins (crypto, etc.).
+  "compatibility_flags": ["nodejs_compat"],
+  // Marks this as a Cloudflare Pages config; `wrangler pages deploy` uploads
+  // this directory and applies the bindings/vars below to the Pages Functions.
+  "pages_build_output_dir": "./dist",
+
+  // Non-secret runtime vars (readable as Astro.locals.runtime.env.*).
+  // NOTE: PUBLIC_INSTANT_APP_ID is NOT here — it is inlined into the bundle at
+  // BUILD time by Vite, so it must be a build env var (see deploy workflow).
+  "vars": {
+    "LLM_MODEL": "google/gemini-3.1-flash-lite-preview",
+    "LLM_BASE_URL": "https://api.sargalay.com/v1"
+  },
+
+  // KV namespaces (created via `wrangler kv namespace create`).
+  //   - RATE_LIMIT : backs the per-IP chat rate limiter (/api/chat).
+  //   - SESSION    : required by the Astro/Cloudflare sessions feature.
+  "kv_namespaces": [
+    { "binding": "RATE_LIMIT", "id": "60848f8c8c7a4d7aad9cdef158a287a7" },
+    { "binding": "SESSION", "id": "dff949d04f894d9cb70648a7872c68e8" }
+  ]
+
+  // Secrets — DO NOT put here. Set them once per Pages project:
+  //   wrangler pages secret put LLM_API_KEY
+  //   wrangler pages secret put INSTANT_APP_ADMIN_TOKEN
+}

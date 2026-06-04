@@ -1,22 +1,26 @@
-name: Deploy to GitHub Pages
+name: Deploy to Cloudflare Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# Required repo configuration (Settings → Secrets and variables → Actions):
+#   Variables: PUBLIC_INSTANT_APP_ID   (public InstantDB app id, inlined at build)
+#   Secrets:   CLOUDFLARE_API_TOKEN    (token with "Cloudflare Pages: Edit")
+#              CLOUDFLARE_ACCOUNT_ID
+# Cloudflare Pages project secrets (set once via `wrangler pages secret put`):
+#   LLM_API_KEY, INSTANT_APP_ADMIN_TOKEN
 
 concurrency:
-  group: pages
+  group: cf-pages
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,19 +39,15 @@ jobs:
 
       - name: Build
         run: bun run build
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+          # Public, non-secret; baked into the client + worker bundles at build.
+          PUBLIC_INSTANT_APP_ID: ${{ vars.PUBLIC_INSTANT_APP_ID }}
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Project name + output dir + bindings come from wrangler.jsonc.
+          command: pages deploy --branch=main

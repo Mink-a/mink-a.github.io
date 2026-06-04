@@ -13,17 +13,29 @@
     "resume:pdf": "bun scripts/resume-pdf.ts"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^2.0.48",
+    "@astrojs/cloudflare": "^12",
     "@astrojs/mdx": "^5.0.6",
+    "@astrojs/react": "^4",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
+    "@instantdb/admin": "^1.0.43",
+    "@instantdb/core": "1.0.43",
+    "@instantdb/react": "^1.0.43",
+    "ai": "^6.0.196",
     "astro": "^5.0.0",
-    "astro-icon": "^1.1.5"
+    "astro-icon": "^1.1.5",
+    "react": "^19",
+    "react-dom": "^19",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
     "@iconify-json/lucide": "^1.2.107",
     "@iconify-json/simple-icons": "^1.2.82",
     "@tailwindcss/vite": "^4.3.0",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
     "puppeteer": "^25.1.0",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.3.0",

@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# Cloudflare / Wrangler local state (miniflare KV, sessions)
+.wrangler/
+
 # Dependencies
 node_modules/
 
@@ -18,9 +21,15 @@ yarn-error.log*
 .env
 .env.local
 .env.production
+.dev.vars
+.dev.vars.*
 
 # OS
 .DS_Store
 
-# Brainstorm artifacts (already present)
+# Agent / harness artifacts
 .superpowers/
+.agents/
+.claude/
+skills-lock.json
+docs/superpowers/
