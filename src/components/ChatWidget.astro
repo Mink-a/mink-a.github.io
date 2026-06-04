@@ -11,7 +11,7 @@
   aria-expanded="false"
   aria-controls="chat-panel"
   aria-label="Chat with Min's assistant"
-  class="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-bg shadow-lg shadow-accent-glow transition-transform hover:scale-105 focus-visible:scale-105"
+  class="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-bg shadow-lg shadow-accent-glow transition-transform hover:scale-105 focus-visible:scale-105 max-sm:aria-expanded:hidden"
 >
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
@@ -22,7 +22,7 @@
   id="chat-panel"
   role="dialog"
   aria-label="Min's portfolio assistant"
-  class="hidden fixed bottom-24 right-5 z-50 flex flex-col w-[360px] max-w-[calc(100vw-2.5rem)] h-[520px] max-h-[calc(100vh-8rem)] rounded-2xl border border-border-strong bg-surface shadow-2xl overflow-hidden"
+  class="hidden fixed inset-0 z-50 flex flex-col bg-surface/60 backdrop-blur-xl overflow-hidden sm:inset-auto sm:bottom-24 sm:right-5 sm:w-[360px] sm:max-w-[calc(100vw-2.5rem)] sm:h-[520px] sm:max-h-[calc(100vh-8rem)] sm:rounded-2xl sm:border sm:border-border-strong sm:shadow-2xl"
 >
   <header class="flex items-center justify-between border-b border-border px-4 py-3">
     <div class="flex flex-col">

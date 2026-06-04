@@ -127,6 +127,19 @@ body {
   min-height: 100vh;
 }
 
+/*
+ * iOS Safari zooms the page in whenever a focused form control has a computed
+ * font-size below 16px. The chat input's size is rem-based and lands well under
+ * that on phones (root is ~13.6px), so pin it to 16px on iOS only. The desktop
+ * Tailwind size is left untouched; @supports(-webkit-touch-callout) matches
+ * iOS/iPadOS Safari exclusively.
+ */
+@supports (-webkit-touch-callout: none) {
+  #chat-input {
+    font-size: 16px;
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;
