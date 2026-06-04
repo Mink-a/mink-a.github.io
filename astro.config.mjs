@@ -27,6 +27,12 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      // Cloudflare Workers lack `MessageChannel`, which react-dom's browser SSR
+      // build references at module load. The edge build doesn't, so the Worker
+      // boots. (Only the admin island uses React, and it's client:only.)
+      alias: { "react-dom/server": "react-dom/server.edge" },
+    },
     server: {
       // Cloudflare's local KV (rate limiter, sessions) writes to .wrangler/state
       // on every request. Without this, the dev file-watcher reloads the page
