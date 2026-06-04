@@ -109,6 +109,10 @@ export const resume = {
       desc: "Two production Next.js products on one shared, multi-tenant engine (Turborepo), with touchless facial check-in (MediaPipe + AWS Rekognition).",
     },
     {
+      name: "AI Document Management — RAG",
+      desc: "Hackathon-winning, Google-Drive-style document manager with a LangChain + Chroma RAG pipeline over a local LLM and per-department/user RBAC. React + NestJS.",
+    },
+    {
       name: "BurmaUni — EdTech Admin Portal",
       desc: "~30-module operations portal around a custom JWT/RBAC system and a reusable URL-state data-table hook.",
     },
@@ -116,10 +120,6 @@ export const resume = {
       name: "CoBudget — Expense-Splitting PWA",
       desc: "Offline-first PWA that settles shared expenses in the fewest transfers; authz via Supabase RLS.",
       link: { href: "https://co-budget-snowy.vercel.app", label: "Live demo" },
-    },
-    {
-      name: "Textify — OCR App",
-      desc: "Turns images and PDFs into editable text using Google Drive's document conversion as a zero-cost OCR engine.",
     },
   ] satisfies Project[],
   aiNote: {
