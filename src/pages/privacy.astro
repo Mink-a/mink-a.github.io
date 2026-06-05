@@ -20,19 +20,30 @@ import Breadcrumb from "../components/Breadcrumb.astro";
         Privacy notice
       </h1>
       <p class="text-base lg:text-lg text-text-muted leading-relaxed">
-        This is a personal portfolio site. It collects nothing about you.
+        Reading these pages is anonymous. The optional AI chat assistant is the
+        one feature that sends and stores what you type — details below.
       </p>
     </header>
 
-    <div class="prose-project text-text-muted text-base leading-[1.7] space-y-5 [&_h2]:text-xl [&_h2]:lg:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-text [&_a]:text-accent [&_a:hover]:underline">
-      <h2>What I collect</h2>
-      <p>Nothing. There is no analytics script, no tracking pixel, no cookie set by this site. Your visit is not logged beyond standard web server access logs (IP, user-agent, requested path) which are retained briefly for operational debugging only.</p>
+    <div class="prose-project text-text-muted text-base leading-[1.7] space-y-5 [&_h2]:text-xl [&_h2]:lg:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:text-text [&_a]:text-accent [&_a:hover]:underline [&_code]:rounded [&_code]:bg-surface-2 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.85em] [&_code]:text-text">
+      <p class="text-sm text-text-dim">Last updated 4 June 2026.</p>
+
+      <h2>Plain browsing</h2>
+      <p>Reading this site is anonymous. There is no analytics script, no tracking pixel, and no advertising or social trackers. The site sets no cookies. Requests still reach standard web-server access logs (IP address, user-agent, requested path), retained briefly for operational debugging only.</p>
+
+      <h2>The AI chat assistant</h2>
+      <p>The site has an optional chat assistant. It does nothing until you open it and send a message. When you send one, your message — plus a few browser hints (time zone, language, screen size, and the page you came from) — is sent to my server and forwarded to a third-party language-model provider, Sargalay, which generates the reply.</p>
+      <p>To group a conversation, a random identifier is saved in your browser's local storage (<code>mkk-chat-visitor</code>); the running transcript is kept in session storage (<code>mkk-chat-history</code>), which your browser clears when you close the tab. Clearing this site's data removes both.</p>
+      <p>Conversations are logged to a database (<a href="https://www.instantdb.com" rel="noopener" target="_blank">InstantDB</a>) so I can understand what visitors ask, improve the assistant, and detect abuse. Each logged turn keeps your messages and the assistant's replies, the browser hints above, an approximate location (country and city, derived from your IP by the hosting network), your browser/OS/device, and timestamps. Your IP address itself is used only for rate-limiting and is not stored with the transcript. Please don't enter anything sensitive or confidential — treat the chat like a public message, and see the <a href="/policy">use policy</a> for acceptable-use terms.</p>
 
       <h2>Third parties</h2>
-      <p>Outbound links to GitHub, LinkedIn, and similar services are subject to each service's own privacy policies. This site embeds no third-party iframes, ads, or social trackers.</p>
+      <p>A few services may process data on the site's behalf, each under its own privacy policy: <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">Cloudflare</a> (hosting and approximate geolocation), Sargalay (the model provider that processes chat messages), and <a href="https://www.instantdb.com" rel="noopener" target="_blank">InstantDB</a> (stores chat logs). Outbound links to GitHub, LinkedIn, and similar services are subject to their own policies. The site embeds no third-party iframes or ads.</p>
+
+      <h2>Your choices</h2>
+      <p>If you'd rather share nothing, don't use the chat. Clearing your browser's storage for this site removes the visitor identifier and any saved transcript. To request deletion of logged conversations, email me below.</p>
 
       <h2>Contact</h2>
-      <p>If you have any questions about this notice, email <a href="mailto:hello@minkhantkyaw.com">hello@minkhantkyaw.com</a>.</p>
+      <p>Questions about this notice? Email <a href="mailto:hello@minkhantkyaw.com">hello@minkhantkyaw.com</a>.</p>
     </div>
   </article>
 </Base>
