@@ -4,11 +4,13 @@ import { Icon } from "astro-icon/components";
 interface Props {
   /** Plain-Markdown URL of the post (for "Copy page" + "Markdown"). */
   mdUrl: string;
+  /** Cached English-Markdown URL — set only for non-English posts. */
+  enMdUrl?: string;
   /** Prompt seeded into AI assistants. */
   prompt: string;
 }
 
-const { mdUrl, prompt } = Astro.props;
+const { mdUrl, prompt, enMdUrl } = Astro.props;
 const q = encodeURIComponent(prompt);
 
 // ChatGPT and Perplexity prefill the prompt from the URL. Claude removed its
@@ -38,6 +40,13 @@ const providers = [
     <Icon name="lucide:file-text" class="w-3.5 h-3.5" aria-hidden="true" />
     <span>Markdown</span>
   </a>
+
+  {enMdUrl && (
+    <a href={enMdUrl} class="post-chip">
+      <Icon name="lucide:languages" class="w-3.5 h-3.5" aria-hidden="true" />
+      <span>Markdown · English</span>
+    </a>
+  )}
 
   <span class="post-toolbar-divider" aria-hidden="true"></span>
   <span class="post-toolbar-label">Open in</span>

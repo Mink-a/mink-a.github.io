@@ -8,9 +8,24 @@ export function postUrl(post: CollectionEntry<"writing">): string {
   return `${SITE}/writing/${post.id}/`;
 }
 
-/** URL of the plain-Markdown version served by `[...slug].md.ts`. */
+/** Relative URL of the plain-Markdown version served by `[...slug].md.ts`. */
 export function postMarkdownUrl(post: CollectionEntry<"writing">): string {
   return `/writing/${post.id}.md`;
+}
+
+/** True for posts whose source language isn't English. */
+export function isTranslatable(post: CollectionEntry<"writing">): boolean {
+  return post.data.lang !== "en";
+}
+
+/**
+ * Relative URL of the cached English Markdown served by
+ * `api/writing/[...slug].en.md.ts` (under /api/* so the Worker actually runs —
+ * the prerendered /writing/* tree is excluded from the Worker).
+ * Only meaningful for non-English posts (English posts ARE this already).
+ */
+export function postEnglishMarkdownUrl(post: CollectionEntry<"writing">): string {
+  return `/api/writing/${post.id}.en.md`;
 }
 
 /**
@@ -33,7 +48,12 @@ export function postToMarkdown(post: CollectionEntry<"writing">): string {
   return `# ${title}\n\n${meta}\n\n${post.body ?? ""}\n`;
 }
 
-/** Prompt seeded into AI assistants from the toolbar; points them at the post. */
+/**
+ * Prompt seeded into AI assistants from the toolbar. For non-English posts it
+ * points at the cached English Markdown so the model gets clean English source;
+ * otherwise at the post itself.
+ */
 export function llmPrompt(post: CollectionEntry<"writing">): string {
-  return `Read this article and help me understand it, then answer my follow-up questions:\n${postUrl(post)}`;
+  const url = isTranslatable(post) ? `${SITE}${postEnglishMarkdownUrl(post)}` : postUrl(post);
+  return `Read this article and help me understand it, then answer my follow-up questions:\n${url}`;
 }

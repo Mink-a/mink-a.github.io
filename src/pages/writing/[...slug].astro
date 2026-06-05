@@ -3,7 +3,7 @@ import Base from "../../layouts/InnerLayout.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
 import PostToolbar from "../../components/PostToolbar.astro";
 import { Icon } from "astro-icon/components";
-import { postMarkdownUrl, llmPrompt } from "../../lib/postMarkdown";
+import { postMarkdownUrl, postEnglishMarkdownUrl, isTranslatable, llmPrompt } from "../../lib/postMarkdown";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -94,7 +94,11 @@ const schema = {
         </p>
       )}
 
-      <PostToolbar mdUrl={postMarkdownUrl(post)} prompt={llmPrompt(post)} />
+      <PostToolbar
+        mdUrl={postMarkdownUrl(post)}
+        enMdUrl={isTranslatable(post) ? postEnglishMarkdownUrl(post) : undefined}
+        prompt={llmPrompt(post)}
+      />
     </header>
 
     <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-12">
