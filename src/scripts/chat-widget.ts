@@ -106,13 +106,39 @@ function initChatWidget(): void {
     input.style.height = `${Math.min(input.scrollHeight, 120)}px`;
   };
 
+  // Keep the full-screen mobile overlay glued to the *visual* viewport. The
+  // on-screen keyboard shrinks the visual viewport (not the layout viewport), so
+  // a plain `fixed` overlay gets scrolled upward by the browser to reveal the
+  // focused input. Tracking visualViewport pins the panel and simply shrinks it
+  // above the keyboard instead. Only relevant below `sm`, where the panel is
+  // full-screen; the >=sm popover isn't reflowed by the keyboard.
+  const mqlFullscreen = window.matchMedia("(max-width: 639.98px)");
+  const syncOverlayToViewport = () => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    if (panel.classList.contains("hidden") || !mqlFullscreen.matches) {
+      panel.style.top = "";
+      panel.style.height = "";
+      return;
+    }
+    panel.style.top = `${vv.offsetTop}px`;
+    panel.style.height = `${vv.height}px`;
+  };
+  window.visualViewport?.addEventListener("resize", syncOverlayToViewport);
+  window.visualViewport?.addEventListener("scroll", syncOverlayToViewport);
+  mqlFullscreen.addEventListener("change", syncOverlayToViewport);
+
   const setOpen = (open: boolean) => {
     panel.classList.toggle("hidden", !open);
     launcher.setAttribute("aria-expanded", String(open));
     if (open) {
       messagesEl.scrollTop = messagesEl.scrollHeight; // show the latest message
-      input.focus();
+      // Auto-focus only the desktop popover. On the mobile full-screen overlay,
+      // popping the keyboard the instant it opens would jolt the layout; visitors
+      // tap the field when they want to type.
+      if (!mqlFullscreen.matches) input.focus();
     }
+    syncOverlayToViewport();
   };
 
   const send = async (text: string) => {
