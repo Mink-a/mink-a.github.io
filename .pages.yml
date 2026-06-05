@@ -1,0 +1,165 @@
+# Pages CMS configuration — https://pagescms.org
+#
+# Edit this site's content through https://app.pagescms.org (sign in with GitHub,
+# install the app on this repo). Fields mirror the Zod schemas in
+# src/content/config.ts; the special `body` field maps to the Markdown content
+# below each file's frontmatter. Commits land on `main` and trigger the
+# Cloudflare Pages deploy (.github/workflows/deploy.yml).
+
+# Uploaded images are committed under public/assets and referenced by their
+# served URL (/assets/...), matching the existing covers.
+media:
+  input: public/assets
+  output: /assets
+  extensions: [webp, png, jpg, jpeg, avif, svg, gif]
+
+content:
+  - name: writing
+    label: Writing
+    type: collection
+    path: src/content/writing
+    format: yaml-frontmatter
+    subfolders: false
+    exclude: [".gitkeep"]
+    # Reproduces the YYYY-MM-DD-slug convention (e.g. 2026-05-15-hello-world.md).
+    filename: "{fields.pubDate}-{primary}.md"
+    view:
+      fields: [title, pubDate, draft]
+      primary: title
+      sort: [pubDate, title]
+      default:
+        sort: pubDate
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: text
+        required: true
+        description: One or two sentences — used for the page meta, social card, and listing.
+      - name: pubDate
+        label: Publish date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: draft
+        label: Draft
+        type: boolean
+        default: false
+        description: Drafts are excluded from the production build.
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+      - name: body
+        label: Body
+        type: rich-text
+        options:
+          format: markdown
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    format: yaml-frontmatter
+    subfolders: false
+    exclude: [".gitkeep"]
+    filename: "{primary}.md"
+    view:
+      fields: [title, type, featured, order]
+      primary: title
+      sort: [order, title]
+      default:
+        sort: order
+        order: desc
+    fields:
+      - name: title
+        type: string
+        required: true
+      - name: type
+        label: Type
+        type: string
+        required: true
+        description: 'Short label, e.g. "Event Platform · Meeeetup".'
+      - name: description
+        type: text
+        required: true
+      - name: tech
+        label: Tech
+        type: string
+        list: true
+        required: true
+        description: Technologies and tools — shown as tags.
+      - name: repoUrl
+        label: Repository URL
+        type: string
+        description: Optional. Leave empty if there is no public repo.
+      - name: demoUrl
+        label: Demo URL
+        type: string
+        description: Optional. Live site or demo.
+      - name: image
+        label: Cover image
+        type: image
+        options:
+          path: public/assets/covers
+      - name: featured
+        label: Featured
+        type: boolean
+        default: false
+        description: Featured projects are surfaced on the home page.
+      - name: order
+        label: Order
+        type: number
+        default: 0
+        description: Higher numbers sort first.
+      - name: body
+        label: Body
+        type: rich-text
+        options:
+          format: markdown
+
+  - name: experience
+    label: Experience
+    type: collection
+    path: src/content/experience
+    format: yaml-frontmatter
+    subfolders: false
+    exclude: [".gitkeep"]
+    filename: "{primary}.md"
+    view:
+      fields: [role, company, start, end, order]
+      primary: company
+      sort: [order, company]
+      default:
+        sort: order
+        order: desc
+    fields:
+      - name: role
+        type: string
+        required: true
+      - name: company
+        type: string
+        required: true
+      - name: companyUrl
+        label: Company URL
+        type: string
+        description: Optional.
+      - name: start
+        type: string
+        required: true
+        description: 'e.g. "Jan 2025".'
+      - name: end
+        type: string
+        required: true
+        description: 'Month and year, or "Present".'
+      - name: description
+        type: text
+        required: true
+      - name: order
+        type: number
+        required: true
+        description: Higher numbers sort first.
