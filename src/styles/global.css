@@ -534,3 +534,37 @@ html.js img.blur-up[data-loaded="true"] {
   font-size: 0.75rem;
   color: var(--color-text-muted);
 }
+
+/* Chat "assistant is typing" indicator — three dots bouncing/fading in stagger
+ * (chat-widget.ts shows it until the first streamed token). Dots inherit the
+ * bubble's text color; reduced-motion users get the global instant transition. */
+.chat-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 0;
+}
+.chat-typing > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.35;
+  animation: chat-typing 1.2s infinite ease-in-out;
+}
+.chat-typing > span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.chat-typing > span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes chat-typing {
+  0%, 70%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  35% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}

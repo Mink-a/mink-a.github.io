@@ -101,6 +101,15 @@ function initChatWidget(): void {
     return bubble;
   };
 
+  // Animated "assistant is typing" bubble shown until the first token streams in.
+  const renderTyping = (): HTMLElement => {
+    const bubble = renderMessage("assistant", "");
+    bubble.setAttribute("aria-label", "Assistant is typing…");
+    bubble.innerHTML =
+      '<span class="chat-typing" aria-hidden="true"><span></span><span></span><span></span></span>';
+    return bubble;
+  };
+
   const autoResize = () => {
     input.style.height = "auto";
     input.style.height = `${Math.min(input.scrollHeight, 120)}px`;
@@ -162,7 +171,7 @@ function initChatWidget(): void {
     streaming = true;
     input.disabled = true;
     sendBtn.disabled = true;
-    const bubble = renderMessage("assistant", "…");
+    const bubble = renderTyping();
 
     try {
       const res = await fetch("/api/chat", {
@@ -191,11 +200,11 @@ function initChatWidget(): void {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let assistant = "";
-      bubble.textContent = "";
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
         assistant += decoder.decode(value, { stream: true });
+        if (!assistant) continue; // keep the typing dots until real text arrives
         bubble.textContent = assistant;
         messagesEl.scrollTop = messagesEl.scrollHeight;
       }
