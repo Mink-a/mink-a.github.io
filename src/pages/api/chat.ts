@@ -4,7 +4,7 @@ import { streamText } from "ai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { init as initAdmin, id } from "@instantdb/admin";
 import { z } from "zod";
-import { buildChatContext } from "../../lib/portfolio-context";
+import { buildKnowledgeBase } from "../../lib/portfolio-context";
 
 export const prerender = false;
 
@@ -48,6 +48,7 @@ const SYSTEM_PREAMBLE = `You are the friendly personal assistant on Min Khant Ky
 Guidelines:
 - Be concise, warm, and concrete; prefer short paragraphs.
 - Answer in plain prose. Do not use markdown tables or headings.
+- When relevant, include the page URL as a bare link (e.g., https://minkhantkyaw.com/projects) — not [text](url) markdown — so visitors can follow it.
 - Reply in the same language the user writes in.
 - Only state facts present in the knowledge base. If you don't know, say so and suggest contacting Min.
 - If asked something outside Min's professional/portfolio scope, politely decline and steer back to his work.
@@ -217,7 +218,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   // Static prefix (preamble + knowledge base) stays identical for cache hits;
   // the volatile date/time is appended last.
-  const system = `${SYSTEM_PREAMBLE}\n\n=== KNOWLEDGE BASE ===\n${await buildChatContext()}\n\n=== CURRENT DATE & TIME ===\n${formatNow(client?.timezone)}\nUse this for any time-relative question (e.g., "today", or how recent something is).`;
+  const origin = new URL(request.url).origin;
+  const system = `${SYSTEM_PREAMBLE}\n\n=== KNOWLEDGE BASE ===\n${await buildKnowledgeBase(origin)}\n\n=== CURRENT DATE & TIME ===\n${formatNow(client?.timezone)}\nUse this for any time-relative question (e.g., "today", or how recent something is).`;
 
   const lastUser = [...messages].reverse().find((m) => m.role === "user");
 

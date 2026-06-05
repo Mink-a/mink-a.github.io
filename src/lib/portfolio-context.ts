@@ -1,15 +1,10 @@
 import { getCollection } from "astro:content";
 
 /**
- * Portfolio content as markdown, in two flavors:
- *
- *  - `buildKnowledgeBase(origin)` — full, link-rich doc served verbatim at
- *    /llms.txt (for crawlers / ATS / LLMs).
- *  - `buildChatContext()` — lean doc injected into the assistant's system
- *    prompt: same facts, but no page URLs / RSS / sitemap sections, to keep
- *    per-request input tokens down.
- *
- * Both are deterministic per deploy and memoized.
+ * Portfolio content as one full, link-rich markdown doc — `buildKnowledgeBase(origin)`.
+ * Served verbatim at /llms.txt AND injected into the chat assistant's system
+ * prompt, so the assistant gets the same complete context (full links +
+ * descriptions) as crawlers/LLMs. Deterministic per deploy, memoized per origin.
  */
 
 const techStack: [string, string][] = [
@@ -48,18 +43,25 @@ export async function buildKnowledgeBase(baseOrigin: string): Promise<string> {
 
   const experienceLines = experience.length
     ? experience
-        .map(
-          (e) =>
-            `- **${e.data.role}** at ${e.data.company} (${e.data.start} – ${e.data.end}): ${e.data.description}`,
-        )
+        .map((e) => {
+          const company = e.data.companyUrl
+            ? `[${e.data.company}](${e.data.companyUrl})`
+            : e.data.company;
+          return `- **${e.data.role}** at ${company} (${e.data.start} – ${e.data.end}): ${e.data.description}`;
+        })
         .join("\n")
     : "- No experience entries.";
 
   const projectLines = projects
-    .map(
-      (p) =>
-        `- [${p.data.title}](${url(`/projects/${p.id}`)}): ${p.data.type} — ${p.data.description} (Tech: ${p.data.tech.join(", ")})`,
-    )
+    .map((p) => {
+      const extra = [
+        p.data.demoUrl && `[Demo](${p.data.demoUrl})`,
+        p.data.repoUrl && `[Repo](${p.data.repoUrl})`,
+      ]
+        .filter(Boolean)
+        .join(", ");
+      return `- [${p.data.title}](${url(`/projects/${p.id}`)}): ${p.data.type} — ${p.data.description} (Tech: ${p.data.tech.join(", ")})${extra ? ` — ${extra}` : ""}`;
+    })
     .join("\n");
 
   const writingLines = posts.length
@@ -119,49 +121,3 @@ ${writingLines}
   return body;
 }
 
-let chatCache: string | null = null;
-
-export async function buildChatContext(): Promise<string> {
-  if (chatCache) return chatCache;
-
-  const { experience, projects, posts } = await loadCollections();
-
-  const experienceLines = experience.length
-    ? experience
-        .map(
-          (e) =>
-            `- ${e.data.role} at ${e.data.company} (${e.data.start}–${e.data.end}): ${e.data.description}`,
-        )
-        .join("\n")
-    : "- No experience entries.";
-
-  const projectLines = projects
-    .map((p) => `- ${p.data.title} (${p.data.type}): ${p.data.description} [${p.data.tech.join(", ")}]`)
-    .join("\n");
-
-  const writingLines = posts.length
-    ? posts.map((p) => `- ${p.data.title}: ${p.data.description}`).join("\n")
-    : "- No published writing yet.";
-
-  chatCache = `Min Khant Kyaw is a full-stack software engineer working primarily in TypeScript, focused on frontend, API design, and system architecture. He currently builds AI-powered products at meeeetup.com (a face-recognition event platform, a coworking-space management product, and an AI face-identity SaaS). Previously he shipped enterprise software at KBZ Bank (Myanmar's largest private bank, behind KBZPay) and Myanmar Information Technology (MIT) across Myanmar, Singapore, and Thailand, and built cobudget, an offline-first expense-splitting PWA. He works remotely and favors simple solutions over clever ones.
-
-## Tech stack
-${techLines}
-
-## Experience
-${experienceLines}
-
-## Projects
-${projectLines}
-
-## Writing
-${writingLines}
-
-## Links
-- GitHub: github.com/Mink-a
-- LinkedIn: linkedin.com/in/min-khant-kyaw-56b05724b/
-- Telegram: t.me/mkhant
-- Email: hello@minkhantkyaw.com`;
-
-  return chatCache;
-}
