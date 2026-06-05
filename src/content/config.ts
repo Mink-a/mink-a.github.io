@@ -41,6 +41,9 @@ const writing = defineCollection({
     /** BCP-47 base code of the post's source language (drives <html lang>, the
      *  language badge, and the reader-facing AI translation). */
     lang: z.string().default("en"),
+    /** Open Graph / social-share image (1200×630). Public path like
+     *  /assets/writing/foo.png or an absolute URL; falls back to /og.png. */
+    cover: z.string().optional(),
   }),
 });
 

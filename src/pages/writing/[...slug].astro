@@ -47,6 +47,7 @@ const schema = {
   headline: post.data.title,
   description: post.data.description,
   datePublished: post.data.pubDate.toISOString(),
+  image: new URL(post.data.cover ?? "/og.png", site).href,
   keywords: post.data.tags.join(", "),
   url: new URL(`/writing/${post.id}/`, site).href,
   mainEntityOfPage: new URL(`/writing/${post.id}/`, site).href,
@@ -60,6 +61,7 @@ const schema = {
 <Base
   title={`${post.data.title} — Min Khant Kyaw`}
   description={post.data.description}
+  image={post.data.cover}
   ogType="article"
   publishedTime={post.data.pubDate.toISOString()}
   tags={post.data.tags}

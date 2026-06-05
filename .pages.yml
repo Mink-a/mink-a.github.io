@@ -67,6 +67,12 @@ content:
             - { name: th, label: Thai }
             - { name: zh, label: Chinese }
             - { name: ko, label: Korean }
+      - name: cover
+        label: OG cover
+        type: image
+        description: Social-share image (1200×630). Falls back to the site default if empty.
+        options:
+          path: public/assets/writing
       - name: body
         label: Body
         type: code
