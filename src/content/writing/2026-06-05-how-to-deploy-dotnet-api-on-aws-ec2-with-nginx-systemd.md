@@ -4,7 +4,7 @@ description: ဤလမ်းညွှန်သည် .NET API တစ်ခုက
   Nginx Reverse Proxy နှင့် systemd တို့ကိုအသုံးပြုပြီး စနစ်တကျ Deploy
   ပြုလုပ်နည်း ဖြစ်ပါသည်။
 pubDate: 2026-06-05
-draft: true
+draft: false
 tags:
   - dotnet
   - deployment
