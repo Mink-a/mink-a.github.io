@@ -9,8 +9,6 @@ featured: true
 order: 80
 ---
 
-import BlurImage from "../../components/BlurImage.astro";
-
 ## Overview
 
 A fully static portfolio for **Khin Sandar Kyaw**, an oil-landscape painter from Yangon, Myanmar, live at [madebyksk.com](https://madebyksk.com). The whole site is built so the artist can publish new work without ever touching code: each painting is a single Markdown file, and the gallery, per-painting pages, deep-linkable lightbox, social-share cards, and structured data are all derived from those files at build time.
@@ -66,12 +64,7 @@ The build-time-everything approach shows up in the field: the site scores a perf
 
 Those numbers fall out of the architecture rather than from micro-tuning: shipping pure static HTML with no client framework keeps the main thread idle (0 ms blocking time), and the inline ThumbHash placeholders reserve every image's box up front, so cumulative layout shift stays at exactly zero.
 
-<BlurImage
-  src="/assets/madebyksk-lighthouse.webp"
-  alt="Lighthouse report for madebyksk.com: a perfect 100 across Performance, Accessibility, Best Practices, and SEO."
-  loading="lazy"
-  class="rounded-md border border-border my-6"
-/>
+![Lighthouse report for madebyksk.com: a perfect 100 across Performance, Accessibility, Best Practices, and SEO.](/assets/madebyksk-lighthouse.webp)
 
 ## Tech stack
 
