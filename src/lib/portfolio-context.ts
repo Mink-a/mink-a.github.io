@@ -85,8 +85,10 @@ The site is a statically generated Astro site, so the linked pages are HTML. Pri
 - [Home / About](${url("/")}): Bio, current and past roles, featured projects, and recent writing.
 - [Projects](${url("/projects")}): Full list of selected projects with descriptions and tech stacks.
 - [Writing](${url("/writing")}): Engineering notes and articles.
-- [Resume](${url("/resume")}): Condensed CV covering experience, selected projects, and contact details.
+- [Resume](${url("/resume")}): Condensed CV covering experience, selected projects, and contact details. Downloadable PDF: ${url("/Min-Khant-Kyaw-Resume.pdf")}
 - [Tech stack](${url("/stack")}): Languages, frameworks, and tools he works with.
+- [Privacy notice](${url("/privacy")}): What the site collects, including the AI chat assistant.
+- [Use policy](${url("/policy")}): Terms for using the site, its content, and the AI assistant.
 
 ## Tech stack
 
