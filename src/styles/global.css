@@ -423,3 +423,72 @@ html.js img.blur-up[data-loaded="true"] {
     transition: none;
   }
 }
+
+/*
+ * Writing-post tools (scripts/post-tools.ts).
+ * Code blocks get a top-right stack: a tiny language tag above a copy button.
+ * Shiki renders a dark surface regardless of theme, so both are light-on-dark.
+ * The tag is always visible; the copy button is hidden until hover on pointer
+ * devices and always shown on touch (no hover).
+ */
+.code-block {
+  position: relative;
+}
+.code-block__actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  pointer-events: none;
+}
+.code-lang {
+  font-size: 0.625rem;
+  line-height: 1;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  user-select: none;
+}
+.code-copy-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: opacity 150ms ease, color 150ms ease, background 150ms ease,
+    border-color 150ms ease;
+}
+.code-copy-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+.code-copy-btn.is-copied {
+  color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.5);
+}
+@media (hover: hover) {
+  .code-copy-btn {
+    opacity: 0;
+  }
+  .code-block:hover .code-copy-btn,
+  .code-copy-btn:focus-visible {
+    opacity: 1;
+  }
+}
+
+/* Toolbar chips flash accent on a successful copy. */
+[data-post-toolbar] .is-copied {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}

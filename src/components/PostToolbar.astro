@@ -1,0 +1,61 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  /** Plain-Markdown URL of the post (for "Copy page" + "Markdown"). */
+  mdUrl: string;
+  /** Prompt seeded into AI assistants. */
+  prompt: string;
+}
+
+const { mdUrl, prompt } = Astro.props;
+const q = encodeURIComponent(prompt);
+
+// ChatGPT and Perplexity prefill the prompt from the URL. Claude removed its
+// `?q=` param (Oct 2025) and Gemini never had one, so for those the toolbar also
+// copies the prompt to the clipboard on click (see post-tools.ts) — the link
+// still opens the app, and the user pastes.
+const providers = [
+  { name: "ChatGPT", icon: "simple-icons:openai", href: `https://chatgpt.com/?q=${q}`, copy: false },
+  { name: "Claude", icon: "simple-icons:claude", href: `https://claude.ai/new?q=${q}`, copy: true },
+  { name: "Gemini", icon: "simple-icons:googlegemini", href: `https://gemini.google.com/app?q=${q}`, copy: true },
+  { name: "Perplexity", icon: "simple-icons:perplexity", href: `https://www.perplexity.ai/search?q=${q}`, copy: false },
+];
+
+const chip =
+  "inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-border-strong hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40";
+---
+<div
+  data-post-toolbar
+  data-md-url={mdUrl}
+  data-prompt={prompt}
+  class="mt-6 flex flex-wrap items-center gap-2"
+>
+  <button type="button" data-copy-page class={chip} aria-label="Copy this page as Markdown">
+    <Icon name="lucide:copy" class="w-3.5 h-3.5" aria-hidden="true" />
+    <span data-label>Copy page</span>
+  </button>
+
+  <a href={mdUrl} class={chip}>
+    <Icon name="lucide:file-text" class="w-3.5 h-3.5" aria-hidden="true" />
+    <span>Markdown</span>
+  </a>
+
+  <span class="mx-1 h-4 w-px bg-border" aria-hidden="true"></span>
+  <span class="text-xs text-text-dim">Open in</span>
+
+  {providers.map((p) => (
+    <a
+      href={p.href}
+      target="_blank"
+      rel="noopener"
+      data-llm
+      data-name={p.name}
+      data-copy={String(p.copy)}
+      class={chip}
+    >
+      <Icon name={p.icon} class="w-3.5 h-3.5" aria-hidden="true" />
+      <span data-label>{p.name}</span>
+    </a>
+  ))}
+</div>
