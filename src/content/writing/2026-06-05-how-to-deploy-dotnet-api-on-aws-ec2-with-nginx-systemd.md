@@ -27,10 +27,10 @@ EC2 ပေါ်သို့ မတင်မီ သင်၏ Local Windows စ�
 - **Visual Studio သုံးလျှင်:** `Ctrl + Shift + B` ကို နှိပ်ပါ။
 - **CLI (Git Bash/Terminal) သုံးလျှင်:** Project Folder ထဲတွင် အောက်ပါအတိုင်း ရိုက်ပါ။
 
-  ```bash
-  dotnet build
-  
-  ```
+```bash
+dotnet build
+
+```
 
 ### ၂။ Test Locally (Local တွင် Run ၍ စမ်းသပ်ခြင်း)
 
@@ -39,10 +39,10 @@ EC2 ပေါ်သို့ မတင်မီ သင်၏ Local Windows စ�
 - **Visual Studio သုံးလျှင်:** `F5` သို့မဟုတ် `Ctrl + F5` ကို နှိပ်၍ Run ပါ။
 - **CLI သုံးလျှင်:**
 
-  ```bash
-  dotnet run
-  
-  ```
+```bash
+dotnet run
+
+```
 - Browser တွင် `http://localhost:<PORT>/swagger` သို့မဟုတ် `http://localhost:<PORT>/weatherforecast` ကို ဝင်ရောက်ပြီး API အလုပ်လုပ်ပုံ မှန်မမှန် စစ်ဆေးပါ။
 
 ### ၃။ Prepare for Production (Production အတွက် ပြင်ဆင်ခြင်း)
@@ -52,17 +52,17 @@ EC2 ပေါ်သို့ မတင်မီ သင်၏ Local Windows စ�
 - **Connection Strings & Secrets:** Database Connection String များ သို့မဟုတ် API Key များကို Code ထဲတွင် Hardcode ရေးခဲ့ခြင်းမျိုး ရှိပါက ပြန်ဖျက်ပါ။ ၎င်းတို့ကို `appsettings.Production.json` ထဲတွင် ပြောင်းလဲထည့်သွင်းပါ သို့မဟုတ် EC2 ပေါ်တွင် Environment Variable အဖြစ် သုံးရန် ပြင်ဆင်ပါ။
 - **Production Config File:** Project ထဲတွင် `appsettings.Production.json` ရှိမရှိ စစ်ဆေးပါ။ အကယ်၍ မရှိသေးပါက ဖိုင်အသစ်ဆောက်ပြီး Production တွင် သုံးမည့် configuration များကို သီးသန့်ခွဲရေးပါ။
 
-  ```json
-  {
-    "Logging": {
-      "LogLevel": {
-        "Default": "Warning",
-        "Microsoft.AspNetCore": "Warning"
-      }
-    },
-    "AllowedHosts": "*"
-  }
-  
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}
+
   ```
 - **CORS Policy:** အကယ်၍ သင်၏ API ကို Frontend (ဥပမာ Next.js, React) တစ်ခုခုမှ လှမ်းခေါ်မည်ဆိုပါက `Program.cs` ထဲတွင် Production Domain Name ကိုသာ ခွင့်ပြုရန် (CORS Settings တွင်) စနစ်တကျ ပြင်ဆင်ထားပါ။
 
@@ -274,10 +274,10 @@ http://<PUBLIC_DNS>:5000/weatherforecast
 
 > **သတိပြုရန်:** ဤနေရာတွင် တိုက်ရိုက်စမ်းသပ်နိုင်ရန် ပေါ့တ် **5000** ကို EC2 Security Group တွင် ခေတ္တဖွင့်ပေးထားရပါမည်။ နောက်ပိုင်း Nginx proxy ခံပြီးပါက ၎င်းပေါ့တ်ကို ပြန်ပိတ်နိုင်သည်။ သို့မဟုတ်ပါက နောက်ထပ် SSH Session တစ်ခုထပ်ဖွင့်ပြီး Server ထဲကနေပဲ အောက်ပါအတိုင်း စမ်းသပ်နိုင်သည်-
 >
-> ```bash
-> curl http://localhost:5000/weatherforecast
->
-> ```
+```bash
+curl http://localhost:5000/weatherforecast
+
+```
 
 စမ်းသပ်ပြီးပါက App ကို ရပ်တန့်ရန် **Ctrl+C** ကို နှိပ်ပါ။
 
