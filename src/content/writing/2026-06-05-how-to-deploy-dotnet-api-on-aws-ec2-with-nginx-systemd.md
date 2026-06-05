@@ -27,8 +27,7 @@ EC2 ပေါ်သို့ မတင်မီ သင်၏ Local Windows စ�
 - **Visual Studio သုံးလျှင်:** `Ctrl + Shift + B` ကို နှိပ်ပါ။
 - **CLI (Git Bash/Terminal) သုံးလျှင်:** Project Folder ထဲတွင် အောက်ပါအတိုင်း ရိုက်ပါ။
 
-  Bash
-  ```
+  ```bash
   dotnet build
   
   ```
@@ -40,8 +39,7 @@ EC2 ပေါ်သို့ မတင်မီ သင်၏ Local Windows စ�
 - **Visual Studio သုံးလျှင်:** `F5` သို့မဟုတ် `Ctrl + F5` ကို နှိပ်၍ Run ပါ။
 - **CLI သုံးလျှင်:**
 
-  Bash
-  ```
+  ```bash
   dotnet run
   
   ```
@@ -54,8 +52,7 @@ EC2 ပေါ်သို့ မတင်မီ သင်၏ Local Windows စ�
 - **Connection Strings & Secrets:** Database Connection String များ သို့မဟုတ် API Key များကို Code ထဲတွင် Hardcode ရေးခဲ့ခြင်းမျိုး ရှိပါက ပြန်ဖျက်ပါ။ ၎င်းတို့ကို `appsettings.Production.json` ထဲတွင် ပြောင်းလဲထည့်သွင်းပါ သို့မဟုတ် EC2 ပေါ်တွင် Environment Variable အဖြစ် သုံးရန် ပြင်ဆင်ပါ။
 - **Production Config File:** Project ထဲတွင် `appsettings.Production.json` ရှိမရှိ စစ်ဆေးပါ။ အကယ်၍ မရှိသေးပါက ဖိုင်အသစ်ဆောက်ပြီး Production တွင် သုံးမည့် configuration များကို သီးသန့်ခွဲရေးပါ။
 
-  JSON
-  ```
+  ```json
   {
     "Logging": {
       "LogLevel": {
@@ -102,9 +99,7 @@ MyApi/
 
 ၅။ `.pem` ဖိုင်အတွက် သင့်တော်သော Permission သတ်မှတ်ရန် သင်၏ local စက်ရှိ **Git Bash** တွင် အောက်ပါ Command ကို ရိုက်ပါ-
 
-Bash
-
-```
+```bash
 chmod 400 dotnet-api-key.pem
 
 ```
@@ -113,9 +108,7 @@ chmod 400 dotnet-api-key.pem
 
 သင်၏ local စက်ရှိ Project Folder ထဲတွင် **Git Bash** ကိုဖွင့်ပြီး အောက်ပါ Command ကို Run ပါ-
 
-Bash
-
-```
+```bash
 dotnet publish -c Release -r linux-x64 --self-contained false -o ./publish
 
 ```
@@ -154,9 +147,7 @@ Publish လုပ်ငန်းစဉ် ပြီးဆုံးသွား�
 >
 > Git Bash ကို Project Folder ၏ အခြေခံ (Root) လမ်းကြောင်းအတိုင်း ဖွင့်ထားဆဲဖြစ်ပါက `scp` command ကို အောက်ပါအတိုင်း ပြောင်းလဲရိုက်ကူးပါ-
 
-Bash
-
-```
+```bash
 scp -i dotnet-api-key.pem -r ./bin/Release/net8.0/publish/* ec2-user@<PUBLIC_DNS>:/home/ec2-user/dotnet-api/
 
 ```
@@ -165,18 +156,14 @@ scp -i dotnet-api-key.pem -r ./bin/Release/net8.0/publish/* ec2-user@<PUBLIC_DNS
 
 သင်၏ local Git Bash ထဲတွင် ဆက်လက်ပြီး၊ `<PUBLIC_DNS>` နေရာတွင် သင်၏ EC2 Public DNS (AWS Console → EC2 → Instance details တွင် တွေ့နိုင်သည်၊ ဥပမာ `ec2-xx-xx-xx-xx.compute-1.amazonaws.com`) ဖြင့် အစားထိုး၍ အောက်ပါအတိုင်း ရိုက်ပါ-
 
-Bash
-
-```
+```bash
 scp -i dotnet-api-key.pem -r ./publish ec2-user@<PUBLIC_DNS>:/home/ec2-user/dotnet-api
 
 ```
 
 ဥပမာ နမူနာပြောင်းလဲပုံ-
 
-Bash
-
-```
+```bash
 scp -i dotnet-api-key.pem -r ./publish ec2-user@ec2-13-215-12-34.compute-1.amazonaws.com:/home/ec2-user/dotnet-api
 
 ```
@@ -187,18 +174,14 @@ scp -i dotnet-api-key.pem -r ./publish ec2-user@ec2-13-215-12-34.compute-1.amazo
 
 ### SSH ဖြင့် EC2 သို့ ချိတ်ဆက်ခြင်း
 
-Bash
-
-```
+```bash
 ssh -i dotnet-api-key.pem ec2-user@<PUBLIC_DNS>
 
 ```
 
 ### .NET SDK ထည့်သွင်းခြင်း
 
-Bash
-
-```
+```bash
 sudo dnf update -y
 sudo dnf install -y dotnet-sdk-8.0
 
@@ -206,9 +189,7 @@ sudo dnf install -y dotnet-sdk-8.0
 
 ဗားရှင်း အောင်မြင်စွာ တင်ပြီးကြောင်း စစ်ဆေးရန်-
 
-Bash
-
-```
+```bash
 dotnet --version
 # 8.0.x ဟု ထွက်လာရမည်။
 
@@ -216,18 +197,14 @@ dotnet --version
 
 ### Nginx ထည့်သွင်းခြင်း
 
-Bash
-
-```
+```bash
 sudo dnf install -y nginx
 
 ```
 
 ### Nginx ကို Enable လုပ်ပြီး Start လုပ်ခြင်း
 
-Bash
-
-```
+```bash
 sudo systemctl enable nginx
 sudo systemctl start nginx
 
@@ -248,18 +225,14 @@ Nginx ၏ မူလ **Welcome to nginx!** စာမျက်နှာကို �
 
 ### EC2 ထဲမှနေ၍ Localhost ကို တုံ့ပြန်မှုရှိမရှိ စစ်ဆေးခြင်း
 
-Bash
-
-```
+```bash
 curl http://localhost
 
 ```
 
 မျှော်လင့်ထားသည့် Output (Nginx Welcome Page ၏ HTML Code များ မြင်ရမည်)-
 
-HTML
-
-```
+```html
 <!DOCTYPE html>
 <html>
 ...
@@ -272,9 +245,7 @@ HTML
 
 ### App ကို ယာယီ ကိုယ်တိုင် Run ကြည့်ခြင်း (Foreground တွင် စမ်းသပ်ရန်)
 
-Bash
-
-```
+```bash
 cd /home/ec2-user/dotnet-api
 dotnet MyApi.dll --urls "http://0.0.0.0:5000"
 
@@ -303,9 +274,7 @@ http://<PUBLIC_DNS>:5000/weatherforecast
 
 > **သတိပြုရန်:** ဤနေရာတွင် တိုက်ရိုက်စမ်းသပ်နိုင်ရန် ပေါ့တ် **5000** ကို EC2 Security Group တွင် ခေတ္တဖွင့်ပေးထားရပါမည်။ နောက်ပိုင်း Nginx proxy ခံပြီးပါက ၎င်းပေါ့တ်ကို ပြန်ပိတ်နိုင်သည်။ သို့မဟုတ်ပါက နောက်ထပ် SSH Session တစ်ခုထပ်ဖွင့်ပြီး Server ထဲကနေပဲ အောက်ပါအတိုင်း စမ်းသပ်နိုင်သည်-
 >
-> Bash
->
-> ```
+> ```bash
 > curl http://localhost:5000/weatherforecast
 >
 > ```
@@ -316,18 +285,14 @@ http://<PUBLIC_DNS>:5000/weatherforecast
 
 သင်၏ API အတွက် Nginx Configuration ဖိုင်အသစ်တစ်ခု ဆောက်ပါ-
 
-Bash
-
-```
+```bash
 sudo nano /etc/nginx/conf.d/dotnet-api.conf
 
 ```
 
 အောက်ပါ Code များကို ကူးယူ၍ ထည့်ပါ (Paste လုပ်ပါ)-
 
-Nginx
-
-```
+```nginx
 server {
     listen 80;
     server_name _;
@@ -351,9 +316,7 @@ server {
 
 Config မှန်မမှန် စစ်ဆေးပြီး Nginx ကို Reload လုပ်ပါ-
 
-Bash
-
-```
+```bash
 sudo nginx -t
 # nginx: configuration file /etc/nginx/nginx.conf test is successful ဟု ပြရမည်။
 
@@ -365,18 +328,14 @@ sudo systemctl reload nginx
 
 Nginx ၏ မူလ config တွင်ပါဝင်သော `server { listen 80; }` block သည် သင်ယခုဆောက်လိုက်သော config နှင့် ပေါ့တ်ချင်း ငြိစွန်းနေတတ်ပါသည်။ ထို့ကြောင့် ၎င်းကို ဖွင့်ပါ-
 
-Bash
-
-```
+```bash
 sudo nano /etc/nginx/nginx.conf
 
 ```
 
 အောက်ပါအတိုင်း တွေ့ရမည့် Section တစ်ခုလုံးကို ရှာပြီး **ဖျက်ပစ်ပါ** (`server {` မှ အပိတ် `}` အထိ အားလုံးကို ဖျက်ပါ)-
 
-Nginx
-
-```
+```nginx
 # ဤ Block တစ်ခုလုံးကို ဖျက်ပါ ↓
 server {
     listen       80;
@@ -402,9 +361,7 @@ server {
 
 ထပ်မံ စစ်ဆေးပြီး Reload လုပ်ပါ-
 
-Bash
-
-```
+```bash
 sudo nginx -t
 sudo systemctl reload nginx
 
@@ -416,18 +373,14 @@ sudo systemctl reload nginx
 
 API အား နောက်ကွယ်တွင် Background process အဖြစ် အမြဲတမ်းပွင့်နေစေရန်နှင့် Server ကျသွားလျှင်လည်း အလိုအလျောက် ပြန်ပွင့်လာစေရန် (Auto-restart) systemd unit ဖိုင်တစ်ခု ဆောက်ပါမည်-
 
-Bash
-
-```
+```bash
 sudo nano /etc/systemd/system/dotnet-api.service
 
 ```
 
 အောက်ပါစာသားများကို ထည့်ပါ — `MyApi.dll` နေရာတွင် သင်၏ တကယ့် `.dll` နာမည်ကို အစားထိုးရန် မမေ့ပါနှင့်-
 
-Ini, TOML
-
-```
+```ini
 [Unit]
 Description=ASP.NET Core API
 After=network.target
@@ -451,9 +404,7 @@ WantedBy=multi-user.target
 
 ### Service ကို Enable လုပ်ပြီး Start လုပ်ခြင်း
 
-Bash
-
-```
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable dotnet-api
 sudo systemctl start dotnet-api
@@ -462,9 +413,7 @@ sudo systemctl start dotnet-api
 
 ### စနစ်တကျ ပွင့်နေကြောင်း စစ်ဆေးခြင်း
 
-Bash
-
-```
+```bash
 sudo systemctl status dotnet-api
 
 ```
@@ -480,9 +429,7 @@ sudo systemctl status dotnet-api
 
 ### End-to-End အားလုံး အလုပ်လုပ်ပုံကို စမ်းသပ်ခြင်း
 
-Bash
-
-```
+```bash
 # EC2 Server ထဲမှနေ၍ စမ်းသပ်ရန်
 curl http://localhost/weatherforecast
 
@@ -493,9 +440,7 @@ http://<PUBLIC_DNS>/weatherforecast
 
 ### နောင်တွင် အသုံးလိုမည့် အသုံးဝင်သော Command များ
 
-Bash
-
-```
+```bash
 # Live တက်လာမည့် Log များကို ကြည့်ရန်
 sudo journalctl -u dotnet-api -f
 
@@ -511,9 +456,7 @@ sudo systemctl stop dotnet-api
 
 သင်၏ local စက်ရှိ Project folder ထဲမှ **Git Bash** ကို အသုံးပြုပြီး အောက်ပါ အဆင့် ၃ ဆင့်ဖြင့် အလွယ်တကူ Deploy ပြန်လုပ်နိုင်သည်-
 
-Bash
-
-```
+```bash
 # ၁။ ဗားရှင်းအသစ်ကို ပြန်ပြီး Publish လုပ်သည်
 dotnet publish -c Release -r linux-x64 --self-contained false -o ./publish
 
