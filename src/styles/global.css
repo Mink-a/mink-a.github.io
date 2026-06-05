@@ -29,11 +29,11 @@
 }
 
 /*
- * Self-hosted Pyidaungsu (Myanmar subset, woff2). Scoped via unicode-range: the
- * browser only downloads it on pages that contain Burmese (English pages never
- * fetch it), and only Myanmar glyphs use it — latin stays Inter. `local()` reuses
- * the visitor's installed Pyidaungsu when present. Regular-only file, so bold
- * Burmese (headings / **bold**) is browser-synthesized.
+ * Self-hosted Pyidaungsu 2.5.3 (Myanmar subset, woff2), Regular + Bold. Scoped
+ * via unicode-range: downloaded only on pages with Burmese, used only for Myanmar
+ * glyphs (latin stays Inter). `local()` reuses an installed Pyidaungsu. The real
+ * Bold face means bold titles/headings aren't browser-synthesized — synthetic
+ * bold smears complex Myanmar clusters.
  */
 @font-face {
   font-family: "Pyidaungsu";
@@ -43,6 +43,17 @@
   src:
     local("Pyidaungsu"),
     url("/fonts/pyidaungsu-myanmar.woff2") format("woff2");
+  unicode-range: U+1000-109F, U+200C-200D, U+25CC, U+A92E, U+A9E0-A9FE, U+AA60-AA7F, U+116D0-116E3;
+}
+@font-face {
+  font-family: "Pyidaungsu";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local("Pyidaungsu Bold"),
+    local("Pyidaungsu-Bold"),
+    url("/fonts/pyidaungsu-myanmar-bold.woff2") format("woff2");
   unicode-range: U+1000-109F, U+200C-200D, U+25CC, U+A92E, U+A9E0-A9FE, U+AA60-AA7F, U+116D0-116E3;
 }
 
