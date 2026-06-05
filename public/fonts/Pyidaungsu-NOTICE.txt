@@ -1,0 +1,9 @@
+Pyidaungsu — Myanmar Unicode font
+Copyright (c) 2016 Myanmar Computer Federation (MCF).
+
+Pyidaungsu is the official Myanmar Unicode font, distributed freely for public use.
+
+The file served here (pyidaungsu-myanmar.woff2) is a subset of Pyidaungsu Regular,
+reduced to the Myanmar Unicode blocks and converted to woff2.
+
+Source: https://github.com/saturngod/myanmar-unicode-fonts
