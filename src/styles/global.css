@@ -493,8 +493,7 @@ html.js img.blur-up[data-loaded="true"] {
   border-color: var(--color-accent);
 }
 
-/* Post toolbar chips (server + JS-injected translate buttons), divider, label,
- * and the source-language badge. */
+/* Post toolbar chips, divider, label, and the source-language badge. */
 .post-chip {
   display: inline-flex;
   align-items: center;
@@ -512,14 +511,6 @@ html.js img.blur-up[data-loaded="true"] {
   color: var(--color-text);
   border-color: var(--color-border-strong);
 }
-.post-chip:disabled {
-  opacity: 0.55;
-  cursor: default;
-}
-.post-chip.is-active {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-}
 .post-toolbar-divider {
   width: 1px;
   height: 1rem;
@@ -532,10 +523,6 @@ html.js img.blur-up[data-loaded="true"] {
   gap: 0.375rem;
   font-size: 0.75rem;
   color: var(--color-text-dim);
-}
-.post-toolbar-label svg {
-  width: 0.875rem;
-  height: 0.875rem;
 }
 .post-lang-badge {
   display: inline-flex;
