@@ -38,6 +38,9 @@ const writing = defineCollection({
     pubDate: z.coerce.date(),
     draft: z.boolean().default(false),
     tags: z.array(z.string()).default([]),
+    /** BCP-47 base code of the post's source language (drives <html lang>, the
+     *  language badge, and the reader-facing AI translation). */
+    lang: z.string().default("en"),
   }),
 });
 

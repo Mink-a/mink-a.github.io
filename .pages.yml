@@ -54,6 +54,19 @@ content:
         label: Tags
         type: string
         list: true
+      - name: lang
+        label: Language
+        type: select
+        default: en
+        description: Source language of the post — enables the reader-facing AI translation.
+        options:
+          values:
+            - { name: en, label: English }
+            - { name: my, label: Myanmar (Burmese) }
+            - { name: ja, label: Japanese }
+            - { name: th, label: Thai }
+            - { name: zh, label: Chinese }
+            - { name: ko, label: Korean }
       - name: body
         label: Body
         type: code

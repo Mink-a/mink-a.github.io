@@ -11,6 +11,7 @@ tags:
   - ec2
   - nginx
   - linux
+lang: my
 ---
 ဤလမ်းညွှန်သည် .NET API တစ်ခုကို Amazon Linux 2023 (EC2) ပေါ်တွင် Nginx Reverse Proxy နှင့် systemd တို့ကိုအသုံးပြုပြီး စနစ်တကျ Deploy ပြုလုပ်နည်း ဖြစ်ပါသည်။
 

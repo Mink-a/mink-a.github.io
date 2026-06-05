@@ -22,8 +22,6 @@ const providers = [
   { name: "Perplexity", icon: "simple-icons:perplexity", href: `https://www.perplexity.ai/search?q=${q}`, copy: false },
 ];
 
-const chip =
-  "inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-border-strong hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40";
 ---
 <div
   data-post-toolbar
@@ -31,18 +29,18 @@ const chip =
   data-prompt={prompt}
   class="mt-6 flex flex-wrap items-center gap-2"
 >
-  <button type="button" data-copy-page class={chip} aria-label="Copy this page as Markdown">
+  <button type="button" data-copy-page class="post-chip" aria-label="Copy this page as Markdown">
     <Icon name="lucide:copy" class="w-3.5 h-3.5" aria-hidden="true" />
     <span data-label>Copy page</span>
   </button>
 
-  <a href={mdUrl} class={chip}>
+  <a href={mdUrl} class="post-chip">
     <Icon name="lucide:file-text" class="w-3.5 h-3.5" aria-hidden="true" />
     <span>Markdown</span>
   </a>
 
-  <span class="mx-1 h-4 w-px bg-border" aria-hidden="true"></span>
-  <span class="text-xs text-text-dim">Open in</span>
+  <span class="post-toolbar-divider" aria-hidden="true"></span>
+  <span class="post-toolbar-label">Open in</span>
 
   {providers.map((p) => (
     <a
@@ -52,10 +50,13 @@ const chip =
       data-llm
       data-name={p.name}
       data-copy={String(p.copy)}
-      class={chip}
+      class="post-chip"
     >
       <Icon name={p.icon} class="w-3.5 h-3.5" aria-hidden="true" />
       <span data-label>{p.name}</span>
     </a>
   ))}
+
+  <!-- Translate controls (browser language + English) injected by translate.ts. -->
+  <div data-translate class="contents"></div>
 </div>
