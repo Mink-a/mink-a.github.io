@@ -2,10 +2,10 @@ import type { InstantRules } from "@instantdb/core";
 
 /**
  * Lock everything down:
- *  - All writes are denied for clients. The chat endpoint writes via the Admin
- *    SDK, which bypasses these rules entirely.
+ *  - All writes are denied for clients. The chat and resume-tailor endpoints
+ *    write via the Admin SDK, which bypasses these rules entirely.
  *  - Only the owner (authenticated by magic code to OWNER_EMAIL) can read the
- *    session/message logs, which powers the admin panel.
+ *    session/message logs and résumé drafts, which power the admin panel.
  *
  * `auth.email` is the email of the currently signed-in InstantDB user.
  */
@@ -26,6 +26,24 @@ const rules = {
     bind: { isOwner },
   },
   messages: {
+    allow: {
+      view: "isOwner",
+      create: "false",
+      update: "false",
+      delete: "false",
+    },
+    bind: { isOwner },
+  },
+  applications: {
+    allow: {
+      view: "isOwner",
+      create: "false",
+      update: "false",
+      delete: "false",
+    },
+    bind: { isOwner },
+  },
+  resumeVersions: {
     allow: {
       view: "isOwner",
       create: "false",
