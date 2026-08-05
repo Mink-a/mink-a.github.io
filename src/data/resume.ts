@@ -269,47 +269,79 @@ export const resumeCSS = `
 }
 `;
 
-/** Renders the résumé markup (the inner content of `.resume-doc`). */
-export function renderResumeBody(): string {
-  const contact =
-    resume.contact
-      .map((c) => `<a href="${c.href}">${c.label}</a>`)
-      .join("<br />") + `<br />${resume.location}`;
+/**
+ * Shape the renderers consume: the base résumé, or the base spread with a
+ * tailored override (`{ ...resume, ...tailored }`). Identity fields — name,
+ * contact, location, aiNote — always come from the base, so a tailored
+ * résumé can never alter them.
+ */
+export interface ResumeData {
+  name: string;
+  subtitle: string;
+  location: string;
+  contact: { label: string; href: string }[];
+  experience: Experience[];
+  skills: SkillGroup[];
+  projects: Project[];
+  aiNote: { text: string; href: string; label: string };
+}
 
-  const experience = resume.experience
+/**
+ * Escapes text for HTML interpolation. The base résumé is plain text, so this
+ * is a no-op for it visually (`&` in "Database & ORM" becomes `&amp;`, which
+ * renders identically). Tailored résumés are model-generated, so every
+ * interpolated value goes through it.
+ */
+const esc = (s: string): string =>
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+/** Renders the résumé markup (the inner content of `.resume-doc`). */
+export function renderResumeBody(data: ResumeData = resume): string {
+  const contact =
+    data.contact
+      .map((c) => `<a href="${esc(c.href)}">${esc(c.label)}</a>`)
+      .join("<br />") + `<br />${esc(data.location)}`;
+
+  const experience = data.experience
     .map(
       (e) => `
       <div class="entry">
         <div class="entry-head">
-          <div class="role">${e.role} · <span class="company">${e.company}</span></div>
-          <div class="date">${e.date}</div>
+          <div class="role">${esc(e.role)} · <span class="company">${esc(e.company)}</span></div>
+          <div class="date">${esc(e.date)}</div>
         </div>
-        <ul>${e.bullets.map((b) => `<li>${b}</li>`).join("")}</ul>
+        <ul>${e.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>
       </div>`,
     )
     .join("");
 
-  const skills = resume.skills
+  const skills = data.skills
     .map(
       (s) =>
-        `<div class="skill-group"><h3>${s.label}</h3><p>${s.items}</p></div>`,
+        `<div class="skill-group"><h3>${esc(s.label)}</h3><p>${esc(s.items)}</p></div>`,
     )
     .join("");
 
-  const projects = resume.projects
+  const projects = data.projects
     .map(
       (p) =>
-        `<div class="proj"><h3>${p.name}</h3><p>${
-          p.link ? `<a class="accent" href="${p.link.href}">${p.link.label}</a> · ` : ""
-        }${p.desc}</p></div>`,
+        `<div class="proj"><h3>${esc(p.name)}</h3><p>${
+          p.link
+            ? `<a class="accent" href="${esc(p.link.href)}">${esc(p.link.label)}</a> · `
+            : ""
+        }${esc(p.desc)}</p></div>`,
     )
     .join("");
 
   return `
     <header>
       <div>
-        <h1 class="name">${resume.name}</h1>
-        <p class="subtitle">${resume.subtitle}</p>
+        <h1 class="name">${esc(data.name)}</h1>
+        <p class="subtitle">${esc(data.subtitle)}</p>
       </div>
       <div class="contact">${contact}</div>
     </header>
@@ -322,5 +354,33 @@ export function renderResumeBody(): string {
         <section><h2>Selected Projects</h2>${projects}</section>
       </aside>
     </div>
-    <footer class="ai-note">${resume.aiNote.text} <a href="${resume.aiNote.href}">${resume.aiNote.label}</a></footer>`;
+    <footer class="ai-note">${esc(data.aiNote.text)} <a href="${esc(data.aiNote.href)}">${esc(data.aiNote.label)}</a></footer>`;
+}
+
+/** Serializes a résumé to Markdown, for pasting into application forms. */
+export function renderResumeMarkdown(data: ResumeData = resume): string {
+  const lines: string[] = [
+    `# ${data.name}`,
+    "",
+    data.subtitle,
+    "",
+    [...data.contact.map((c) => `[${c.label}](${c.href})`), data.location].join(" · "),
+    "",
+    "## Experience",
+  ];
+
+  for (const e of data.experience) {
+    lines.push("", `### ${e.role} · ${e.company}`, `_${e.date}_`, "");
+    for (const b of e.bullets) lines.push(`- ${b}`);
+  }
+
+  lines.push("", "## Skills", "");
+  for (const s of data.skills) lines.push(`**${s.label}:** ${s.items}`, "");
+
+  lines.push("## Selected Projects");
+  for (const p of data.projects) {
+    lines.push("", `### ${p.name}`, p.link ? `[${p.link.label}](${p.link.href}) · ${p.desc}` : p.desc);
+  }
+
+  return lines.join("\n") + "\n";
 }
