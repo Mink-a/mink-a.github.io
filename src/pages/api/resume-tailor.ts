@@ -11,13 +11,13 @@ import {
   tailoredSchema,
   type GroundResult,
 } from "../../lib/resumeTailor";
+import { isOwner } from "../../lib/adminAuth";
 
 export const prerender = false;
 
 const DEFAULT_BASE_URL = "https://api.sargalay.com/v1";
 const DEFAULT_MODEL = "google/gemini-3.1-flash-lite-preview";
 const MAX_OUTPUT_TOKENS = 4000;
-const OWNER_EMAIL = "hello@minkhantkyaw.com";
 
 const bodySchema = z.discriminatedUnion("action", [
   z.object({
@@ -40,31 +40,6 @@ const json = (body: unknown, status = 200) =>
     status,
     headers: { "content-type": "application/json" },
   });
-
-/**
- * The slice of the Admin SDK the owner check needs. Structural, so it stays
- * decoupled from the SDK's internal client type.
- */
-interface TokenVerifier {
-  auth: {
-    verifyToken: (token: string) => Promise<{ email?: string | null } | null | undefined>;
-  };
-}
-
-/**
- * Verifies the caller is the site owner. The client sends its InstantDB
- * refresh token; the email is resolved server-side and never trusted from the
- * request body. `User.email` is optional in the SDK types, so a record without
- * an email must be rejected rather than compared loosely.
- */
-async function isOwner(db: TokenVerifier, token: string): Promise<boolean> {
-  try {
-    const user = await db.auth.verifyToken(token);
-    return Boolean(user && user.email && user.email === OWNER_EMAIL);
-  } catch {
-    return false;
-  }
-}
 
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env;
