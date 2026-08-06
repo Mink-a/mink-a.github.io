@@ -18,23 +18,6 @@ type Application = InstaQLEntity<AppSchema, "applications">;
 
 const emptyForm = { company: "", role: "", jobDescription: "" };
 
-/**
- * Hides the admin chrome when printing so only the résumé sheet reaches the
- * page. `visibility` (not `display`) keeps `.resume-doc` measurable, and the
- * absolute reset drops the offset inherited from the hidden layout.
- */
-const PRINT_SCOPE_CSS = `@media print {
-  body * { visibility: hidden !important; }
-  .resume-doc, .resume-doc * { visibility: visible !important; }
-  .resume-doc {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    padding: 0 !important;
-  }
-}`;
-
 function parseTailored(content: string): TailoredResume | null {
   try {
     return JSON.parse(content) as TailoredResume;
@@ -54,6 +37,7 @@ export default function ResumeStudio() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [copied, setCopied] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const applications = [...(data?.applications ?? [])].sort(
     (a, b) => Number(b.updatedAt ?? 0) - Number(a.updatedAt ?? 0),
@@ -130,15 +114,41 @@ export default function ResumeStudio() {
   };
 
   /**
-   * Prints the already-rendered preview. Cross-window printing (popup or
-   * iframe) throws "Illegal invocation" in some Chromium builds, so instead the
-   * page itself is printed with everything but `.resume-doc` hidden. resumeCSS
-   * already scopes its sheet styling to `@media screen` and sets `@page`, so
-   * print output matches the PDF from scripts/resume-pdf.ts.
+   * Downloads a real, text-based PDF. Rendering happens server-side through
+   * Cloudflare Browser Run from the same HTML + resumeCSS as
+   * scripts/resume-pdf.ts, so the file matches the canonical résumé PDF —
+   * unlike a client-side canvas conversion, which would rasterize the text and
+   * make it unreadable to ATS parsers.
    */
-  const printVersion = () => {
-    if (!resumeData) return;
-    window.print();
+  const downloadPdf = async () => {
+    if (!selectedVersion) return;
+    setDownloading(true);
+    setErr("");
+    try {
+      const res = await fetch("/api/resume-pdf", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ token: user.refresh_token, versionId: selectedVersion.id }),
+      });
+      if (!res.ok) {
+        const out = (await res.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(out?.error ?? `PDF request failed (${res.status})`);
+      }
+      const name =
+        res.headers.get("content-disposition")?.match(/filename="([^"]+)"/)?.[1] ?? "resume.pdf";
+      const url = URL.createObjectURL(await res.blob());
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e2) {
+      setErr(e2 instanceof Error ? e2.message : "PDF download failed.");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const copyMarkdown = async () => {
@@ -284,10 +294,11 @@ export default function ResumeStudio() {
           <div className="flex flex-col">
             <div className="flex flex-wrap items-center gap-2 border-b border-border p-4">
               <button
-                onClick={printVersion}
-                className="rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-bg hover:opacity-90"
+                onClick={downloadPdf}
+                disabled={downloading}
+                className="rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-bg hover:opacity-90 disabled:opacity-50"
               >
-                Print to PDF
+                {downloading ? "Rendering PDF…" : "Download PDF"}
               </button>
               <button
                 onClick={copyMarkdown}
@@ -307,7 +318,7 @@ export default function ResumeStudio() {
             )}
 
             <div className="overflow-x-auto bg-white p-4">
-              <style dangerouslySetInnerHTML={{ __html: resumeCSS + PRINT_SCOPE_CSS }} />
+              <style dangerouslySetInnerHTML={{ __html: resumeCSS }} />
               <div
                 className="resume-doc"
                 dangerouslySetInnerHTML={{ __html: renderResumeBody(resumeData) }}
