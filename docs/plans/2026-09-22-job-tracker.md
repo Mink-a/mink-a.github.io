@@ -505,7 +505,192 @@ git commit -m "feat(admin): JD analysis and résumé artifact views"
 
 ---
 
-## Task 6: End-to-end verification
+## Task 6: Skill facts and the merged base (test-first)
+
+**Files:**
+- Modify: `instant.schema.ts` (add `skillFacts`), `instant.perms.ts` (owner client writes)
+- Create: `src/lib/skillFacts.ts`, `src/lib/skillFacts.test.ts`
+- Modify: `src/lib/jdAnalysis.ts` (match against the merged base)
+- Modify: `src/lib/resumeTailor.ts` (pin against the merged base; bullet budget; metric scan)
+
+This is where a new fact is allowed to enter the résumé, so it carries the most risk in
+the whole feature. Tests first.
+
+**Step 1: Add the entity**
+
+```ts
+    skillFacts: i.entity({
+      skill: i.string().indexed(),     // normalized match key, lowercase
+      label: i.string(),               // display form, owner's capitalization
+      have: i.boolean(),               // false = confirmed gap; never ask again
+      level: i.string().optional(),    // learning | working | strong
+      evidence: i.string().optional(), // owner-typed; the ONLY source of new fact text
+      roleKey: i.string().optional(),  // "company|role|date" of a base role, or ""
+      createdAt: i.date().indexed(),
+      updatedAt: i.date().indexed(),
+    }),
+```
+
+Grant owner client writes in `instant.perms.ts` alongside `applications`, then
+**`bunx instant-cli@latest push perms -y`** again — a new namespace is denied by default.
+
+**Step 2: Write the failing tests**
+
+`src/lib/skillFacts.test.ts`:
+
+```ts
+import { expect, test } from "bun:test";
+import { resolveSkillBase, pendingGaps, bulletBudget, unverifiedMetrics } from "./skillFacts";
+
+const fact = (o: Partial<Parameters<typeof resolveSkillBase>[0][number]> = {}) => ({
+  skill: "kubernetes", label: "Kubernetes", have: true,
+  level: "working", evidence: "Ran the staging cluster.", roleKey: "Codigo|Frontend Engineer|2023",
+  ...o,
+});
+
+test("a confirmed skill joins the searchable base", () => {
+  const base = resolveSkillBase([fact()]);
+  expect(base.text).toContain("Kubernetes");
+  expect(base.text).toContain("Ran the staging cluster.");
+});
+
+test("a confirmed gap does NOT join the base", () => {
+  const base = resolveSkillBase([fact({ have: false, evidence: "" })]);
+  expect(base.text).not.toContain("Kubernetes");
+});
+
+test("answered skills are never asked about again", () => {
+  const missing = [
+    { keyword: "Kubernetes", importance: "critical" as const, present: false },
+    { keyword: "Terraform", importance: "critical" as const, present: false },
+  ];
+  const gaps = pendingGaps(missing, [fact({ have: false })]);
+  expect(gaps.map((g) => g.keyword)).toEqual(["Terraform"]);
+});
+
+test("bullet budget grows by one per fact attached to that role", () => {
+  expect(bulletBudget(3, "Codigo|Frontend Engineer|2023", [fact()])).toBe(4);
+  expect(bulletBudget(3, "Other|Role|2020", [fact()])).toBe(3);
+});
+
+test("a number absent from base and evidence is flagged", () => {
+  const found = unverifiedMetrics("Cut latency by 40% across 3 services", "Worked on 3 services", []);
+  expect(found).toEqual(["40"]);
+});
+
+test("a number present in owner-typed evidence is not flagged", () => {
+  const found = unverifiedMetrics("Ran 12 nodes", "", [fact({ evidence: "Ran 12 nodes in staging." })]);
+  expect(found).toEqual([]);
+});
+```
+
+**Step 3: Run to verify it fails**
+
+```bash
+bun test src/lib/skillFacts.test.ts
+```
+Expected: FAIL — module not found.
+
+**Step 4: Implement `src/lib/skillFacts.ts`**
+
+- `resolveSkillBase(facts)` → `{ text, skills, byRole }`. Starts from
+  `renderResumeMarkdown()` and appends each `have: true` fact's label and evidence.
+  Facts with `have: false` are excluded — a confirmed gap must never make the résumé
+  look like it covers the skill.
+- `pendingGaps(missing, facts)` → missing keywords with no fact of either polarity,
+  so answered questions never return.
+- `bulletBudget(baseCount, roleKey, facts)` → `baseCount` plus the count of `have: true`
+  facts whose `roleKey` matches.
+- `unverifiedMetrics(output, baseText, facts)` → every numeric token in `output` that
+  appears in neither `baseText` nor any fact's evidence. Compare digits only, so
+  `40%` and `40` are the same token.
+
+**Step 5: Wire the merged base into the two existing libs**
+
+- `jdAnalysis.groundAnalysis` takes the merged `text` as its `resumeText`, so answering
+  a gap raises coverage.
+- `resumeTailor.groundTailored` pins skills against the merged skill list, enforces
+  `bulletBudget` per role, and returns `unverifiedMetrics` alongside the value so the UI
+  can warn. Exceeding the budget is a **rejection**; an unverified metric is a **warning**.
+
+**Step 6: Run tests and build**
+
+```bash
+bun test && bun run build
+```
+Expected: all pass, 0 errors.
+
+**Step 7: Commit**
+
+```bash
+git add instant.schema.ts instant.perms.ts src/lib
+git commit -m "feat(lib): owner-confirmed skill facts as the only path for new résumé facts"
+```
+
+---
+
+## Task 7: Gap interview UI and the knowledge-base merge
+
+**Files:**
+- Create: `src/components/admin/SkillGaps.tsx`, `src/components/admin/SkillInventory.tsx`
+- Modify: `src/components/admin/JdAnalysisView.tsx` (entry banner), `AdminApp.tsx` (inventory tab)
+- Modify: `src/lib/portfolio-context.ts`, `src/pages/llms.txt.ts`, `src/pages/api/chat.ts`
+
+**Step 1: Entry banner**
+
+Inside JD Analysis, when `pendingGaps` is non-empty, render the accent banner: *"N required
+skills aren't on your résumé"*, the keyword list, and an **Answer N questions** button.
+
+**Step 2: Gap cards**
+
+One card per pending gap, with the four states from the approved mockup: ask (Yes / No,
+I haven't) → yes (level chips, role `<select>` built from the base résumé's roles,
+evidence `<textarea>`, Save fact) → saved → confirmed gap with Undo.
+
+The evidence field carries the note *"Your words are the only source. The model may quote
+this, never invent around it."* — it is the contract, and it belongs on screen.
+
+Writes go straight to InstantDB from the client.
+
+**Step 3: Fit delta**
+
+After a save, show `61 → 78` with the count answered and any remaining confirmed gaps,
+plus a **Re-tailor résumé** button. This is the feature's proof: the number must move.
+
+**Step 4: Skill inventory**
+
+A new admin tab listing every fact — haves and gaps — with a **Copy résumé source**
+button emitting updated TypeScript for `resume.ts` `skills` and `portfolio-context.ts`
+`techStack`.
+
+**Step 5: Merge into the knowledge base**
+
+- `buildKnowledgeBase(origin, extraSkills)` accepts confirmed skills; `/api/chat` passes
+  them, so the assistant is live and correct with no deploy.
+- `src/pages/llms.txt.ts` adds `export const prerender = false`, queries confirmed facts
+  via the Admin SDK, and **wraps that in try/catch falling back to the un-merged base**.
+  A crawler endpoint must not 500 because a database is down.
+
+**Step 6: Verify**
+
+```bash
+bun run build
+```
+Expected: 0 errors. Then in a browser: analyse a JD naming a technology you do not have,
+answer one gap Yes and one No, confirm the fit score rises, confirm the declined skill
+disappears from future questions, and confirm `curl localhost:PORT/llms.txt` now lists
+the confirmed skill.
+
+**Step 7: Commit**
+
+```bash
+git add src/components/admin src/lib/portfolio-context.ts src/pages
+git commit -m "feat(admin): skill gap interview feeding résumé and knowledge base"
+```
+
+---
+
+## Task 8: End-to-end verification
 
 **Step 1: Full build**
 
@@ -517,14 +702,22 @@ Expected: 0 errors, all tests pass.
 **Step 2: Local runtime pass**
 
 Run under `wrangler pages dev` (not `astro dev`) so the API routes execute with real
-bindings. Exercise: create application without JD → add JD → analyse → check coverage
-→ tailor résumé → download PDF → delete.
+bindings. Exercise the full loop: create an application without a JD → add a JD naming a
+technology you do not have → analyse → note the coverage → answer one gap Yes and one No
+→ **confirm coverage rises** → re-tailor → confirm the new skill appears and no invented
+metric is present → download PDF → delete.
+
+Then `curl` the local `/llms.txt` and confirm the confirmed skill is listed. Break
+InstantDB access (bad token) and re-request it: it must still serve the un-merged base,
+not a 500.
 
 **Step 3: Confirm zero residue**
 
-Delete every test application created during verification and re-query. The owner's
-real application (**Software Engineer III — FMX / Fanatics**) and its version must
-still be present — do not delete it.
+Delete every test application **and every `skillFacts` row** created during verification,
+then re-query both namespaces. The owner's real application (**Software Engineer III —
+FMX / Fanatics**) and its version must still be present — do not delete it. Any skill
+fact the owner genuinely answered during testing should be kept deliberately, not by
+accident: confirm each surviving row with them.
 
 **Step 4: Deploy and verify in production**
 

@@ -24,12 +24,15 @@ The reference material listed nine prompts. They collapse to five artifacts:
 | Source prompts | Artifact | v1 |
 | --- | --- | --- |
 | JD breakdown, ATS alignment | **JD Analysis** | yes |
+| *(none — added by the owner)* | **Skill Gap Interview** | yes |
 | Tailor résumé, rewrite bullets | **Tailored Résumé** | already shipped |
 | Cover letter | Cover Letter | deferred |
 | Interview questions, STAR answers | Interview Prep | deferred |
 | Role-fit matrix, recruiter verdict | Recruiter Review | deferred |
 
-Nine buttons would be interface noise for five outputs.
+Nine buttons would be interface noise for five outputs. The Skill Gap Interview is
+not from that list: it closes the loop the nine prompts leave open, where the JD
+demands something the résumé does not contain.
 
 ## Layout
 
@@ -150,3 +153,109 @@ running it: `astro check` for types, and a real browser pass on the admin UI.
 
 No tests are written for React rendering or InstantDB plumbing; they would assert
 wiring rather than behaviour.
+
+---
+
+# Addendum — Skill Gap Interview
+
+Approved 2026-09-22, after the tracker design.
+
+## Problem
+
+Grounding pins the résumé to `src/data/resume.ts`, which is exactly right for stopping
+fabrication and exactly wrong as a ceiling: when a posting requires Kubernetes and the
+résumé has never mentioned it, the correct answer is sometimes *"ask the owner — he may
+well have done it"*, not *"omit it forever"*.
+
+This is the **only sanctioned path for a new fact to enter the résumé**.
+
+## The rule
+
+> The model asks the question. The owner's typed answer is the fact.
+
+The model may propose *what to ask about* — it derives that mechanically from keywords
+already verified as present in the job description. It may never supply the answer.
+Everything else keeps pinning against the base; the base simply grows by facts the owner
+authored.
+
+## Recording the "no" matters as much as the "yes"
+
+A declined skill is persisted as a confirmed gap. Without it:
+
+- every future Kubernetes posting re-asks the same question, forever, and
+- the fit score cannot distinguish *"not yet asked"* from *"genuinely does not have it"*.
+
+A confirmed gap is also a real finding in its own right: it tells the owner what to learn.
+
+## Evidence, not checkboxes
+
+Each confirmed skill captures `{ have, level, roleKey, evidence }`. Appending a bare
+keyword to a skills list is résumé padding that fails at the first interview question.
+The owner-typed `evidence` is what lets the tailor write a bullet that is both specific
+and true, and `roleKey` is chosen from a dropdown of the résumé's actual roles, so it is
+structured data rather than free text.
+
+## Data model
+
+```ts
+skillFacts: i.entity({
+  skill: i.string().indexed(),     // normalized match key, lowercase
+  label: i.string(),               // display form, owner's capitalization
+  have: i.boolean(),               // false = confirmed gap; never ask again
+  level: i.string().optional(),    // learning | working | strong
+  evidence: i.string().optional(), // owner-typed; the ONLY source of new fact text
+  roleKey: i.string().optional(),  // "company|role|date" of a base role, or ""
+  createdAt: i.date().indexed(),
+  updatedAt: i.date().indexed(),
+})
+```
+
+Owner-entered, therefore a client write, per the write-path rule above.
+
+## One resolver, two consumers
+
+`resolveSkillBase()` merges `src/data/resume.ts` with confirmed facts and becomes the
+single input to both grounding and presence-matching. Consequences:
+
+- `matchesResume` checks against the merged base, so **answering a gap must move the fit
+  score**. That is the feature's falsifiable test: if the number does not move, it is
+  broken.
+- `groundTailored` pins against the merged base, so a newly confirmed skill is legal
+  output while an invented one still is not.
+
+## Experience bullets
+
+The chosen scope lets evidence strengthen a bullet on the named role, which means the
+model is editing work history. Two invariants contain that:
+
+1. **Bullet budget.** A role's tailored bullet count may not exceed its base count plus
+   the number of confirmed facts assigned to that role. Wholesale invention becomes
+   arithmetically impossible.
+2. **Metric scan.** Every number in the tailored output must occur in the base résumé or
+   in some confirmed fact's evidence text. Anything else surfaces as an *unverified
+   claim* warning before the résumé is used.
+
+The prompt additionally requires `[ADD METRIC]` in place of any figure the model does not
+have, so the scan should rarely have anything to catch.
+
+## Keeping `/llms.txt` honest
+
+Skills are declared twice today: `resume.ts` (`skills`) and `portfolio-context.ts`
+(`techStack`). They already drift. Confirmed facts must reach both, but `output: 'static'`
+means `/llms.txt` is generated at deploy time and cannot see runtime data — while
+`/api/chat` shares `buildKnowledgeBase` and is already on-demand.
+
+Resolution:
+
+- `buildKnowledgeBase` accepts the merged skill set, so **the chat assistant is live and
+  correct immediately**.
+- `/llms.txt` opts into on-demand rendering (`export const prerender = false`) and
+  **falls back to the static base if InstantDB is unreachable** — a crawler endpoint must
+  not depend on a database being up.
+- A **Copy résumé source** button emits updated TypeScript for both `resume.ts` and
+  `portfolio-context.ts`, so the committed files converge on the owner's schedule without
+  a GitHub token or code generation into tracked source.
+
+The underlying duplication of the two skill lists is left alone here. It should be
+collapsed into one declaration eventually; doing it inside this feature would widen the
+change for no user-visible gain.
