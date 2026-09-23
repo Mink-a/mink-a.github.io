@@ -33,3 +33,6 @@ yarn-error.log*
 .claude/
 skills-lock.json
 docs/superpowers/
+
+# Git worktrees for feature work
+.worktrees/
