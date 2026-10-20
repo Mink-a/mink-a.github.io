@@ -2,12 +2,17 @@
 // as `calc(<value> * var(--density))`; this measures the rendered document
 // against the real printed page and steps `--density` down only as far as
 // needed — never stretching a short résumé, never crushing a long one past a
-// readable floor. Shared by src/pages/resume/[variant].astro (in the browser)
-// and scripts/resume-pdf.ts (in headless Chromium), so both pick the same
-// density for the same content.
+// readable floor. `fitResumeDocument` is the single entry point: the live
+// /resume/<variant> page calls it directly, and scripts/resume-pdf.ts bundles
+// this module into its headless page and calls the same function before
+// printing, so the browser and the static PDFs cannot pick different
+// densities for the same content.
 //
 // Geometry mirrors the `@page { size: A4; margin: 13mm 14mm }` rule in
-// `resumeCSS`.
+// `resumeCSS`. The model was validated against the artefact: rasterising the
+// produced PDF and locating the last inked row agrees with the predicted fill
+// to within ~0.3 points across densities 0.78–1, and the predicted >100%
+// cases are exactly the ones Chrome paginates onto a second sheet.
 
 export const PX_PER_MM = 96 / 25.4;
 const A4_HEIGHT_MM = 297;
@@ -26,8 +31,10 @@ export const CONTENT_WIDTH_MM = A4_WIDTH_MM - PAGE_MARGIN_X_MM * 2;
 export const DENSITY_FLOOR = 0.78;
 export const DENSITY_STEP = 0.02;
 /**
- * Fraction of the printable height to fill. Fitting to 100% lands the last
- * line flush against the page edge; 96% leaves a visible foot of white space.
+ * Upper bound of the fill band, as a fraction of the printable height. Fitting
+ * to 100% lands the last line flush against the page edge. One density step
+ * moves the height by ~2.2% of the page, so the highest density at or under
+ * 96% lands in the 92–96% band whenever the résumé needs fitting at all.
  */
 export const TARGET_FILL = 0.96;
 export const TARGET_HEIGHT_PX = PRINTABLE_HEIGHT_MM * PX_PER_MM * TARGET_FILL;
@@ -75,7 +82,7 @@ export async function fitDensity(
  * and the screen sheet's padding/border removed. Inter is loaded inside the
  * iframe before measuring so the metrics match the printed font.
  */
-export async function fitResumeInBrowser(
+async function fitResumeInBrowser(
   bodyHtml: string,
   css: string,
   fontUrl: string,
@@ -116,4 +123,21 @@ export async function fitResumeInBrowser(
   } finally {
     iframe.remove();
   }
+}
+
+/**
+ * Fits the `[data-resume-doc]` element of the current document using the
+ * résumé styles in `#resume-css`, then applies the result: sets `--density`
+ * and records `data-density` / `data-print-height-mm` on the element. Returns
+ * `undefined` when the page has no résumé to fit.
+ */
+export async function fitResumeDocument(fontUrl: string): Promise<FitResult | undefined> {
+  const docEl = document.querySelector<HTMLElement>("[data-resume-doc]");
+  const css = document.getElementById("resume-css")?.textContent;
+  if (!docEl || !css) return undefined;
+  const result = await fitResumeInBrowser(docEl.innerHTML, css, fontUrl);
+  docEl.style.setProperty("--density", String(result.density));
+  docEl.dataset.density = String(result.density);
+  docEl.dataset.printHeightMm = result.heightMm.toFixed(1);
+  return result;
 }

@@ -307,7 +307,9 @@ export const resumeVariants: readonly VariantView[] = [
       freelance: ["freelance.ownership", "freelance.burmauni", "freelance.myanhealth"],
     },
     skills: ["languages", "frontend", "backend", "data", "auth-payments", "cloud", "testing"],
-    projects: ["meeeetup", "ai-docs", "burmauni"],
+    // The MeeeetUp project is left out here: all four MeeeetUp bullets above
+    // already cover it, and the third project made the aside outrun Experience.
+    projects: ["ai-docs", "burmauni"],
   },
   {
     slug: "frontend",
@@ -317,8 +319,13 @@ export const resumeVariants: readonly VariantView[] = [
       "Frontend engineer specialising in React, Next.js and TypeScript — building production web interfaces, from virtualized data tables to in-browser computer vision.",
     pdf: "/Min-Khant-Kyaw-Frontend.pdf",
     bullets: {
-      meeeetup: ["meeeetup.platform", "meeeetup.facial-checkin", "meeeetup.domain-model"],
-      kbz: ["kbz.payroll", "kbz.banking-systems", "kbz.nps-queue"],
+      meeeetup: [
+        "meeeetup.platform",
+        "meeeetup.facial-checkin",
+        "meeeetup.domain-model",
+        "meeeetup.payments-email",
+      ],
+      kbz: ["kbz.payroll", "kbz.banking-systems", "kbz.nps-queue", "kbz.cash-management"],
       mit: ["mit.reservation-calendar", "mit.pos", "mit.odoo-erp"],
       freelance: ["freelance.burmauni", "freelance.myanhealth", "freelance.ownership"],
     },
@@ -339,9 +346,9 @@ export const resumeVariants: readonly VariantView[] = [
         "meeeetup.platform",
         "meeeetup.facial-checkin",
       ],
-      kbz: ["kbz.cash-management", "kbz.banking-systems", "kbz.nps-queue"],
-      mit: ["mit.odoo-erp", "mit.pos"],
-      freelance: ["freelance.burmauni", "freelance.ownership"],
+      kbz: ["kbz.cash-management", "kbz.banking-systems", "kbz.nps-queue", "kbz.payroll"],
+      mit: ["mit.odoo-erp", "mit.pos", "mit.reservation-calendar"],
+      freelance: ["freelance.burmauni", "freelance.ownership", "freelance.myanhealth"],
     },
     skills: ["backend", "data", "auth-payments", "cloud", "languages", "frontend", "testing"],
     projects: ["ai-docs", "meeeetup"],
@@ -479,7 +486,9 @@ export const resumeCSS = `
 }
 .resume-doc .layout {
   display: grid;
-  grid-template-columns: 1.75fr 1fr;
+  /* Sized so Experience runs at least as tall as Skills + Projects + Education
+     in every curated view (measured at the 182mm print width). */
+  grid-template-columns: 1.45fr 1fr;
   gap: calc(32px * var(--density));
   align-items: start;
 }

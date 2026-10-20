@@ -79,23 +79,12 @@ const title = `${view.title} Resume — Min Khant Kyaw`;
 </html>
 
 <script>
-  import { fitResumeInBrowser } from "../../lib/resumeFit";
-
-  // Auto-fit to one printed page: measure at the real print geometry (182mm
-  // wide, see resumeFit.ts) and step `--density` down only as far as needed.
-  async function fit(): Promise<void> {
-    const docEl = document.querySelector<HTMLElement>("[data-resume-doc]");
-    const css = document.getElementById("resume-css")?.textContent;
-    if (!docEl || !css) return;
-    const fontUrl = new URL("/fonts/inter-variable.woff2", location.href).href;
-    const result = await fitResumeInBrowser(docEl.innerHTML, css, fontUrl);
-    docEl.style.setProperty("--density", String(result.density));
-    docEl.dataset.density = String(result.density);
-    docEl.dataset.printHeightMm = result.heightMm.toFixed(1);
-  }
+  import { fitResumeDocument } from "../../lib/resumeFit";
 
   document.addEventListener("astro:page-load", () => {
-    void fit();
+    // Auto-fit to one printed page (see resumeFit.ts) — the same function
+    // scripts/resume-pdf.ts runs before printing the static PDFs.
+    void fitResumeDocument(new URL("/fonts/inter-variable.woff2", location.href).href);
     // Top-level window.print(): the browser's own dialog yields a real,
     // searchable, ATS-readable PDF.
     document.querySelector("[data-print]")?.addEventListener("click", () => window.print());
