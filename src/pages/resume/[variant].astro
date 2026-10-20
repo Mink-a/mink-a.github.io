@@ -1,0 +1,103 @@
+---
+import "../../styles/global.css";
+import BaseHead from "../../components/BaseHead.astro";
+import { renderResumeBody, resumeCSS, resumeVariants, type VariantView } from "../../data/resume";
+
+export function getStaticPaths() {
+  return resumeVariants.map((view) => ({ params: { variant: view.slug }, props: { view } }));
+}
+
+interface Props {
+  view: VariantView;
+}
+
+const { view } = Astro.props;
+const title = `${view.title} Resume — Min Khant Kyaw`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={view.subtitle} />
+    <style is:inline id="resume-css" set:html={resumeCSS}></style>
+    <!--
+      Print overrides, unlayered on purpose: global.css's unlayered
+      `body { min-height: 100vh }` beats any Tailwind (layered) utility, and
+      would spill the résumé onto a phantom second sheet. The `@page` margin
+      is the print padding (content is never full-bleed); `.resume-doc` drops
+      its on-screen sheet padding in print because resumeCSS scopes that to
+      `@media screen`.
+    -->
+    <style is:inline>
+      @media print {
+        @page { size: A4; margin: 13mm 14mm; }
+        html, body { min-height: 0; background: #fff; color: #000; }
+        .resume-page { padding: 0; background: #fff; }
+      }
+    </style>
+  </head>
+  <body class="bg-bg text-text antialiased">
+    <nav
+      aria-label="Résumé toolbar"
+      class="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3 print:hidden"
+    >
+      <div class="flex flex-wrap items-center gap-1 text-sm">
+        <a href="/resume" class="rounded-lg px-3 py-1.5 text-text-muted hover:text-text">← Resume</a>
+        {resumeVariants.map((v) => (
+          <a
+            href={`/resume/${v.slug}`}
+            aria-current={v.slug === view.slug ? "page" : undefined}
+            class:list={[
+              "rounded-lg px-3 py-1.5 font-medium transition-colors",
+              v.slug === view.slug ? "bg-surface-2 text-text" : "text-text-muted hover:text-text",
+            ]}
+          >
+            {v.label}
+          </a>
+        ))}
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href={view.pdf}
+          download
+          class="rounded-lg px-3 py-1.5 text-sm font-semibold text-text hover:text-accent"
+        >
+          Download PDF
+        </a>
+        <button
+          type="button"
+          data-print
+          class="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-bg hover:opacity-90"
+        >
+          Save as PDF
+        </button>
+      </div>
+    </nav>
+    <main class="resume-page p-4 sm:p-8">
+      <div class="resume-doc" data-resume-doc set:html={renderResumeBody(view.slug)}></div>
+    </main>
+  </body>
+</html>
+
+<script>
+  import { fitResumeInBrowser } from "../../lib/resumeFit";
+
+  // Auto-fit to one printed page: measure at the real print geometry (182mm
+  // wide, see resumeFit.ts) and step `--density` down only as far as needed.
+  async function fit(): Promise<void> {
+    const docEl = document.querySelector<HTMLElement>("[data-resume-doc]");
+    const css = document.getElementById("resume-css")?.textContent;
+    if (!docEl || !css) return;
+    const fontUrl = new URL("/fonts/inter-variable.woff2", location.href).href;
+    const result = await fitResumeInBrowser(docEl.innerHTML, css, fontUrl);
+    docEl.style.setProperty("--density", String(result.density));
+    docEl.dataset.density = String(result.density);
+    docEl.dataset.printHeightMm = result.heightMm.toFixed(1);
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    void fit();
+    // Top-level window.print(): the browser's own dialog yields a real,
+    // searchable, ATS-readable PDF.
+    document.querySelector("[data-print]")?.addEventListener("click", () => window.print());
+  });
+</script>

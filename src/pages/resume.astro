@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/InnerLayout.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
-import { resumeCSS, renderResumeBody } from "../data/resume";
+import { resumeCSS, renderResumeBody, resumeVariants } from "../data/resume";
 ---
 <Base
   title="Resume — Min Khant Kyaw"
@@ -25,6 +25,15 @@ import { resumeCSS, renderResumeBody } from "../data/resume";
       Download PDF
     </a>
   </div>
+
+  <nav aria-label="Focused résumés" class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-8 text-sm">
+    <span class="text-text-muted">Focused versions:</span>
+    {resumeVariants.map((v) => (
+      <a href={`/resume/${v.slug}`} class="font-semibold text-text hover:text-accent transition-colors">
+        {v.label} →
+      </a>
+    ))}
+  </nav>
 
   <style is:inline set:html={resumeCSS}></style>
   <div class="resume-doc" set:html={renderResumeBody()}></div>

@@ -13,9 +13,7 @@
   // BUILD time by Vite, so it must be a build env var (see deploy workflow).
   "vars": {
     "LLM_MODEL": "google/gemini-3.1-flash-lite-preview",
-    "LLM_BASE_URL": "https://api.sargalay.com/v1",
-    // Account id is not a secret; the Browser Rendering token is (below).
-    "CLOUDFLARE_ACCOUNT_ID": "422fe4378e4a875ad1539583e2d0fd46"
+    "LLM_BASE_URL": "https://api.sargalay.com/v1"
   },
 
   // KV namespaces (created via `wrangler kv namespace create`).
@@ -29,6 +27,4 @@
   // Secrets — DO NOT put here. Set them once per Pages project:
   //   wrangler pages secret put LLM_API_KEY
   //   wrangler pages secret put INSTANT_APP_ADMIN_TOKEN
-  //   wrangler pages secret put CLOUDFLARE_BROWSER_TOKEN
-  //     (API token with "Browser Rendering — Edit"; renders résumé PDFs)
 }

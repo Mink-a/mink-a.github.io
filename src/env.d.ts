@@ -14,10 +14,6 @@ interface Env {
   LLM_BASE_URL?: string;
   /** KV namespace backing the chat rate limiter. */
   RATE_LIMIT: KVNamespace;
-  /** Cloudflare account id — non-secret, set in wrangler.jsonc vars. */
-  CLOUDFLARE_ACCOUNT_ID?: string;
-  /** API token with "Browser Rendering — Edit", used to render résumé PDFs. */
-  CLOUDFLARE_BROWSER_TOKEN?: string;
 }
 
 declare global {
