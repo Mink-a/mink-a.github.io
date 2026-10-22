@@ -1,9 +1,7 @@
-// Renders the résumé (src/data/resume.ts) to static A4 PDFs in public/:
-//   - Min-Khant-Kyaw-Resume.pdf      (canonical, linked from /resume)
-//   - Min-Khant-Kyaw-<Variant>.pdf   (one per curated view, linked from /resume/<variant>)
-// Single source of truth: the same data + styles power the /resume pages, and
-// the one-page density fit is the very same `fitResumeDocument` the live
-// /resume/<variant> page runs (src/lib/resumeFit.ts), executed in the page here.
+// Renders the résumé (src/data/resume.ts) to public/Min-Khant-Kyaw-Resume.pdf,
+// a single full A4 page. The same data + styles power /resume, and the page
+// fill is the very same `fitResumeDocument` /resume runs live
+// (src/lib/resumeFit.ts), executed in the headless page here before printing.
 // Run after editing the résumé: `bun run resume:pdf`
 // (One-time browser setup if needed: `bunx puppeteer browsers install chrome`)
 import os from "node:os";
@@ -12,8 +10,8 @@ import { pathToFileURL } from "node:url";
 import { readFile, writeFile, unlink } from "node:fs/promises";
 import puppeteer from "puppeteer";
 import ts from "typescript";
-import { resumeCSS, renderResumeBody, resumeVariants } from "../src/data/resume.ts";
-import { PRINTABLE_HEIGHT_MM, type FitResult } from "../src/lib/resumeFit.ts";
+import { resumeCSS, renderResumeBody } from "../src/data/resume.ts";
+import { FILL_HEIGHT_MM, type FitResult } from "../src/lib/resumeFit.ts";
 
 const root = process.cwd();
 const fontUrl = pathToFileURL(path.join(root, "public", "fonts", "inter-variable.woff2")).href;
@@ -26,13 +24,7 @@ const fitModule = ts.transpileModule(
   { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } },
 ).outputText;
 
-const targets = [
-  { file: "Min-Khant-Kyaw-Resume.pdf", body: renderResumeBody() },
-  ...resumeVariants.map((v) => ({
-    file: path.basename(v.pdf),
-    body: renderResumeBody(v.slug),
-  })),
-];
+const targets = [{ file: "Min-Khant-Kyaw-Resume.pdf", body: renderResumeBody() }];
 
 const htmlFor = (body: string): string => `<!doctype html>
 <html lang="en">
@@ -76,12 +68,16 @@ try {
       const pdfPath = path.join(root, "public", target.file);
       const pdf = await page.pdf({ path: pdfPath, preferCSSPageSize: true, printBackground: true });
       const pages = (Buffer.from(pdf).toString("latin1").match(/\/Type\s*\/Page(?!s)/g) ?? []).length;
+      const balanced = fit.balanced
+        ? `, ${fit.balanced.column} balanced at ${fit.balanced.density}`
+        : "";
       console.log(
-        `Wrote ${path.relative(root, pdfPath)} — density ${fit.density}, height ` +
-          `${fit.heightMm.toFixed(1)}mm = ${((fit.heightMm / PRINTABLE_HEIGHT_MM) * 100).toFixed(1)}% ` +
-          `of the printable page, ${pages} page${pages === 1 ? "" : "s"}` +
+        `Wrote ${path.relative(root, pdfPath)} — density ${fit.density}${balanced}, height ` +
+          `${fit.heightMm.toFixed(1)}mm = ${((fit.heightMm / FILL_HEIGHT_MM) * 100).toFixed(1)}% ` +
+          `of the fill height, ${pages} page${pages === 1 ? "" : "s"}` +
           (fit.fits ? "" : " — DOES NOT FIT at density floor"),
       );
+      if (pages !== 1) process.exitCode = 1;
     } finally {
       await unlink(tmpPath).catch(() => {});
     }

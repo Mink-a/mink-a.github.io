@@ -1,8 +1,11 @@
 import { useState } from "react";
-import type { SyntheticEvent } from "react";
+import type { ReactNode, SyntheticEvent } from "react";
 import { db, isConfigured } from "../../lib/instant";
 import { Centered, OWNER_EMAIL } from "./shared";
 import ChatSessions from "./ChatSessions";
+import ResumeVariants from "./ResumeVariants";
+
+type Tab = "chat" | "resumes";
 
 export default function AdminApp() {
   if (!isConfigured) {
@@ -29,6 +32,7 @@ export default function AdminApp() {
 
 function Shell() {
   const user = db.useUser();
+  const [tab, setTab] = useState<Tab>("chat");
 
   if (user.email !== OWNER_EMAIL) {
     return (
@@ -47,9 +51,16 @@ function Shell() {
   }
 
   return (
-    <div className="flex h-screen flex-col">
-      <header className="flex items-center justify-between gap-4 border-b border-border px-5 py-3">
-        <h1 className="text-sm font-medium text-text">Chat sessions</h1>
+    <div className="flex h-screen flex-col print:block print:h-auto">
+      <header className="flex items-center justify-between gap-4 border-b border-border px-5 py-3 print:hidden">
+        <nav className="flex gap-1">
+          <TabButton active={tab === "chat"} onClick={() => setTab("chat")}>
+            Chat sessions
+          </TabButton>
+          <TabButton active={tab === "resumes"} onClick={() => setTab("resumes")}>
+            Résumés
+          </TabButton>
+        </nav>
         <button
           onClick={() => db.auth.signOut()}
           className="rounded-lg px-3 py-1.5 text-sm text-text-muted hover:bg-surface-2 hover:text-text"
@@ -58,8 +69,29 @@ function Shell() {
         </button>
       </header>
 
-      <ChatSessions />
+      {tab === "chat" ? <ChatSessions /> : <ResumeVariants />}
     </div>
+  );
+}
+
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+        active ? "bg-surface-2 text-text" : "text-text-muted hover:text-text"
+      }`}
+    >
+      {children}
+    </button>
   );
 }
 

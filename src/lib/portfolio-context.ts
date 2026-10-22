@@ -14,7 +14,7 @@ const techStack: [string, string][] = [
   ["Database & ORM", "PostgreSQL, OracleDB, MySQL, Supabase, Prisma"],
   ["Auth & Payments", "NextAuth, JWT / RBAC, Stripe & Stripe Connect"],
   ["Cloud & Tooling", "AWS (S3, Rekognition, SES/SNS/SQS, Lambda, Amplify), Vercel, DigitalOcean, Cloudflare, Docker, GitHub Actions, Turborepo, esbuild"],
-  ["Testing", "Vitest, Playwright, Storybook"],
+  ["Testing", "Vitest, Playwright, e2e (TesterArmy), Storybook"],
 ];
 
 const techLines = techStack.map(([k, v]) => `- **${k}:** ${v}`).join("\n");

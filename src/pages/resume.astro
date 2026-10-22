@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/InnerLayout.astro";
 import Breadcrumb from "../components/Breadcrumb.astro";
-import { resumeCSS, renderResumeBody, resumeVariants } from "../data/resume";
+import { resumeCSS, renderResumeBody } from "../data/resume";
 ---
 <Base
   title="Resume — Min Khant Kyaw"
@@ -26,15 +26,16 @@ import { resumeCSS, renderResumeBody, resumeVariants } from "../data/resume";
     </a>
   </div>
 
-  <nav aria-label="Focused résumés" class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-8 text-sm">
-    <span class="text-text-muted">Focused versions:</span>
-    {resumeVariants.map((v) => (
-      <a href={`/resume/${v.slug}`} class="font-semibold text-text hover:text-accent transition-colors">
-        {v.label} →
-      </a>
-    ))}
-  </nav>
-
-  <style is:inline set:html={resumeCSS}></style>
-  <div class="resume-doc" set:html={renderResumeBody()}></div>
+  <style is:inline id="resume-css" set:html={resumeCSS}></style>
+  <div class="resume-doc" data-resume-doc set:html={renderResumeBody()}></div>
 </Base>
+
+<script>
+  import { fitResumeDocument } from "../lib/resumeFit";
+
+  // Fill the sheet exactly as the PDF is filled (see resumeFit.ts) — the same
+  // function scripts/resume-pdf.ts runs before printing.
+  document.addEventListener("astro:page-load", () => {
+    void fitResumeDocument(new URL("/fonts/inter-variable.woff2", location.href).href);
+  });
+</script>
