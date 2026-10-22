@@ -12,22 +12,27 @@ import { resumeCSS, renderResumeBody } from "../data/resume";
     { label: "Resume" },
   ]} />
 
-  <div class="flex items-center justify-between gap-4 mb-8 lg:mb-10">
-    <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent">
-      Resume
-    </p>
-    <a
-      href="/Min-Khant-Kyaw-Resume.pdf"
-      download
-      class="inline-flex items-center gap-2 text-sm font-semibold text-text hover:text-accent transition-colors"
-    >
-      <span aria-hidden="true">⬇</span>
-      Download PDF
-    </a>
-  </div>
+  <!-- One A4-wide column for the label row and the sheet, so the Download
+       button's right edge lines up with the sheet and the label and sheet
+       line up with the breadcrumb on the left. -->
+  <div class="max-w-[210mm]">
+    <div class="flex items-center justify-between gap-4 mb-8 lg:mb-10">
+      <p class="text-xs uppercase tracking-[0.16em] font-semibold text-accent">
+        Resume
+      </p>
+      <a
+        href="/Min-Khant-Kyaw-Resume.pdf"
+        download
+        class="inline-flex items-center gap-2 text-sm font-semibold text-text hover:text-accent transition-colors"
+      >
+        <span aria-hidden="true">⬇</span>
+        Download PDF
+      </a>
+    </div>
 
-  <style is:inline id="resume-css" set:html={resumeCSS}></style>
-  <div class="resume-doc" data-resume-doc set:html={renderResumeBody()}></div>
+    <style is:inline id="resume-css" set:html={resumeCSS}></style>
+    <div class="resume-doc" data-resume-doc set:html={renderResumeBody()}></div>
+  </div>
 </Base>
 
 <script>
